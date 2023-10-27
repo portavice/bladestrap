@@ -1,0 +1,55 @@
+{
+    "name": "portavice/bladestrap",
+    "description": "Blade components for Bootstrap 5",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Patrick Robrecht",
+            "role": "Lead Developer",
+            "email": "patrick.robrecht@portavice.de"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Portavice\\Bladestrap\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Portavice\\Bladestrap\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^8.1",
+        "illuminate/console": "^10.24",
+        "illuminate/session": "^10.24",
+        "illuminate/support": "^10.24",
+        "illuminate/view": "^10.24"
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^1",
+        "orchestra/testbench": "^8.5",
+        "phpcompatibility/php-compatibility": "^9.3",
+        "phpunit/phpunit": "^10.4",
+        "squizlabs/php_codesniffer": "^3.7"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Portavice\\Bladestrap\\BladestrapServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "cs": "vendor/bin/phpcs",
+        "csfix": "vendor/bin/phpcbf",
+        "test": "vendor/bin/phpunit"
+    }
+}
