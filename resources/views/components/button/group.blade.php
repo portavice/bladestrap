@@ -1,4 +1,5 @@
 @props([
+    /** @var bool $vertical */
     'vertical' => false,
 ])
 <div {{ $attributes

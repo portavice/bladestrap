@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+- Components for alerts, badges, and links
+- Components for breadcrumb and navigation
+- Components for buttons, groups, and toolbars
 - Components for forms and their fields including feedback
-- Components for breadcrumb, links, navigation
-- Components for buttons, groups, toolbars
+- Components for list groups and their items

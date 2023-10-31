@@ -1,8 +1,6 @@
 <?php
 
-namespace Portavice\Bladestrap\Tests\Feature\Nav;
-
-use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
+namespace Portavice\Bladestrap\Tests\Feature;
 
 class NavTest extends ComponentTestCase
 {
@@ -19,6 +17,14 @@ class NavTest extends ComponentTestCase
                 ...
             </nav>',
             $this->bladeView('<x-bs::nav container="nav">...</x-bs::nav>')
+        );
+        $this->assertBladeRendersToHtml(
+            '<nav class="nav flex-column">
+                ...
+            </nav>',
+            $this->bladeView('<x-bs::nav container="nav" :vertical="$vertical">...</x-bs::nav>', [
+                'vertical' => true,
+            ])
         );
     }
 

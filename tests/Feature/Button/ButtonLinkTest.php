@@ -3,11 +3,14 @@
 namespace Portavice\Bladestrap\Tests\Feature\Button;
 
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
+use Portavice\Bladestrap\Tests\Traits\TestsVariants;
 
-class LinkTest extends ComponentTestCase
+class ButtonLinkTest extends ComponentTestCase
 {
+    use TestsVariants;
+
     /**
-     * @dataProvider dataProviderForVariants
+     * @dataProvider variants
      */
     public function testLinksRenderCorrectly(string $buttonClass, ?string $variant): void
     {
@@ -15,15 +18,15 @@ class LinkTest extends ComponentTestCase
             '<a class="btn ' . $buttonClass . '" href="http://localhost/my-target">Link title</a>',
             $this->bladeView(
                 sprintf(
-                    '<x-bs::link %s href="http://localhost/my-target">Link title</x-bs::link>',
-                    isset($variant) ? sprintf('variant="%s"', $variant) : ''
+                    '<x-bs::button.link %s href="http://localhost/my-target">Link title</x-bs::button.link>',
+                    self::makeVariantAttribute($variant)
                 )
             )
         );
     }
 
     /**
-     * @dataProvider dataProviderForVariants
+     * @dataProvider variants
      */
     public function testDisabledLinksRenderCorrectly(string $buttonClass, ?string $variant): void
     {
@@ -34,8 +37,8 @@ class LinkTest extends ComponentTestCase
             '<a aria-disabled="true" class="btn ' . $buttonClass . ' disabled">Link title</a>',
             $this->bladeView(
                 sprintf(
-                    '<x-bs::link %s disabled="true">Link title</x-bs::button>',
-                    isset($variant) ? sprintf('variant="%s"', $variant) : ''
+                    '<x-bs::button.link %s :disabled="true">Link title</x-bs::button>',
+                    self::makeVariantAttribute($variant)
                 )
             )
         );
@@ -48,20 +51,18 @@ class LinkTest extends ComponentTestCase
             '<a aria-disabled="true" role="button" tabindex="-1" class="btn ' . $buttonClass . ' disabled" href="#">Link title</a>',
             $this->bladeView(
                 sprintf(
-                    '<x-bs::link %s disabled="true" href="#">Link title</x-bs::button>',
+                    '<x-bs::button.link %s disabled="true" href="#">Link title</x-bs::button>',
                     isset($variant) ? sprintf('variant="%s"', $variant) : ''
                 )
             )
         );
     }
 
-    public static function dataProviderForVariants(): array
+    public static function variants(): array
     {
         return [
             ['btn-primary', null],
-            ['btn-primary', 'primary'],
-            ['btn-secondary', 'secondary'],
-            ['btn-danger', 'danger'],
+            ...self::makeDataProvider('btn-'),
             ['btn-link', 'link'],
         ];
     }

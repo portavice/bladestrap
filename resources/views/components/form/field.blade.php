@@ -82,7 +82,7 @@
             ->class(config('bladestrap.classes.form.label'))
             ->merge([
                 'for' => $id ?? $name,
-        ]) }}>{{ $slot }}</label>
+            ]) }}>{{ $slot }}</label>
     @endif
     @if($hasInputGroupContainer)
         <div @class([

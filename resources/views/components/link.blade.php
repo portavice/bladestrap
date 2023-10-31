@@ -6,17 +6,21 @@
      */
     'variant' => 'primary',
 
-    /** @var bool $disabled */
-    'disabled' => false,
+    /**
+     * @var int|string|null $opacity
+     * Possible values: 10, 25, 50, 75, 100
+     */
+    'opacity' => null,
+
+     /**
+     * @var int|string|null $opacityHover
+     * Possible values: 10, 25, 50, 75, 100
+     */
+    'opacityHover' => null,
 ])
 <a {{ $attributes
     ->class([
-        'btn',
-        'btn-' . $variant,
-        'disabled' => $disabled,
-    ])
-     ->merge([
-         'aria-disabled' => $disabled ? 'true' : null,
-         'role' => $attributes->get('href') === '#' ? 'button' : null,
-         'tabindex' => $disabled && $attributes->has('href') ? '-1' : null,
-    ])}}>{{ $slot }}</a>
+        'link-' . $variant,
+        'link-opacity-' . $opacity => isset($opacity),
+        'link-opacity-' . $opacityHover . '-hover' => isset($opacityHover),
+    ]) }}>{{ $slot }}</a>

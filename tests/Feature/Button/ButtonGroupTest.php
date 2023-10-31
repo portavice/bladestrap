@@ -26,7 +26,7 @@ class ButtonGroupTest extends ComponentTestCase
             '<div role="group" class="btn-group-vertical"><button class="btn btn-primary">Button 1</button>
                 <button class="btn btn-primary">Button 2</button></div>',
             $this->bladeView(
-                '<x-bs::button.group vertical="true">
+                '<x-bs::button.group :vertical="true">
                     <x-bs::button>Button 1</x-bs::button>
                     <x-bs::button>Button 2</x-bs::button>
                 </x-bs::button.group>'

@@ -1,8 +1,6 @@
 <?php
 
-namespace Portavice\Bladestrap\Tests\Feature\Breadcrumb;
-
-use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
+namespace Portavice\Bladestrap\Tests\Feature;
 
 class BreadcrumbTest extends ComponentTestCase
 {
