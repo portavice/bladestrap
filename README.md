@@ -14,6 +14,9 @@ for the [Bootstrap 5](https://getbootstrap.com/docs/) frontend framework.
   - [Configure Bladestrap](#configure-bladestrap)
   - [Customize views](#customize-views)
 - [Usage](#usage)
+  - [Buttons and links](#buttons-and-links)
+    - [Button groups and toolbars](#button-groups-and-toolbars)
+  - [Breadcrumb](#breadcrumb)
   - [Forms](#forms)
     - [Types of form fields](#types-of-form-fields)
     - [Options](#options)
@@ -22,6 +25,7 @@ for the [Bootstrap 5](https://getbootstrap.com/docs/) frontend framework.
     - [Hints](#hints)
     - [Prefill values from query parameters](#prefill-values-from-query-parameters)
     - [Error messages](#error-messages)
+  - [Navigation](#navigation) 
 
 
 ## Installation
@@ -74,6 +78,52 @@ You may want to delete the views you haven't changed to benefit from package upd
 The components are placed in the `bs` namespace, such that they can be used via:
 ```HTML
 <x-bs::component-name> <!-- Replace component-name with one of the component names described below -->
+```
+
+### Breadcrumb
+The breadcrumb container is a `<x-bs::breadcrumb>` (typically placed within your `layouts/app.blade.php`):
+```HTML
+@hasSection('breadcrumbs')
+    <x-bs::breadcrumb container-class="mt-3" class="bg-light">
+        <x-bs::breadcrumb.item href="{{ route('dashboard') }}">{{ __('Dashboard') }}</x-bs::breadcrumb.item>
+        @yield('breadcrumbs')
+    </x-bs::breadcrumb>
+@endif
+```
+
+Items can be added via `<x-bs::breadcrumb.item :href="route('route-name')">Title</x-bs::breadcrumb.item>`.
+
+### Buttons and links
+To create buttons or links with Bootstrap's `btn-*` classes you can use `<x-bs::button>` and `<x-bs::link>`.
+Per default `btn-primary` is used, you can change that with the variant. 
+```HTML
+<x-bs::button href="{{ route('my-route') }}" variant="danger">{{ __('Delete') }}</x-bs::button>
+<x-bs::link href="{{ route('my-route') }}">{{ __('My title') }}</x-bs::link>
+```
+
+To disable a button or link, just add `disabled="true"` which automatically adds the corresponding class 
+and `aria-disabled="true"` as recommended by the Bootstrap documentation.
+
+#### Button groups and toolbars
+Buttons can be grouped:
+```HTML
+<x-bs::button.group>
+    <x-bs::button>Button 1</x-bs::button>
+    <x-bs::button variant="secondary">Button 2</x-bs::button>
+</x-bs::button.group>
+```
+Button groups can be grouped into a toolbar:
+```HTML
+<x-bs:toolbar aria-label="Toolbar with two groups">
+    <x-bs::button.group aria-label="First group">
+        <x-bs::button>Button 1</x-bs::button>
+        <x-bs::button>Button 2</x-bs::button>
+    </x-bs::button.group>
+    <x-bs::button.group aria-label="Second group">
+        <x-bs::button variant="secondary">Button 3</x-bs::button>
+        <x-bs::button variant="secondary">Button 4</x-bs::button>
+    </x-bs::button.group>
+</x-bs:toolbar>
 ```
 
 ### Forms
@@ -190,11 +240,15 @@ Setting `:from-query="true"` will extract values from the query parameters of th
 A form with the example field above on a page `/my-page?filter[name]=Test` will set "Test" as the prefilled value of the field,
 while `/my-page` will have an empty value.
 
-
-### Error messages
+#### Error messages
 All form fields show error messages automatically if present.
 If you want to show them independent of a form field, you can use the component directly:
 ```HTML
 <x-bs::form.feedback name="{{ $name }}"/>
 ```
 Both `<x-bs::form.feedback>` and `<x-bs::form.field>` support to use another than the default error bag via the `:errors` attribute.
+
+### Navigation
+`<x-bs::nav>` creates a nav container, use `container="ol"` to change the container element from the default `<ul>` to `<ol>`.
+
+Navigation items can be added via `<x-bs::nav.item href="{{ route('route-name') }}">Current Page</x-bs::nav.item>`.
