@@ -14,6 +14,11 @@ for the [Bootstrap 5](https://getbootstrap.com/docs/) frontend framework.
   - [Configure Bladestrap](#configure-bladestrap)
   - [Customize views](#customize-views)
 - [Usage](#usage)
+  - [Alerts](#alerts)
+  - [Badges](#badges)
+  - [Breadcrumb](#breadcrumb)
+  - [Buttons](#buttons)
+    - [Button groups and toolbars](#button-groups-and-toolbars)
   - [Forms](#forms)
     - [Types of form fields](#types-of-form-fields)
     - [Options](#options)
@@ -22,6 +27,9 @@ for the [Bootstrap 5](https://getbootstrap.com/docs/) frontend framework.
     - [Hints](#hints)
     - [Prefill values from query parameters](#prefill-values-from-query-parameters)
     - [Error messages](#error-messages)
+  - [Links](#links)
+  - [List groups](#list-groups)
+  - [Navigation](#navigation) 
 
 
 ## Installation
@@ -74,6 +82,77 @@ You may want to delete the views you haven't changed to benefit from package upd
 The components are placed in the `bs` namespace, such that they can be used via:
 ```HTML
 <x-bs::component-name> <!-- Replace component-name with one of the component names described below -->
+```
+Components can be enhanced with additional classes from Bootstrap or your own CSS.
+
+Specifically handled attributes are documented with type annotations in the `@props`
+in the respective Blade template under `resources/views/components`.
+
+
+### Alerts
+[Alerts](https://getbootstrap.com/docs/5.3/components/alerts/) are of variant `alert-info` by default
+and can be dismissible (with a close button).
+```HTML
+<x-bs::alert>My info alert</x-bs::alert>
+<x-bs::alert variant="primary">My primary alert</x-bs::alert>
+<x-bs::alert variant="secondary" :dismissible="true">My dismissible secondary alert</x-bs::alert>
+```
+
+### Badges
+[Badges](https://getbootstrap.com/docs/5.3/components/badge/) are of variant `badge-primary` default:
+```HTML
+<x-bs::badge>My primary badge</x-bs::badge>
+<x-bs::badge variant="secondary">My secondary badge</x-bs::badge>
+```
+
+### Breadcrumb
+The [breadcrumb](https://getbootstrap.com/docs/5.3/components/breadcrumb/) container is a `<x-bs::breadcrumb>` (typically placed within your `layouts/app.blade.php`):
+```HTML
+@hasSection('breadcrumbs')
+    <x-bs::breadcrumb container-class="mt-3" class="bg-light">
+        <x-bs::breadcrumb.item href="{{ route('dashboard') }}">{{ __('Dashboard') }}</x-bs::breadcrumb.item>
+        @yield('breadcrumbs')
+    </x-bs::breadcrumb>
+@endif
+```
+
+Items can be added via `<x-bs::breadcrumb.item :href="route('route-name')">Title</x-bs::breadcrumb.item>`.
+
+### Buttons
+To create [buttons](https://getbootstrap.com/docs/5.3/components/buttons/) 
+or button-like links with Bootstrap's `btn-*` classes you can use 
+- `<x-bs::button>` (becomes a `<button>`)
+- and `<x-bs::button.link>` (becomes an `<a>`).
+Per default `btn-primary` is used, you can change that with the variant. 
+```HTML
+<x-bs::button href="{{ route('my-route') }}" variant="danger">{{ __('Delete') }}</x-bs::button>
+<x-bs::button.link href="{{ route('my-route') }}">{{ __('My title') }}</x-bs::button.link>
+```
+
+To disable a button or link, just add `disabled="true"` which automatically adds the corresponding class 
+and `aria-disabled="true"` as recommended by the Bootstrap documentation.
+
+#### Button groups and toolbars
+Buttons can be [grouped](https://getbootstrap.com/docs/5.3/components/button-group/):
+```HTML
+<x-bs::button.group>
+    <x-bs::button>Button 1</x-bs::button>
+    <x-bs::button variant="secondary">Button 2</x-bs::button>
+</x-bs::button.group>
+```
+
+Button groups can be grouped into a [toolbar](https://getbootstrap.com/docs/5.3/components/button-group/#button-toolbar):
+```HTML
+<x-bs:toolbar aria-label="Toolbar with two groups">
+    <x-bs::button.group aria-label="First group">
+        <x-bs::button>Button 1</x-bs::button>
+        <x-bs::button>Button 2</x-bs::button>
+    </x-bs::button.group>
+    <x-bs::button.group aria-label="Second group">
+        <x-bs::button variant="secondary">Button 3</x-bs::button>
+        <x-bs::button variant="secondary">Button 4</x-bs::button>
+    </x-bs::button.group>
+</x-bs:toolbar>
 ```
 
 ### Forms
@@ -163,7 +242,8 @@ The attributes `:disabled`, `:readonly`, and `:required` accept a boolean value,
 e.g. `:disabled=true` or `:required=isset($var)`.
 
 #### Input groups
-To add text at the left or the right, you can use the slots `<x-slot:prependText>` and `<x-slot:appendText>`:
+To add text at the left or the right of a form field, you can use the slots `<x-slot:prependText>` and `<x-slot:appendText>`
+which makes an [input group](https://getbootstrap.com/docs/5.3/forms/input-group/):
 ```HTML
 <x-bs::form.field name="my_field_name" type="number" min="0" max="100" step="0.1">
     {{ __('My label') }}
@@ -177,7 +257,7 @@ To add text at the left or the right, you can use the slots `<x-slot:prependText
 which will be automatically referenced via `aria-describedby` by the input:
 ```HTML
 <x-bs::form.field name="my_field_name" type="text">
-    {{ __('{{ __('My label') }}') }}
+    {{ __('My label') }}
     <x-slot:hint>Hint</x-slot:hint>
 </x-bs::form.field>
 ```
@@ -190,11 +270,40 @@ Setting `:from-query="true"` will extract values from the query parameters of th
 A form with the example field above on a page `/my-page?filter[name]=Test` will set "Test" as the prefilled value of the field,
 while `/my-page` will have an empty value.
 
-
-### Error messages
-All form fields show error messages automatically if present.
+#### Error messages
+All form fields show corresponding error messages automatically if present 
+([server-side validation](https://getbootstrap.com/docs/5.3/forms/validation/#server-side)).
 If you want to show them independent of a form field, you can use the component directly:
 ```HTML
 <x-bs::form.feedback name="{{ $name }}"/>
 ```
 Both `<x-bs::form.feedback>` and `<x-bs::form.field>` support to use another than the default error bag via the `:errors` attribute.
+
+### Links
+[Colored links](https://getbootstrap.com/docs/5.3/helpers/colored-links/#link-colors) can be placed via `<x-bs::link>`, 
+the attributes `opacity` and `opacityHover` define [opacity](https://getbootstrap.com/docs/5.3/utilities/link/#link-opacity). 
+```HTML
+<x-bs::link href="{{ route('my-route') }}">Link text</x-bs::link>
+<x-bs::link href="{{ route('my-route') }}" variant="danger">Link text</x-bs::link>
+<x-bs::link href="{{ route('my-route') }}" opacity="25">Link text</x-bs::link>
+```
+
+### List groups
+`<x-bs::list>` is a [list group](https://getbootstrap.com/docs/5.3/components/list-group/), a container for multiple `<x-bs::list.item>`.
+`:flush="true"` enables [flush behavior](https://getbootstrap.com/docs/5.3/components/list-group/#flush),
+`:horizontal="true` changes the layout from vertical to [horizontal](https://getbootstrap.com/docs/5.3/components/list-group/#horizontal).
+
+Items can be added via `<x-bs::list.item>`:
+```HTML
+<x-bs::list>
+    <x-bs::list.item>Item 1</x-bs::list.item>
+    <x-bs::list.item :active="true">Item 2</x-bs::list.item>
+</x-bs::list>
+```
+`:active="true"` highlights the [active item](https://getbootstrap.com/docs/5.3/components/list-group/#active-items), 
+`:disabled="true"` makes it appear [disabled](https://getbootstrap.com/docs/5.3/components/list-group/#disabled-items).
+
+### Navigation
+`<x-bs::nav>` creates a [nav](https://getbootstrap.com/docs/5.3/components/navs-tabs/) container, use `container="ol"` to change the container element from the default `<ul>` to `<ol>`.
+
+Navigation items can be added via `<x-bs::nav.item href="{{ route('route-name') }}">Current Page</x-bs::nav.item>`.
