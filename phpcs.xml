@@ -20,10 +20,7 @@
 
     <!-- Increase line limit for test files due to long sample strings -->
     <rule ref="Generic.Files.LineLength">
-        <include-pattern>*/tests/*</include-pattern>
-        <properties>
-            <property name="lineLimit" value="160"/>
-        </properties>
+        <exclude-pattern>*/tests/*</exclude-pattern>
     </rule>
 
     <!-- Check vor PHP compatibility -->

@@ -155,6 +155,31 @@ Button groups can be grouped into a [toolbar](https://getbootstrap.com/docs/5.3/
 </x-bs:toolbar>
 ```
 
+### Dropdowns
+[Dropdown buttons](https://getbootstrap.com/docs/5.3/components/dropdowns/#single-button) can be added as follows:
+
+```HTML
+<x-bs::dropdown.button direction="end" variant="secondary">
+    My button
+    <x-slot:dropdown>
+        <x-bs::dropdown.item href="#">Item 1</x-bs::dropdown.item>
+        <x-bs::dropdown.item href="#">Item 2</x-bs::dropdown.item>
+    </x-slot:dropdown>
+</x-bs::dropdown.button>
+```
+
+The `direction` attribute can be used to set the direction of the dropdown overlay. It defaults to `down`.
+`variant` (default `primary`) is inherited from the [button component](#buttons).
+
+Within the `<x-slot:dropdown>` you may place [headers](https://getbootstrap.com/docs/5.3/components/dropdowns/#headers) 
+and [items](https://getbootstrap.com/docs/5.3/components/dropdowns/#menu-items):
+```HTML
+<x-bs::dropdown.header>My header</x-bs::dropdown.header>
+<x-bs::dropdown.item href="#">Item</x-bs::dropdown.item>
+```
+
+Note that Bootstrap's dropdowns require Popper, which needs to be included separately if you don't use Bootstrap's `bootstrap.bundle.min.js`.
+
 ### Forms
 Use `<x-bs::form>` to create [forms](https://getbootstrap.com/docs/5.3/forms/overview/) (method defaults to `POST`),
 any additional attributes passed to the form component will be outputted as well:
@@ -307,3 +332,13 @@ Items can be added via `<x-bs::list.item>`:
 `<x-bs::nav>` creates a [nav](https://getbootstrap.com/docs/5.3/components/navs-tabs/) container, use `container="ol"` to change the container element from the default `<ul>` to `<ol>`.
 
 Navigation items can be added via `<x-bs::nav.item href="{{ route('route-name') }}">Current Page</x-bs::nav.item>`.
+
+A navigation item may open a [dropdown](#dropdowns) if you enabled this by adding a dropdown slot:
+```HTML
+<x-bs::nav.item id="navbarUserDropdown">
+    Dropdown link text
+    <x-slot:dropdown class="dropdown-menu-end">
+        <!-- dropdown content-->
+    </x-slot:dropdown>
+</x-bs::list.item>
+```
