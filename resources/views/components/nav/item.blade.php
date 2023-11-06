@@ -1,6 +1,13 @@
 @props([
     /** @var bool $disabled */
     'disabled' => false,
+
+    /**
+     * @var string $direction
+     * Possible values: down, down-center, up, up-center, start, end
+     * May be used only in combination with dropdown slot.
+     */
+    'direction' => 'down',
 ])
 @php
     /** @var \Illuminate\View\ComponentAttributeBag $attributes */
@@ -24,7 +31,7 @@
 <li {{ $containerAttributes
     ->class([
         'nav-item',
-        'dropdown' => $hasDropdown,
+        'drop' . $direction => $hasDropdown,
     ]) }}>
     <a {{ $itemAttributes
         ->class([

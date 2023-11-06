@@ -18,7 +18,7 @@ class DropdownItemTest extends ComponentTestCase
     {
         $this->mockRequest('http://localhost/my-account');
         $this->assertBladeRendersToHtml(
-            '<li><a class="dropdown-item active" href="http://localhost/my-account">My account</a></li>',
+            '<li><a aria-current="true" class="dropdown-item active" href="http://localhost/my-account">My account</a></li>',
             $this->bladeView('<x-bs::dropdown.item href="http://localhost/my-account">My account</x-bs::dropdown.item>')
         );
     }
