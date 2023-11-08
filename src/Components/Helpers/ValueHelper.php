@@ -95,8 +95,8 @@ class ValueHelper
         }
 
         return match ($cast) {
-            'bool' => (bool)$value,
-            'int', 'integer' => (int)$value,
+            'bool' => (bool) $value,
+            'int', 'integer' => (int) $value,
             default => $value,
         };
     }
