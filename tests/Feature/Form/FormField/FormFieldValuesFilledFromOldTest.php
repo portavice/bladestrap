@@ -40,7 +40,7 @@ class FormFieldValuesFilledFromOldTest extends ComponentTestCase
                 </div>',
                 '<x-bs::form.field name="test1" type="text" :value="$value1">Test1</x-bs::form.field>
                 <x-bs::form.field name="test2" type="text" :value="$value2">Test2</x-bs::form.field>',
-                ['value1' => 'test-value-1', 'value2' => 'test-value-2']
+                ['value1' => 'test-value-1', 'value2' => 'test-value-2'],
             ],
         ];
     }

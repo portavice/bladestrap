@@ -57,7 +57,7 @@ class ListTest extends ComponentTestCase
     {
         return [
             ['', null],
-            ...self::makeDataProvider('list-group-item-')
+            ...self::makeDataProvider('list-group-item-'),
         ];
     }
 
