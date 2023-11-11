@@ -112,4 +112,14 @@ class ValueHelper
             $fieldName
         );
     }
+
+    /**
+     * Checks whether the value is the selected one.
+     */
+    public static function isActive(int|string $optionValue, array|int|string|null $selectedValue): bool
+    {
+        return is_array($selectedValue)
+            ? in_array($optionValue, $selectedValue, true)
+            : $optionValue === $selectedValue;
+    }
 }

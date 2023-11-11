@@ -199,7 +199,7 @@ Bladestrap has wide support for Bootstrap's [form fields](https://getbootstrap.c
 ```
 
 Note that the content of the form field becomes the label. This allows to include icons etc.
-If you don't want this, don't pass any content:
+If you don't want to add a label, don't pass any content:
 ```HTML
 <x-bs::form.field name="my_field_name" type="text" value="My value"/>
 ```
@@ -227,38 +227,89 @@ The following [types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/
 The types (marked with *) listed above don't have [full browser support](https://caniuse.com/?search=input%20type).
 
 #### Options
-Radio buttons, check boxes and selects need a `:options` attribute providing an iterable of value/label pairs, e.g.
-- an array, as in `:options="[1 => 'Label 1', 2 => 'Label 2']"`
-- an instance of `Illuminate\Support\Collection`, such as `:options="User::query()->pluck('name', 'id')"`
-  or `:options="User::query()->pluck('name', 'id')->prepend(__('all'), '')"`
+Radio buttons, checkboxes and selects need a `:options` attribute providing an iterable of value/label pairs, e.g.
+- an `array`, as in `:options="[1 => 'Label 1', 2 => 'Label 2']"`
+- an `Illuminate\Support\Collection`, such as 
+  - `:options="User::query()->pluck('name', 'id')"`
+  - or `:options="User::query()->pluck('name', 'id')->prepend(__('all'), '')"`
+- a `Portavice\Bladestrap\Support\OptionCollection`.
 
-**Radio** buttons:
+An `Portavice\Bladestrap\Support\OptionCollection` can be used to easily create an iterable based on
+- an `array`
+- an `enum` implementing the [BackedEnum interface](https://www.php.net/manual/de/class.backedenum.php)
+  ```PHP
+  use Portavice\Bladestrap\Support\OptionCollection;
+
+  // All enum cases with labels based on the value
+  OptionCollection::fromEnum(MyEnum::class);
+
+  // ... with labels based on the name
+  OptionCollection::fromEnum(MyEnum::class, 'name');
+
+  // ... with labels based on the result of the myMethod function
+  OptionCollection::fromEnum(MyEnum::class, 'myMethod');
+
+  // Only a subset of enum cases
+  OptionCollection::fromEnum([MyEnum::Case1, MyEnum::Case2]);
+  ```
+- an `array` or `Illuminate\Database\Eloquent\Collection` of Eloquent models 
+  (the primary key becomes the value, label must be defined)
+  ```PHP
+  use Portavice\Bladestrap\Support\OptionCollection;
+
+  // Array of models with labels based on a column or accessor
+  OptionCollection::fromModels([$user1, $user2, ...$moreUsers], 'name');
+
+  // Collection of models with labels based on a column or accessor
+  OptionCollection::fromModels(User::query()->get(), 'name');
+
+  // ... with labels based on a Closure
+  OptionCollection::fromModels(
+      User::query()->get(),
+      static fn (User $user) => sprintf('%s (%s)', $user->name, $user->id)
+  );
+
+  // ... with custom attributes for <option>s using a \Closure defining an ComponentAttributeBag
+  OptionCollection::fromModels(User::query()->get(), 'name', static function (User $user) {
+      return (new ComponentAttributeBag([]))->class([
+          'user-option',
+          'inactive' => $user->isInactive(),
+      ]);
+  }));
+
+  // ... with custom attributes for <option>s using a \Closure defining an array of attributes
+  OptionCollection::fromModels(User::query()->get(), 'name', fn (User $user) => [
+      'data-title' => $user->title,
+  ]);
+  ```
+
+**Radio** buttons (allows to select one of multiple values):
 ```HTML
-<x-bs::form.field name="my_field_name"
-                  type="radio" :options="$options"
+<x-bs::form.field name="my_field_name" type="radio" :options="$options"
                   :value="$value">{{ __('My label') }}</x-bs::form.field>
 ```
 
-**Multiple** check boxes:
+**Multiple** checkboxes (allows to select multiple values):
 ```HTML
-<x-bs::form.field id="my_field_name"
-                  name="my_field_name[]"
-                  type="checkbox" :options="$options"
+<x-bs::form.field id="my_field_name" name="my_field_name[]" type="checkbox" :options="$options"
                   :value="$value">{{ __('My label') }}</x-bs::form.field>
 ```
 
 **Single** checkbox (just one option):
 ```HTML
-<x-bs::form.field id="my_field_name"
-                  name="my_field_name[]"
-                  type="checkbox" :options="[1 => 'Option enabled']"
+<x-bs::form.field id="my_field_name" name="my_field_name[]" type="checkbox" :options="[1 => 'Option enabled']"
                   :value="$value">{{ __('My label') }}</x-bs::form.field>
 ```
 
-**Select**:
+**Select** (allows to select one of multiple values):
 ```HTML
-<x-bs::form.field id="my_field_name"
-                  type="select" :options="$options"
+<x-bs::form.field id="my_field_name" type="select" :options="$options"
+                  :value="$value">{{ __('My label') }}</x-bs::form.field>
+```
+
+**Multi-Select** (allows to select multiple values):
+```HTML
+<x-bs::form.field id="my_field_name" name="my_field_name[]" type="select" multi :options="$options"
                   :value="$value">{{ __('My label') }}</x-bs::form.field>
 ```
 

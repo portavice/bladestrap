@@ -10,7 +10,7 @@
 
     /**
      * Only for checkbox, select, radio.
-     * @var $options
+     * @var iterable|Illuminate\Support\Collection|OptionCollection $options
      */
     'options',
 
@@ -22,7 +22,7 @@
     'containerClass' => null,
     'elementClass' => null,
 
-    /** @var string $cast */
+    /** @var ?string $cast */
     'cast' => null,
 
     /**
@@ -51,6 +51,7 @@
 ])
 @php
     use Portavice\Bladestrap\Components\Helpers\ValueHelper;
+    use Portavice\Bladestrap\Support\OptionCollection;
 
     /** @var \Illuminate\View\ComponentAttributeBag $attributes */
     $containerAttributes = $attributes->filterAndTransform('container-');
@@ -72,6 +73,18 @@
         $fieldAttributes = $fieldAttributes->merge([
             'aria-describedby' => $hintId,
         ]);
+    }
+
+    if (isset($options)) {
+        $getAttributesForOption = static function ($optionValue) use ($options) {
+            return $options instanceof OptionCollection
+                ? $options->getAttributes($optionValue)
+                : new \Illuminate\View\ComponentAttributeBag();
+        };
+
+        if ($options instanceof OptionCollection) {
+            $cast = $cast ?? $options->getCast();
+        }
     }
 @endphp
 <div {{ $containerAttributes->class([
@@ -104,9 +117,6 @@
                     @foreach($options as $optionValue => $optionLabel)
                         @php
                             $optionId = ($id ?? $name) . '-' . $optionValue;
-                            $selected = is_array($value)
-                                ? in_array($optionValue, $value, true)
-                                : $optionValue === $value;
                             $hasAnyErrors = $hasAnyErrors && $errorBag->hasAny([$dotSyntax . '.*']);
                         @endphp
                         <div @class([
@@ -123,7 +133,7 @@
                                     'name' => $name,
                                     'type' => $type,
                                     'value' => $optionValue,
-                                ]) }} @checked($selected)/>
+                                ]) }} @checked(ValueHelper::isActive($optionValue, $value))/>
                             <label @class([
                                 config('bladestrap.classes.form.' . $type . '_label'),
                             ]) for="{{ $optionId }}">{{ $optionLabel }}</label>
@@ -164,10 +174,10 @@
                         'name' => $name,
                     ]) }} @disabled($disabled) @required($required)>
                     @foreach($options as $optionValue => $description)
-                        <option {{ (new \Illuminate\View\ComponentAttributeBag())
+                        <option {{ $getAttributesForOption($optionValue)
                             ->merge([
                                 'value' => $optionValue,
-                            ]) }} @selected($value === $optionValue)>{{ $description }}</option>
+                            ]) }} @selected(ValueHelper::isActive($optionValue, $value))>{{ $description }}</option>
                     @endforeach
                 </select>
                 <x-bs::form.feedback name="{{ $name }}" :errorBag="$errorBag"/>
