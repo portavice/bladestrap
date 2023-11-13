@@ -72,8 +72,8 @@ class OptionCollection implements \IteratorAggregate
         $optionCollection = new self($array);
 
         if ($attributeProvider instanceof \Closure) {
-            foreach ($array as $arrayKey => $arrayItem) {
-                $optionCollection->setAttributes($arrayKey, $attributeProvider($arrayKey, $arrayItem));
+            foreach ($array as $optionValue => $label) {
+                $optionCollection->setAttributes($optionValue, $attributeProvider($optionValue, $label));
             }
         }
 

@@ -63,7 +63,7 @@ You may need to adjust the steps above to your custom project configuration (e.g
 
 
 ### Configure Bladestrap
-Usually this should not be necessary, but if need to overwrite the default configuration,
+Usually this should not be necessary, but if you need to overwrite the default configuration,
 create and edit `config/bladestrap.php`:
 ```bash
 php artisan vendor:publish --tag="bladestrap-config"
@@ -204,8 +204,12 @@ If you don't want to add a label, don't pass any content:
 <x-bs::form.field name="my_field_name" type="text" value="My value"/>
 ```
 
+All attributes will be passed to the `<input>`, `<select>`, `<textarea>` - except
+- the attributes which start with `container-` (those will be applied to the container for the label and input)
+- and the attributes which start with `label-` (those will be applied to the label).
+
 The following [types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types) are supported as values for the `type` attribute:
-- `checkbox`, requires `:options`
+- `checkbox` - creates a [normal checkbox](https://getbootstrap.com/docs/5.3/forms/checks-radios/#checks), requires `:options`
 - `color`
 - `date`
 - `datetime-local`*
@@ -214,9 +218,10 @@ The following [types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/
 - `month`*
 - `number`
 - `password`
-- `radio`, requires `:options`
+- `radio` - creates a [radio](https://getbootstrap.com/docs/5.3/forms/checks-radios/#radios), requires `:options`
 - `range`
-- `select` - creates a `<select>` with `<option>`s, requires `:options`
+- `select` - creates a [dropdown](https://getbootstrap.com/docs/5.3/forms/select/) (`<select>` with `<option>`s), requires `:options`
+- `switch` - creates a [toggle switch](https://getbootstrap.com/docs/5.3/forms/checks-radios/#switches), requires `:options`
 - `tel`
 - `text`
 - `textarea` - creates a `<textarea>`
@@ -232,10 +237,25 @@ Radio buttons, checkboxes and selects need a `:options` attribute providing an i
 - an `Illuminate\Support\Collection`, such as 
   - `:options="User::query()->pluck('name', 'id')"`
   - or `:options="User::query()->pluck('name', 'id')->prepend(__('all'), '')"`
-- a `Portavice\Bladestrap\Support\OptionCollection`.
+- a `Portavice\Bladestrap\Support\OptionCollection` which allows to set custom attributes for each option.
+  For checkboxes, radios and switches, custom attributes prefixed with `check-container-` or `check-label-` are applied to the `.form-check` or `.form-check-label` respectively.
 
 An `Portavice\Bladestrap\Support\OptionCollection` can be used to easily create an iterable based on
 - an `array`
+  ```PHP
+  use Portavice\Bladestrap\Support\OptionCollection;
+
+  // Array with custom attributes
+  OptionCollection::fromArray(
+        [
+            1 => 'One',
+            2 => 'Two',
+        ],
+        static fn ($optionValue, $label) => [
+            'data-value' => $optionValue + 2,
+        ]
+    );
+  ```
 - an `enum` implementing the [BackedEnum interface](https://www.php.net/manual/de/class.backedenum.php)
   ```PHP
   use Portavice\Bladestrap\Support\OptionCollection;
@@ -275,7 +295,7 @@ An `Portavice\Bladestrap\Support\OptionCollection` can be used to easily create 
           'user-option',
           'inactive' => $user->isInactive(),
       ]);
-  }));
+  });
 
   // ... with custom attributes for <option>s using a \Closure defining an array of attributes
   OptionCollection::fromModels(User::query()->get(), 'name', fn (User $user) => [
@@ -315,10 +335,11 @@ An `Portavice\Bladestrap\Support\OptionCollection` can be used to easily create 
 
 #### Disabled, readonly, required
 The attributes `:disabled`, `:readonly`, and `:required` accept a boolean value,
-e.g. `:disabled=true` or `:required=isset($var)`.
+e.g. `:disabled="true"` or `:required="isset($var)"`.
 
 #### Input groups
-To add text at the left or the right of a form field, you can use the slots `<x-slot:prependText>` and `<x-slot:appendText>`
+To add text at the left or the right of a form field (except checkboxes and radio buttons),
+you can use the slots `<x-slot:prependText>` and `<x-slot:appendText>`
 which makes an [input group](https://getbootstrap.com/docs/5.3/forms/input-group/):
 ```HTML
 <x-bs::form.field name="my_field_name" type="number" min="0" max="100" step="0.1">
@@ -345,6 +366,15 @@ Setting `:from-query="true"` will extract values from the query parameters of th
 ```
 A form with the example field above on a page `/my-page?filter[name]=Test` will set "Test" as the prefilled value of the field,
 while `/my-page` will have an empty value.
+
+To pass default filters applied if no query parameters are set, use `ValueHelper::setDefaults`:
+```PHP
+use Portavice\Bladestrap\Support\ValueHelper;
+
+ValueHelper::setDefaults([
+    'filter.name' => 'default',
+])
+```
 
 #### Error messages
 All form fields show corresponding error messages automatically if present 

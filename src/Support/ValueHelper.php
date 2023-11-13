@@ -1,6 +1,6 @@
 <?php
 
-namespace Portavice\Bladestrap\Components\Helpers;
+namespace Portavice\Bladestrap\Support;
 
 use Illuminate\Support\Arr;
 
