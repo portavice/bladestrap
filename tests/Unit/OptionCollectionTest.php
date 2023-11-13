@@ -81,7 +81,7 @@ class OptionCollectionTest extends TestCase
     public function testFromEnumWithModelFails(): void
     {
         $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Enum expected but '. TestModel::class. ' found');
+        $this->expectExceptionMessage('Enum expected, but '. TestModel::class. ' found');
         OptionCollection::fromEnum(TestModel::class);
     }
 
@@ -191,11 +191,53 @@ class OptionCollectionTest extends TestCase
         ], $optionCollection->getAttributes(1)->getAttributes());
     }
 
-    public function testSetAttributes(): void
+    public function testAppendAttributes(): void
     {
         $optionCollection = OptionCollection::fromArray(self::$testIntArray);
-        $optionCollection->setAttributes(1, new ComponentAttributeBag(['data-value1' => 42]));
-        $optionCollection->setAttributes(1, ['data-value2' => 43]);
+        $optionCollection->append('', 'all');
+
+        $this->assertEquals([
+            1 => 'One',
+            2 => 'Two',
+            '' => 'all',
+        ], $optionCollection->toArray());
+
+        $optionCollection->append(3, 'Three', ['class' => 'test']);
+        $this->assertEquals([
+            '' => 'all',
+            1 => 'One',
+            2 => 'Two',
+            3 => 'Three',
+        ], $optionCollection->toArray());
+        $this->assertEquals(new ComponentAttributeBag(['class' => 'test']), $optionCollection->getAttributes(3));
+    }
+
+    public function testPrependAttributes(): void
+    {
+        $optionCollection = OptionCollection::fromArray(self::$testIntArray)
+            ->prepend('', 'all');
+
+        $this->assertEquals([
+            '' => 'all',
+            1 => 'One',
+            2 => 'Two',
+        ], $optionCollection->toArray());
+
+        $optionCollection->prepend(3, 'Three', ['class' => 'test']);
+        $this->assertEquals([
+            3 => 'Three',
+            '' => 'all',
+            1 => 'One',
+            2 => 'Two',
+        ], $optionCollection->toArray());
+        $this->assertEquals(new ComponentAttributeBag(['class' => 'test']), $optionCollection->getAttributes(3));
+    }
+
+    public function testSetAttributes(): void
+    {
+        $optionCollection = OptionCollection::fromArray(self::$testIntArray)
+            ->setAttributes(1, new ComponentAttributeBag(['data-value1' => 42]))
+            ->setAttributes(1, ['data-value2' => 43]);
         $this->assertEquals([
             'data-value2' => 43,
         ], $optionCollection->getAttributes(1)->getAttributes());

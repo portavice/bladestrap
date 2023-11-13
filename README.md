@@ -303,6 +303,15 @@ An `Portavice\Bladestrap\Support\OptionCollection` can be used to easily create 
   ]);
   ```
 
+Additional options can be prepended/appended to an `OptionCollection`:
+```PHP
+use Portavice\Bladestrap\Support\OptionCollection;
+
+$options = OptionCollection::fromModels(User::query()->get(), 'name')
+    ->prepend('', 'all'); // adds at start
+    ->append('last', 'last'); // adds at the end
+```
+
 **Radio** buttons (allows to select one of multiple values):
 ```HTML
 <x-bs::form.field name="my_field_name" type="radio" :options="$options"

@@ -20,13 +20,28 @@ class OptionCollection implements \IteratorAggregate
         /**
          * @var array<int|string,string>
          */
-        private readonly array $options,
+        private array $options,
     ) {
     }
 
-    public function addAttributes(int|string $optionValue, array|string $attributes): void
+    public function addAttributes(int|string $optionValue, array|string $attributes): self
     {
         $this->setAttributes($optionValue, $this->getAttributes($optionValue)->merge(Arr::wrap($attributes)));
+
+        return $this;
+    }
+
+    public function append(
+        int|string $optionValue,
+        int|string $label,
+        array|ComponentAttributeBag|null $attributes = null
+    ): self {
+        $this->options += [$optionValue => $label];
+        if ($attributes !== null) {
+            $this->setAttributes($optionValue, $attributes);
+        }
+
+        return $this;
     }
 
     public function getAttributes(int|string $optionValue): ComponentAttributeBag
@@ -44,9 +59,24 @@ class OptionCollection implements \IteratorAggregate
         return new \ArrayIterator($this->options);
     }
 
-    public function setAttributes(int|string $optionValue, array|ComponentAttributeBag $attributes): void
+    public function prepend(
+        int|string $optionValue,
+        int|string $label,
+        array|ComponentAttributeBag|null $attributes = null
+    ): self {
+        $this->options = [$optionValue => $label] + $this->options;
+        if ($attributes !== null) {
+            $this->setAttributes($optionValue, $attributes);
+        }
+
+        return $this;
+    }
+
+    public function setAttributes(int|string $optionValue, array|ComponentAttributeBag $attributes): self
     {
         $this->attributesForOption[$optionValue] = self::wrapAttributes($attributes);
+
+        return $this;
     }
 
     public function toArray(): array
@@ -127,7 +157,7 @@ class OptionCollection implements \IteratorAggregate
         }
 
         if (!enum_exists($enum)) {
-            throw new \BadMethodCallException('Enum expected but ' . $enum . ' found');
+            throw new \BadMethodCallException('Enum expected, but ' . $enum . ' found');
         }
 
         return $enum::cases();
