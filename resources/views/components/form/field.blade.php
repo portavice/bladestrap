@@ -10,19 +10,11 @@
 
     /**
      * Only for checkbox, select, radio.
-     * @var $options
+     * @var iterable|Illuminate\Support\Collection|OptionCollection $options
      */
     'options',
 
-    /**
-     * Only for checkbox, select, radio.
-     * @var ?string $containerClass
-     * @var ?string $elementClass
-     */
-    'containerClass' => null,
-    'elementClass' => null,
-
-    /** @var string $cast */
+    /** @var ?string $cast */
     'cast' => null,
 
     /**
@@ -50,12 +42,21 @@
     'required' => false,
 ])
 @php
-    use Portavice\Bladestrap\Components\Helpers\ValueHelper;
+    use Portavice\Bladestrap\Support\OptionCollection;
+    use Portavice\Bladestrap\Support\ValueHelper;
 
     /** @var \Illuminate\View\ComponentAttributeBag $attributes */
+    /** @var \Illuminate\View\ComponentAttributeBag $containerAttributes */
     $containerAttributes = $attributes->filterAndTransform('container-');
+    /** @var \Illuminate\View\ComponentAttributeBag $labelAttributes */
     $labelAttributes = $attributes->filterAndTransform('label-');
-    $fieldAttributes = $attributes->whereDoesntStartWith(['container-', 'label-']);
+    /** @var \Illuminate\View\ComponentAttributeBag $fieldAttributes */
+    $fieldAttributes = $attributes->whereDoesntStartWith([
+        'container-',
+        'label-',
+        'check-container-',
+        'check-label-',
+    ]);
 
     $dotSyntax = ValueHelper::nameToDotSyntax($name);
     $hasAnyErrors = $errorBag->hasAny($dotSyntax);
@@ -73,13 +74,28 @@
             'aria-describedby' => $hintId,
         ]);
     }
+
+    if (isset($options)) {
+        /** @var \Closure(int|string): \Illuminate\View\ComponentAttributeBag $getAttributesForOption */
+        $getAttributesForOption = static function ($optionValue) use ($options) {
+            return $options instanceof OptionCollection
+                ? $options->getAttributes($optionValue)
+                : new \Illuminate\View\ComponentAttributeBag();
+        };
+
+        if ($options instanceof OptionCollection) {
+            $cast = $cast ?? $options->getCast();
+        }
+    }
 @endphp
 <div {{ $containerAttributes->class([
-    config('bladestrap.classes.form.field')
+    config('bladestrap.form.field.class'),
 ]) }}>
     @if($slot->isNotEmpty())
         <label {{ $labelAttributes
-            ->class(config('bladestrap.classes.form.label'))
+            ->class([
+                'form-label',
+            ])
             ->merge([
                 'for' => $id ?? $name,
             ]) }}>{{ $slot }}</label>
@@ -96,53 +112,62 @@
         @switch($type)
             @case('checkbox')
             @case('radio')
-                @isset($containerClass)
-                    <div @class([
-                        $containerClass,
-                    ])>
-                @endisset
+            @case('switch')
+                @php
+                    /** @var \Illuminate\View\ComponentAttributeBag $checkContainerAttributes */
+                    $checkContainerAttributes = $attributes->filterAndTransform('check-container-');
+                    /** @var \Illuminate\View\ComponentAttributeBag $checkLabelAttributes */
+                    $checkLabelAttributes = $attributes->filterAndTransform('check-label-');
+
+                    [$type, $checkClass, $role] = match ($type) {
+                        'switch' => ['checkbox', 'form-check form-switch', 'switch'],
+                        default => [$type, 'form-check', null],
+                    };
+                @endphp
+                @if(!$checkContainerAttributes->isEmpty())
+                    <div {{ $checkContainerAttributes }}>
+                @endif
                     @foreach($options as $optionValue => $optionLabel)
                         @php
                             $optionId = ($id ?? $name) . '-' . $optionValue;
-                            $selected = is_array($value)
-                                ? in_array($optionValue, $value, true)
-                                : $optionValue === $value;
                             $hasAnyErrors = $hasAnyErrors && $errorBag->hasAny([$dotSyntax . '.*']);
+
+                            $attributesForOption = $getAttributesForOption($optionValue);
+                            /** @var \Illuminate\View\ComponentAttributeBag $checkContainerAttributesForOption */
+                            $checkContainerAttributesForOption = $attributesForOption->filterAndTransform('check-');
                         @endphp
-                        <div @class([
-                            'form-check',
-                            $elementClass,
-                        ])>
-                            <input {{ $fieldAttributes
+                        <div {{ $checkContainerAttributesForOption
+                            ->class([
+                                $checkClass,
+                            ]) }}>
+                            <input {{ $fieldAttributes->merge($attributesForOption->whereDoesntStartWith('check-')->getAttributes())
                                 ->class([
-                                    config('bladestrap.classes.form.' . $type),
+                                    'form-check-input',
                                     'is-invalid' => $hasAnyErrors,
                                 ])
                                 ->merge([
                                     'id' => $optionId,
                                     'name' => $name,
+                                    'role' => $role,
                                     'type' => $type,
                                     'value' => $optionValue,
-                                ]) }} @checked($selected)/>
+                                ]) }} @checked(ValueHelper::isActive($optionValue, $value))/>
                             <label @class([
-                                config('bladestrap.classes.form.' . $type . '_label'),
+                                'form-check-label',
                             ]) for="{{ $optionId }}">{{ $optionLabel }}</label>
                             @if($loop->last)
                                 <x-bs::form.feedback name="{{ $name }}" :errorBag="$errorBag" :showSubErrors="true"/>
                             @endif
                         </div>
                     @endforeach
-                @isset($containerClass)
-                        @if(count($options) % 2 === 1)
-                            <div class="mb-5"></div>
-                        @endif
+                @if(!$checkContainerAttributes->isEmpty())
                     </div>
-                @endisset
+                @endif
                 @break
             @case('range')
                 <input {{ $fieldAttributes
                     ->class([
-                        config('bladestrap.classes.form.range'),
+                        'form-range',
                         'is-invalid' => $hasAnyErrors,
                     ])
                     ->merge([
@@ -156,7 +181,7 @@
             @case('select')
                 <select {{ $attributes
                     ->class([
-                        config('bladestrap.classes.form.select'),
+                        'form-select',
                         'is-invalid' => $hasAnyErrors,
                     ])
                     ->merge([
@@ -164,10 +189,10 @@
                         'name' => $name,
                     ]) }} @disabled($disabled) @required($required)>
                     @foreach($options as $optionValue => $description)
-                        <option {{ (new \Illuminate\View\ComponentAttributeBag())
+                        <option {{ $getAttributesForOption($optionValue)
                             ->merge([
                                 'value' => $optionValue,
-                            ]) }} @selected($value === $optionValue)>{{ $description }}</option>
+                            ]) }} @selected(ValueHelper::isActive($optionValue, $value))>{{ $description }}</option>
                     @endforeach
                 </select>
                 <x-bs::form.feedback name="{{ $name }}" :errorBag="$errorBag"/>
@@ -175,7 +200,7 @@
             @case('textarea')
                 <textarea {{ $fieldAttributes
                     ->class([
-                        config('bladestrap.classes.form.textarea'),
+                        'form-control',
                         'is-invalid' => $hasAnyErrors,
                     ])
                     ->merge([
@@ -187,7 +212,7 @@
             @default
                 <input {{ $fieldAttributes
                     ->class([
-                        config('bladestrap.classes.form.input'),
+                        'form-control',
                         'is-invalid' => $hasAnyErrors,
                     ])
                     ->merge([

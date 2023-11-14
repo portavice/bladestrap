@@ -2,7 +2,7 @@
 
 namespace Portavice\Bladestrap\Tests\Feature\Form\FormField;
 
-use Portavice\Bladestrap\Components\Helpers\ValueHelper;
+use Portavice\Bladestrap\Support\ValueHelper;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 
 class FormFieldValuesFilledFromQueryTest extends ComponentTestCase

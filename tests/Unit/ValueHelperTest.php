@@ -3,7 +3,7 @@
 namespace Portavice\Bladestrap\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Portavice\Bladestrap\Components\Helpers\ValueHelper;
+use Portavice\Bladestrap\Support\ValueHelper;
 use Portavice\Bladestrap\Tests\Feature\Form\FormField\FormFieldValuesFilledFromQueryTest;
 
 class ValueHelperTest extends TestCase

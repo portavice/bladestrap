@@ -9,10 +9,10 @@
     'showSubErrors' => false,
 ])
 @php
-    use Portavice\Bladestrap\Components\Helpers\ValueHelper;
+    use Portavice\Bladestrap\Support\ValueHelper;
 
     $attributes = $attributes->class([
-        config('bladestrap.classes.form.invalid-feedback'),
+        'invalid-feedback',
     ]);
 
     $errorMessages = [];
