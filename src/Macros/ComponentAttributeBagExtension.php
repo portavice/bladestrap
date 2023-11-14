@@ -18,5 +18,8 @@ class ComponentAttributeBagExtension
                 )
             );
         });
+        ComponentAttributeBag::macro('isEmpty', function () {
+            return count($this->getAttributes()) === 0;
+        });
     }
 }

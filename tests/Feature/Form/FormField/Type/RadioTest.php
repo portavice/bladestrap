@@ -2,6 +2,7 @@
 
 namespace Portavice\Bladestrap\Tests\Feature\Form\FormField\Type;
 
+use Portavice\Bladestrap\Support\OptionCollection;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 
 class RadioTest extends ComponentTestCase
@@ -49,6 +50,36 @@ class RadioTest extends ComponentTestCase
                     ],
                     // '2' needs int cast.
                     'value' => '2',
+                ]
+            )
+        );
+    }
+
+    public function testRadioWithAttributesRendersCorrectly(): void
+    {
+        $expectedHtml = '<div class="mb-3">
+            <label for="my_model" class="form-label">My Model</label>
+            <div class="form-check">
+                <input id="my_model-0" name="my_model" type="radio" value="0" class="form-check-input text-danger"/>
+                <label class="form-check-label" for="my_model-0">No</label>
+            </div>
+            <div class="form-check">
+                <input id="my_model-1" name="my_model" type="radio" value="1" class="form-check-input text-success" checked/>
+                <label class="form-check-label" for="my_model-1">Yes</label>
+            </div>
+        </div>';
+        $this->assertBladeRendersToHtml(
+            $expectedHtml,
+            $this->bladeView(
+                '<x-bs::form.field name="my_model" type="radio" :options="$options" :value="$value">My Model</x-bs::form.field>',
+                data: [
+                    'options' => OptionCollection::fromArray(['No', 'Yes'], static fn ($optionValue) => [
+                        'class' => match ($optionValue) {
+                            0 => 'text-danger',
+                            1 => 'text-success',
+                        },
+                    ]),
+                    'value' => 1,
                 ]
             )
         );
