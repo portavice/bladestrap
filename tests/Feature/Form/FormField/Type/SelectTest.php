@@ -6,9 +6,12 @@ use Illuminate\View\ComponentAttributeBag;
 use Portavice\Bladestrap\Support\OptionCollection;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 use Portavice\Bladestrap\Tests\SampleData\TestModel;
+use Portavice\Bladestrap\Tests\Traits\TestsBooleanAttributes;
 
 class SelectTest extends ComponentTestCase
 {
+    use TestsBooleanAttributes;
+
     public function testSelectRendersCorrectly(): void
     {
         $expectedHtml = '<div class="mb-3">
@@ -145,5 +148,33 @@ class SelectTest extends ComponentTestCase
                 $htmlWithAttributes,
             ],
         ];
+    }
+
+    /**
+     * @dataProvider booleanFormFieldAttributes
+     */
+    public function testSelectWithBooleanAttributesRendersCorrectly(string $html, string $blade): void
+    {
+        $this->assertBladeRendersToHtml(
+            '<div class="mb-3">
+                <label for="my_model" class="form-label">My Model</label>
+                <select id="my_model" name="my_model" class="form-select" ' . $html . '>
+                    <option value="1">A</option>
+                    <option value="2" selected>B</option>
+                    <option value="3">C</option>
+                </select>
+            </div>',
+            $this->bladeView(
+                '<x-bs::form.field name="my_model" type="select" :options="$options" :value="$value" cast="int" ' . $blade . '>My Model</x-bs::form.field>',
+                data: [
+                    'options' => [
+                        1 => 'A',
+                        2 => 'B',
+                        3 => 'C',
+                    ],
+                    'value' => 2,
+                ]
+            )
+        );
     }
 }

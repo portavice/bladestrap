@@ -151,7 +151,7 @@
                                     'role' => $role,
                                     'type' => $type,
                                     'value' => $optionValue,
-                                ]) }} @checked(ValueHelper::isActive($optionValue, $value))/>
+                                ]) }} @checked(ValueHelper::isActive($optionValue, $value)) @disabled($disabled) @readonly($readonly) @required($required)/>
                             <label @class([
                                 'form-check-label',
                             ]) for="{{ $optionId }}">{{ $optionLabel }}</label>
@@ -187,7 +187,7 @@
                     ->merge([
                         'id' => $id ?? $name,
                         'name' => $name,
-                    ]) }} @disabled($disabled) @required($required)>
+                    ]) }} @disabled($disabled) @readonly($readonly) @required($required)>
                     @foreach($options as $optionValue => $description)
                         <option {{ $getAttributesForOption($optionValue)
                             ->merge([

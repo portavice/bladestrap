@@ -3,9 +3,12 @@
 namespace Portavice\Bladestrap\Tests\Feature\Form\FormField;
 
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
+use Portavice\Bladestrap\Tests\Traits\TestsBooleanAttributes;
 
 class FormFieldTest extends ComponentTestCase
 {
+    use TestsBooleanAttributes;
+
     public function testFormFieldRendersCorrectly(): void
     {
         $this->assertBladeRendersToHtml(
@@ -82,6 +85,20 @@ class FormFieldTest extends ComponentTestCase
                 <x-slot:prependText>≥</x-slot>
                 <x-slot:appendText>€</x-slot>
             </x-bs::form.field>'
+        );
+    }
+
+    /**
+     * @dataProvider booleanFormFieldAttributes
+     */
+    public function testFormFieldWithBooleanAttributesRendersCorrectly(string $html, string $blade): void
+    {
+        $this->assertBladeRendersToHtml(
+            '<div class="mb-3">
+                <label for="first_name" class="form-label">First name</label>
+                <input id="first_name" name="first_name" type="text" value="Patrick" class="form-control" '. $html . '/>
+            </div>',
+            '<x-bs::form.field name="first_name" type="text" value="Patrick" ' . $blade . '>First name</x-bs::form.field>'
         );
     }
 }
