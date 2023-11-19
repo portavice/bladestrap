@@ -4,9 +4,12 @@ namespace Portavice\Bladestrap\Tests\Feature\Form\FormField\Type;
 
 use Portavice\Bladestrap\Support\OptionCollection;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
+use Portavice\Bladestrap\Tests\Traits\TestsBooleanAttributes;
 
 class CheckboxTest extends ComponentTestCase
 {
+    use TestsBooleanAttributes;
+
     /**
      * @dataProvider checkBoxTypes
      */
@@ -164,6 +167,42 @@ class CheckboxTest extends ComponentTestCase
                         1 => 'Option enabled',
                     ],
                     'value' => 0,
+                ]
+            )
+        );
+    }
+
+    /**
+     * @dataProvider booleanFormFieldAttributes
+     */
+    public function testFormFieldWithBooleanAttributesRendersCorrectly(string $html, string $blade): void
+    {
+        $this->assertBladeRendersToHtml(
+            '<div class="mb-3">
+                <label for="my_model" class="form-label">My Model</label>
+                <div class="form-check">
+                    <input id="my_model-1" name="my_models[]" type="checkbox" value="1" class="form-check-input" ' . $html . '/>
+                    <label class="form-check-label" for="my_model-1">A</label>
+                </div>
+                <div class="form-check">
+                    <input id="my_model-2" name="my_models[]" type="checkbox" value="2" class="form-check-input" checked ' . $html . '/>
+                    <label class="form-check-label" for="my_model-2">B</label>
+                </div>
+                <div class="form-check">
+                    <input id="my_model-3" name="my_models[]" type="checkbox" value="3" class="form-check-input" checked ' . $html . '/>
+                    <label class="form-check-label" for="my_model-3">C</label>
+                </div>
+            </div>',
+            $this->bladeView(
+                '<x-bs::form.field id="my_model" name="my_models[]" type="checkbox"
+                                         :options="$options" :value="$value" cast="int" ' . $blade . '>My Model</x-bs::form.field>',
+                data: [
+                    'options' => [
+                        1 => 'A',
+                        2 => 'B',
+                        3 => 'C',
+                    ],
+                    'value' => [2, 3],
                 ]
             )
         );
