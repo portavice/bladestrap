@@ -5,12 +5,12 @@ namespace Portavice\Bladestrap\Tests\Unit;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\ComponentAttributeBag;
 use PHPUnit\Framework\TestCase;
-use Portavice\Bladestrap\Support\OptionCollection;
+use Portavice\Bladestrap\Support\Options;
 use Portavice\Bladestrap\Tests\SampleData\TestIntEnum;
 use Portavice\Bladestrap\Tests\SampleData\TestModel;
 use Portavice\Bladestrap\Tests\SampleData\TestStringEnum;
 
-class OptionCollectionTest extends TestCase
+class OptionsTest extends TestCase
 {
     private static array $testIntArray = [
         1 => 'One',
@@ -19,46 +19,46 @@ class OptionCollectionTest extends TestCase
 
     public function testFromArray(): void
     {
-        $optionCollection = OptionCollection::fromArray(self::$testIntArray);
-        $this->assertEquals(self::$testIntArray, $optionCollection->toArray());
-        $this->assertEquals(new ComponentAttributeBag([]), $optionCollection->getAttributes(1));
+        $options = Options::fromArray(self::$testIntArray);
+        $this->assertEquals(self::$testIntArray, $options->toArray());
+        $this->assertEquals(new ComponentAttributeBag([]), $options->getAttributes(1));
     }
 
     public function testFromArrayWithAttributes(): void
     {
-        $optionCollection = OptionCollection::fromArray(
+        $options = Options::fromArray(
             self::$testIntArray,
             static fn ($k, $v) => new ComponentAttributeBag([
                 'data-value1' => $k + 2,
                 'data-value2' => $k . '_' . $v,
             ])
         );
-        $this->assertEquals(self::$testIntArray, $optionCollection->toArray());
+        $this->assertEquals(self::$testIntArray, $options->toArray());
         $this->assertEquals(new ComponentAttributeBag([
             'data-value1' => 3,
             'data-value2' => '1_One',
-        ]), $optionCollection->getAttributes(1));
+        ]), $options->getAttributes(1));
     }
 
     /**
      * @dataProvider enumIntSamples
      */
-    public function testFromEnumWithInt(array $expectedOptions, OptionCollection $optionCollection): void
+    public function testFromEnumWithInt(array $expectedOptions, Options $options): void
     {
-        $this->assertEquals($expectedOptions, $optionCollection->toArray());
-        $this->assertEquals('int', $optionCollection->getCast());
+        $this->assertEquals($expectedOptions, $options->toArray());
+        $this->assertEquals('int', $options->getCast());
     }
 
     public static function enumIntSamples(): array
     {
         return [
-            [[0, 1, 2], OptionCollection::fromEnum(TestIntEnum::class)],
-            [['Test0', 'Test1', 'Test2'], OptionCollection::fromEnum(TestIntEnum::class, 'name')],
-            [[0, 1, 4], OptionCollection::fromEnum(TestIntEnum::class, 'square')],
-            [[1 => 1, 2 => 4], OptionCollection::fromEnum([TestIntEnum::Test1, TestIntEnum::Test2], 'square')],
+            [[0, 1, 2], Options::fromEnum(TestIntEnum::class)],
+            [['Test0', 'Test1', 'Test2'], Options::fromEnum(TestIntEnum::class, 'name')],
+            [[0, 1, 4], Options::fromEnum(TestIntEnum::class, 'square')],
+            [[1 => 1, 2 => 4], Options::fromEnum([TestIntEnum::Test1, TestIntEnum::Test2], 'square')],
             [
                 [0 => 'Really Test0', 2 => 'Test2'],
-                OptionCollection::fromEnum(
+                Options::fromEnum(
                     [TestIntEnum::Test0, TestIntEnum::Test2],
                     static fn (TestIntEnum $case) => match ($case) {
                         TestIntEnum::Test0 => 'Really Test0',
@@ -72,24 +72,24 @@ class OptionCollectionTest extends TestCase
     /**
      * @dataProvider enumStringSamples
      */
-    public function testFromEnumWithString(array $expectedOptions, OptionCollection $optionCollection): void
+    public function testFromEnumWithString(array $expectedOptions, Options $options): void
     {
-        $this->assertEquals($expectedOptions, $optionCollection->toArray());
-        $this->assertNull($optionCollection->getCast());
+        $this->assertEquals($expectedOptions, $options->toArray());
+        $this->assertNull($options->getCast());
     }
 
     public function testFromEnumWithModelFails(): void
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Enum expected, but '. TestModel::class. ' found');
-        OptionCollection::fromEnum(TestModel::class);
+        Options::fromEnum(TestModel::class);
     }
 
     public static function enumStringSamples(): array
     {
         return [
-            [['Test1' => 'Test1', 'Test2' => 'Test2'], OptionCollection::fromEnum(TestStringEnum::class)],
-            [['Test1' => '1', 'Test2' => '2'], OptionCollection::fromEnum(TestStringEnum::class, 'getSuffix')],
+            [['Test1' => 'Test1', 'Test2' => 'Test2'], Options::fromEnum(TestStringEnum::class)],
+            [['Test1' => '1', 'Test2' => '2'], Options::fromEnum(TestStringEnum::class, 'getSuffix')],
         ];
     }
 
@@ -99,19 +99,19 @@ class OptionCollectionTest extends TestCase
     public function testFromModels(array|Collection $testModels, array $testModelsIdToName): void
     {
         // With column.
-        $optionCollection = OptionCollection::fromModels($testModels, 'name');
-        $this->assertEquals($testModelsIdToName, $optionCollection->toArray());
+        $options = Options::fromModels($testModels, 'name');
+        $this->assertEquals($testModelsIdToName, $options->toArray());
 
         // With accessor.
-        $optionCollection = OptionCollection::fromModels($testModels, 'display_name');
+        $options = Options::fromModels($testModels, 'display_name');
         $this->assertEquals([
             1 => 'Test model (TM)',
             2 => 'Another test model (ATM)',
             4 => 'Yet another test model (YATM)',
-        ], $optionCollection->toArray());
+        ], $options->toArray());
 
         // With \Closure.
-        $optionCollection = OptionCollection::fromModels(
+        $options = Options::fromModels(
             $testModels,
             static fn (TestModel $model) => sprintf('%s (ID %s)', $model->name, $model->id)
         );
@@ -119,7 +119,7 @@ class OptionCollectionTest extends TestCase
             1 => 'Test model (ID 1)',
             2 => 'Another test model (ID 2)',
             4 => 'Yet another test model (ID 4)',
-        ], $optionCollection->toArray());
+        ], $options->toArray());
     }
 
     /**
@@ -127,7 +127,7 @@ class OptionCollectionTest extends TestCase
      */
     public function testFromModelsWithAttributes(array|Collection $testModels, array $testModelsIdToName): void
     {
-        $optionCollection = OptionCollection::fromModels($testModels, 'name', static function (TestModel $model) {
+        $options = Options::fromModels($testModels, 'name', static function (TestModel $model) {
             $attributes = new ComponentAttributeBag([
                 'data-short-name' => $model->short_name,
             ]);
@@ -140,29 +140,29 @@ class OptionCollectionTest extends TestCase
 
             return $attributes;
         });
-        $this->assertEquals($testModelsIdToName, $optionCollection->toArray());
+        $this->assertEquals($testModelsIdToName, $options->toArray());
 
         $this->assertEquals(new ComponentAttributeBag([
             'data-short-name' => 'TM',
             'data-is-first' => 'true',
-        ]), $optionCollection->getAttributes(1));
+        ]), $options->getAttributes(1));
         $this->assertEquals(new ComponentAttributeBag([
             'data-short-name' => 'ATM',
-        ]), $optionCollection->getAttributes(2));
+        ]), $options->getAttributes(2));
 
-        $optionCollection = OptionCollection::fromModels($testModels, 'name', static function (TestModel $model) {
+        $options = Options::fromModels($testModels, 'name', static function (TestModel $model) {
             return (new ComponentAttributeBag([]))->class([
                 'test',
                 'odd' => $model->id % 2 === 1,
             ]);
         });
-        $this->assertEquals($testModelsIdToName, $optionCollection->toArray());
+        $this->assertEquals($testModelsIdToName, $options->toArray());
         $this->assertEquals(new ComponentAttributeBag([
             'class' => 'test odd',
-        ]), $optionCollection->getAttributes(1));
+        ]), $options->getAttributes(1));
         $this->assertEquals(new ComponentAttributeBag([
             'class' => 'test',
-        ]), $optionCollection->getAttributes(2));
+        ]), $options->getAttributes(2));
     }
 
     public static function modelProvider(): array
@@ -182,64 +182,64 @@ class OptionCollectionTest extends TestCase
 
     public function testAddAttributes(): void
     {
-        $optionCollection = OptionCollection::fromArray(self::$testIntArray);
-        $optionCollection->addAttributes(1, ['data-value1' => 42]);
-        $optionCollection->addAttributes(1, ['data-value2' => 43]);
+        $options = Options::fromArray(self::$testIntArray);
+        $options->addAttributes(1, ['data-value1' => 42]);
+        $options->addAttributes(1, ['data-value2' => 43]);
         $this->assertEquals([
             'data-value1' => 42,
             'data-value2' => 43,
-        ], $optionCollection->getAttributes(1)->getAttributes());
+        ], $options->getAttributes(1)->getAttributes());
     }
 
     public function testAppendAttributes(): void
     {
-        $optionCollection = OptionCollection::fromArray(self::$testIntArray);
-        $optionCollection->append('', 'all');
+        $options = Options::fromArray(self::$testIntArray);
+        $options->append('all', '');
 
         $this->assertEquals([
             1 => 'One',
             2 => 'Two',
             '' => 'all',
-        ], $optionCollection->toArray());
+        ], $options->toArray());
 
-        $optionCollection->append(3, 'Three', ['class' => 'test']);
+        $options->append('Three', 3, ['class' => 'test']);
         $this->assertEquals([
             '' => 'all',
             1 => 'One',
             2 => 'Two',
             3 => 'Three',
-        ], $optionCollection->toArray());
-        $this->assertEquals(new ComponentAttributeBag(['class' => 'test']), $optionCollection->getAttributes(3));
+        ], $options->toArray());
+        $this->assertEquals(new ComponentAttributeBag(['class' => 'test']), $options->getAttributes(3));
     }
 
     public function testPrependAttributes(): void
     {
-        $optionCollection = OptionCollection::fromArray(self::$testIntArray)
-            ->prepend('', 'all');
+        $options = Options::fromArray(self::$testIntArray)
+            ->prepend('all', '');
 
         $this->assertEquals([
             '' => 'all',
             1 => 'One',
             2 => 'Two',
-        ], $optionCollection->toArray());
+        ], $options->toArray());
 
-        $optionCollection->prepend(3, 'Three', ['class' => 'test']);
+        $options->prepend('Three', 3, ['class' => 'test']);
         $this->assertEquals([
             3 => 'Three',
             '' => 'all',
             1 => 'One',
             2 => 'Two',
-        ], $optionCollection->toArray());
-        $this->assertEquals(new ComponentAttributeBag(['class' => 'test']), $optionCollection->getAttributes(3));
+        ], $options->toArray());
+        $this->assertEquals(new ComponentAttributeBag(['class' => 'test']), $options->getAttributes(3));
     }
 
     public function testSetAttributes(): void
     {
-        $optionCollection = OptionCollection::fromArray(self::$testIntArray)
+        $options = Options::fromArray(self::$testIntArray)
             ->setAttributes(1, new ComponentAttributeBag(['data-value1' => 42]))
             ->setAttributes(1, ['data-value2' => 43]);
         $this->assertEquals([
             'data-value2' => 43,
-        ], $optionCollection->getAttributes(1)->getAttributes());
+        ], $options->getAttributes(1)->getAttributes());
     }
 }

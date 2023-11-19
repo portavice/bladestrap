@@ -10,7 +10,7 @@
 
     /**
      * Only for checkbox, select, radio.
-     * @var iterable|Illuminate\Support\Collection|OptionCollection $options
+     * @var iterable|Illuminate\Support\Collection|Options $options
      */
     'options',
 
@@ -42,7 +42,7 @@
     'required' => false,
 ])
 @php
-    use Portavice\Bladestrap\Support\OptionCollection;
+    use Portavice\Bladestrap\Support\Options;
     use Portavice\Bladestrap\Support\ValueHelper;
 
     /** @var \Illuminate\View\ComponentAttributeBag $attributes */
@@ -61,8 +61,6 @@
     $dotSyntax = ValueHelper::nameToDotSyntax($name);
     $hasAnyErrors = $errorBag->hasAny($dotSyntax);
 
-    $value = ValueHelper::value($name, $value, $fromQuery, $cast);
-
     /** @var ?\Illuminate\View\ComponentSlot $prependText */
     /** @var ?\Illuminate\View\ComponentSlot $appendText */
     $hasInputGroupContainer = isset($prependText) || isset($appendText);
@@ -78,15 +76,18 @@
     if (isset($options)) {
         /** @var \Closure(int|string): \Illuminate\View\ComponentAttributeBag $getAttributesForOption */
         $getAttributesForOption = static function ($optionValue) use ($options) {
-            return $options instanceof OptionCollection
+            return $options instanceof Options
                 ? $options->getAttributes($optionValue)
                 : new \Illuminate\View\ComponentAttributeBag();
         };
 
-        if ($options instanceof OptionCollection) {
+        if ($options instanceof Options) {
             $cast = $cast ?? $options->getCast();
         }
     }
+
+    // Override selected value and apply cast.
+    $value = ValueHelper::value($name, $value, $fromQuery, $cast);
 @endphp
 <div {{ $containerAttributes->class([
     config('bladestrap.form.field.class'),

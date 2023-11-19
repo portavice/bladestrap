@@ -238,16 +238,16 @@ Radio buttons, checkboxes and selects need a `:options` attribute providing an i
 - an `Illuminate\Support\Collection`, such as 
   - `:options="User::query()->pluck('name', 'id')"`
   - or `:options="User::query()->pluck('name', 'id')->prepend(__('all'), '')"`
-- a `Portavice\Bladestrap\Support\OptionCollection` which allows to set custom attributes for each option.
+- a `Portavice\Bladestrap\Support\Options` which allows to set custom attributes for each option.
   For checkboxes, radios and switches, custom attributes prefixed with `check-container-` or `check-label-` are applied to the `.form-check` or `.form-check-label` respectively.
 
-An `Portavice\Bladestrap\Support\OptionCollection` can be used to easily create an iterable based on
+An `Portavice\Bladestrap\Support\Options` can be used to easily create an iterable based on
 - an `array`
   ```PHP
-  use Portavice\Bladestrap\Support\OptionCollection;
+  use Portavice\Bladestrap\Support\Options;
 
   // Array with custom attributes
-  OptionCollection::fromArray(
+  Options::fromArray(
         [
             1 => 'One',
             2 => 'Two',
@@ -259,39 +259,39 @@ An `Portavice\Bladestrap\Support\OptionCollection` can be used to easily create 
   ```
 - an `enum` implementing the [BackedEnum interface](https://www.php.net/manual/de/class.backedenum.php)
   ```PHP
-  use Portavice\Bladestrap\Support\OptionCollection;
+  use Portavice\Bladestrap\Support\Options;
 
   // All enum cases with labels based on the value
-  OptionCollection::fromEnum(MyEnum::class);
+  Options::fromEnum(MyEnum::class);
 
   // ... with labels based on the name
-  OptionCollection::fromEnum(MyEnum::class, 'name');
+  Options::fromEnum(MyEnum::class, 'name');
 
   // ... with labels based on the result of the myMethod function
-  OptionCollection::fromEnum(MyEnum::class, 'myMethod');
+  Options::fromEnum(MyEnum::class, 'myMethod');
 
   // Only a subset of enum cases
-  OptionCollection::fromEnum([MyEnum::Case1, MyEnum::Case2]);
+  Options::fromEnum([MyEnum::Case1, MyEnum::Case2]);
   ```
 - an `array` or `Illuminate\Database\Eloquent\Collection` of Eloquent models 
   (the primary key becomes the value, label must be defined)
   ```PHP
-  use Portavice\Bladestrap\Support\OptionCollection;
+  use Portavice\Bladestrap\Support\Options;
 
   // Array of models with labels based on a column or accessor
-  OptionCollection::fromModels([$user1, $user2, ...$moreUsers], 'name');
+  Options::fromModels([$user1, $user2, ...$moreUsers], 'name');
 
   // Collection of models with labels based on a column or accessor
-  OptionCollection::fromModels(User::query()->get(), 'name');
+  Options::fromModels(User::query()->get(), 'name');
 
   // ... with labels based on a Closure
-  OptionCollection::fromModels(
+  Options::fromModels(
       User::query()->get(),
       static fn (User $user) => sprintf('%s (%s)', $user->name, $user->id)
   );
 
   // ... with custom attributes for <option>s using a \Closure defining an ComponentAttributeBag
-  OptionCollection::fromModels(User::query()->get(), 'name', static function (User $user) {
+  Options::fromModels(User::query()->get(), 'name', static function (User $user) {
       return (new ComponentAttributeBag([]))->class([
           'user-option',
           'inactive' => $user->isInactive(),
@@ -299,17 +299,18 @@ An `Portavice\Bladestrap\Support\OptionCollection` can be used to easily create 
   });
 
   // ... with custom attributes for <option>s using a \Closure defining an array of attributes
-  OptionCollection::fromModels(User::query()->get(), 'name', fn (User $user) => [
+  Options::fromModels(User::query()->get(), 'name', fn (User $user) => [
       'data-title' => $user->title,
   ]);
   ```
 
-Additional options can be prepended/appended to an `OptionCollection`:
-```PHP
-use Portavice\Bladestrap\Support\OptionCollection;
+Additional options can be prepended/appended to an `Options`:
 
-$options = OptionCollection::fromModels(User::query()->get(), 'name')
-    ->prepend('', 'all'); // adds at start
+```PHP
+use Portavice\Bladestrap\Support\Options;
+
+$options = Options::fromModels(User::query()->get(), 'name')
+    ->prepend('all', '') // adds an option with empty value at the start
     ->append('last', 'last'); // adds at the end
 ```
 
