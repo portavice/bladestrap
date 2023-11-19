@@ -3,7 +3,7 @@
 namespace Portavice\Bladestrap\Tests\Feature\Form\FormField\Type;
 
 use Illuminate\View\ComponentAttributeBag;
-use Portavice\Bladestrap\Support\OptionCollection;
+use Portavice\Bladestrap\Support\Options;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 use Portavice\Bladestrap\Tests\SampleData\TestModel;
 use Portavice\Bladestrap\Tests\Traits\TestsBooleanAttributes;
@@ -82,7 +82,7 @@ class SelectTest extends ComponentTestCase
     /**
      * @dataProvider attributesProvider
      */
-    public function testSelectWithOptionCollectionRendersCorrectly(OptionCollection $optionCollection, ?string $cast, string $html): void
+    public function testSelectWithOptionsRendersCorrectly(Options $options, ?string $cast, string $html): void
     {
         $this->assertBladeRendersToHtml(
             '<div class="mb-3">
@@ -96,7 +96,7 @@ class SelectTest extends ComponentTestCase
                 . (isset($cast) ? sprintf(' cast="%s"', $cast) : '')
                 . '>My Model</x-bs::form.field>',
                 data: [
-                    'options' => $optionCollection,
+                    'options' => $options,
                     // '2' needs int cast.
                     'value' => '2',
                 ]
@@ -114,22 +114,22 @@ class SelectTest extends ComponentTestCase
                 <option value="4" class="test even" data-short-name="YATM">Yet another test model</option>';
         return [
             [
-                OptionCollection::fromModels(TestModel::samples(), 'short_name'),
+                Options::fromModels(TestModel::samples(), 'short_name'),
                 'int',
                 $defaultHtml,
             ],
             [
-                OptionCollection::fromModels(TestModel::samples(), static fn (TestModel $model) => $model->short_name),
+                Options::fromModels(TestModel::samples(), static fn (TestModel $model) => $model->short_name),
                 'int',
                 $defaultHtml,
             ],
             [
-                OptionCollection::fromModels(TestModel::samples(), static fn (TestModel $model) => $model->short_name),
-                null, // int will be set by OptionCollection::makeModels.
+                Options::fromModels(TestModel::samples(), static fn (TestModel $model) => $model->short_name),
+                null, // int will be set by Options::fromModels.
                 $defaultHtml,
             ],
             [
-                OptionCollection::fromModels(TestModel::samples(), 'name', static function (TestModel $model) {
+                Options::fromModels(TestModel::samples(), 'name', static function (TestModel $model) {
                     return (new ComponentAttributeBag([
                         'data-short-name' => $model->short_name,
                     ]))->class([
@@ -141,7 +141,7 @@ class SelectTest extends ComponentTestCase
                 $htmlWithAttributes,
             ],
             [
-                OptionCollection::fromModels(TestModel::samples(), 'name', fn (TestModel $model) => [
+                Options::fromModels(TestModel::samples(), 'name', fn (TestModel $model) => [
                     'class' => 'test' . ($model->id % 2 === 0 ? ' even' : ''),
                     'data-short-name' => $model->short_name,
                 ]),

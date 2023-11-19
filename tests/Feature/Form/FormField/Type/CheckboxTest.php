@@ -2,7 +2,7 @@
 
 namespace Portavice\Bladestrap\Tests\Feature\Form\FormField\Type;
 
-use Portavice\Bladestrap\Support\OptionCollection;
+use Portavice\Bladestrap\Support\Options;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 use Portavice\Bladestrap\Tests\Traits\TestsBooleanAttributes;
 
@@ -95,7 +95,7 @@ class CheckboxTest extends ComponentTestCase
             </div>
         </div>';
 
-        $options = OptionCollection::fromArray([
+        $options = Options::fromArray([
             1 => 'A',
             2 => 'B',
             3 => 'C',

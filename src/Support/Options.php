@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\View\ComponentAttributeBag;
 
-class OptionCollection implements \IteratorAggregate
+class Options implements \IteratorAggregate
 {
     /**
      * @var array<int|string,ComponentAttributeBag>
@@ -32,8 +32,8 @@ class OptionCollection implements \IteratorAggregate
     }
 
     public function append(
-        int|string $optionValue,
         int|string $label,
+        int|string $optionValue,
         array|ComponentAttributeBag|null $attributes = null
     ): self {
         $this->options += [$optionValue => $label];
@@ -60,8 +60,8 @@ class OptionCollection implements \IteratorAggregate
     }
 
     public function prepend(
-        int|string $optionValue,
         int|string $label,
+        int|string $optionValue,
         array|ComponentAttributeBag|null $attributes = null
     ): self {
         $this->options = [$optionValue => $label] + $this->options;
@@ -99,15 +99,15 @@ class OptionCollection implements \IteratorAggregate
         array $array,
         \Closure|null $attributeProvider = null
     ): self {
-        $optionCollection = new self($array);
+        $options = new self($array);
 
         if ($attributeProvider instanceof \Closure) {
             foreach ($array as $optionValue => $label) {
-                $optionCollection->setAttributes($optionValue, $attributeProvider($optionValue, $label));
+                $options->setAttributes($optionValue, $attributeProvider($optionValue, $label));
             }
         }
 
-        return $optionCollection;
+        return $options;
     }
 
     /**
@@ -133,18 +133,18 @@ class OptionCollection implements \IteratorAggregate
         foreach ($enumCases as $enumCase) {
             $optionArray[$enumCase->value] = $labelProvider($enumCase);
         }
-        $optionCollection = new self($optionArray);
+        $options = new self($optionArray);
         if (is_int(array_key_first($optionArray))) {
-            $optionCollection->cast = 'int';
+            $options->cast = 'int';
         }
 
         if ($attributeProvider instanceof \Closure) {
             foreach ($enumCases as $enumCase) {
-                $optionCollection->setAttributes($enumCase->value, $attributeProvider($enumCase));
+                $options->setAttributes($enumCase->value, $attributeProvider($enumCase));
             }
         }
 
-        return $optionCollection;
+        return $options;
     }
 
     /**
@@ -181,7 +181,7 @@ class OptionCollection implements \IteratorAggregate
             $labelProvider = static fn ($model) => $model->{$labelProvider};
         }
 
-        $optionCollection = new self(
+        $options = new self(
             $modelCollection->map(static fn ($model) => [
                 'label' => $labelProvider($model),
                 'value' => $model->getKey(),
@@ -189,14 +189,14 @@ class OptionCollection implements \IteratorAggregate
             ->pluck('label', 'value')
             ->toArray()
         );
-        $optionCollection->cast = 'int';
+        $options->cast = 'int';
 
         if ($attributeProvider instanceof \Closure) {
             foreach ($modelCollection as $model) {
-                $optionCollection->setAttributes($model->getKey(), $attributeProvider($model));
+                $options->setAttributes($model->getKey(), $attributeProvider($model));
             }
         }
 
-        return $optionCollection;
+        return $options;
     }
 }

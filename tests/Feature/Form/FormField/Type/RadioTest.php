@@ -2,7 +2,7 @@
 
 namespace Portavice\Bladestrap\Tests\Feature\Form\FormField\Type;
 
-use Portavice\Bladestrap\Support\OptionCollection;
+use Portavice\Bladestrap\Support\Options;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 use Portavice\Bladestrap\Tests\Traits\TestsBooleanAttributes;
 
@@ -76,7 +76,7 @@ class RadioTest extends ComponentTestCase
             $this->bladeView(
                 '<x-bs::form.field name="my_model" type="radio" :options="$options" :value="$value">My Model</x-bs::form.field>',
                 data: [
-                    'options' => OptionCollection::fromArray(['No', 'Yes'], static fn ($optionValue) => [
+                    'options' => Options::fromArray(['No', 'Yes'], static fn ($optionValue) => [
                         'class' => match ($optionValue) {
                             0 => 'text-danger',
                             1 => 'text-success',
