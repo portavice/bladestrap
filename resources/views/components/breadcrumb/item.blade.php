@@ -3,7 +3,7 @@
     'href' => null,
 ])
 @php
-    $active = !isset($href) || $href === request()?->fullUrl();
+    $active = !isset($href) || \Portavice\Bladestrap\Support\ValueHelper::isUrl($href);
 @endphp
 <li {{ $attributes
     ->class([

@@ -30,6 +30,7 @@ for the [Bootstrap 5](https://getbootstrap.com/docs/) frontend framework.
   - [Links](#links)
   - [List groups](#list-groups)
   - [Navigation](#navigation) 
+- [Usage without Laravel](#usage-without-laravel)
 
 
 ## Installation
@@ -38,7 +39,7 @@ First, install the package via [Composer](https://getcomposer.org/):
 composer require portavice/bladestrap
 ```
 
-The package will automatically register itself.
+Within a Laravel application, the package will automatically register itself.
 
 ### Install Bootstrap
 Note that you need to [include the Bootstrap files](https://github.com/twbs/bootstrap#quick-start) on your own.
@@ -431,4 +432,43 @@ A navigation item may open a [dropdown](#dropdowns) if you enabled this by addin
         <!-- dropdown content-->
     </x-slot:dropdown>
 </x-bs::list.item>
+```
+
+
+## Usage without Laravel
+Bladestrap uses `config()` and `request()` helpers.
+If you want to use Bladestrap without Laravel, you need to define the two helpers in your application,
+for example (may need to be adapted to the framework you use):
+```PHP
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+
+$configFile = [
+    'bladestrap' => require __DIR__ . '/../vendor/portavice/bladestrap/config/bladestrap.php',
+];
+function config(array|string|null $key, mixed $default = null): mixed
+{
+    global $configFile;
+    return Arr::get($configFile, $key, $default);
+}
+
+$request = Request::capture();
+function request(array|string|null $key = null, mixed $default = null): mixed
+{
+    global $request;
+    return $key === null ? $request : $request->input($key, $default);
+}
+```
+
+In addition, you have to do the registrations of the `BladestrapServiceProvider` yourself:
+```PHP
+use Illuminate\View\Factory;
+use Portavice\Bladestrap\Macros\ComponentAttributeBagExtension;
+
+// Register macros as BladestrapServiceProvider would do.
+ComponentAttributeBagExtension::registerMacros();
+
+/* @var Factory $viewFactory */
+// Add components in bs namespace to your views.
+$viewFactory->addNamespace('bs', __DIR__ . '/../vendor/portavice/bladestrap/resources/views');
 ```

@@ -3,7 +3,7 @@
     'subItems' => false,
 ])
 @php
-    $active = $attributes->get('href') === request()?->fullUrl();
+    $active = \Portavice\Bladestrap\Support\ValueHelper::isUrl($attributes->get('href'));
 @endphp
 <li>{{-- no whitespace
 --}}<a {{ $attributes
