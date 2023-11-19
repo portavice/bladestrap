@@ -61,8 +61,6 @@
     $dotSyntax = ValueHelper::nameToDotSyntax($name);
     $hasAnyErrors = $errorBag->hasAny($dotSyntax);
 
-    $value = ValueHelper::value($name, $value, $fromQuery, $cast);
-
     /** @var ?\Illuminate\View\ComponentSlot $prependText */
     /** @var ?\Illuminate\View\ComponentSlot $appendText */
     $hasInputGroupContainer = isset($prependText) || isset($appendText);
@@ -87,6 +85,9 @@
             $cast = $cast ?? $options->getCast();
         }
     }
+
+    // Override selected value and apply cast.
+    $value = ValueHelper::value($name, $value, $fromQuery, $cast);
 @endphp
 <div {{ $containerAttributes->class([
     config('bladestrap.form.field.class'),

@@ -97,7 +97,8 @@ class SelectTest extends ComponentTestCase
                 . '>My Model</x-bs::form.field>',
                 data: [
                     'options' => $optionCollection,
-                    'value' => 2,
+                    // '2' needs int cast.
+                    'value' => '2',
                 ]
             )
         );
