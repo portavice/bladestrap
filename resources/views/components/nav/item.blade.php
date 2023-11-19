@@ -14,7 +14,7 @@
     $containerAttributes = $attributes->filterAndTransform('container-');
     $itemAttributes = $attributes->whereDoesntStartWith('container-');
 
-    $active = $attributes->get('href') === request()?->fullUrl();
+    $active = \Portavice\Bladestrap\Support\ValueHelper::isUrl($attributes->get('href'));
 
     /** @var ?\Illuminate\View\ComponentSlot $dropdown */
     $hasDropdown = isset($dropdown);

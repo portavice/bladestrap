@@ -2,6 +2,7 @@
 
 namespace Portavice\Bladestrap\Support;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 class ValueHelper
@@ -30,24 +31,22 @@ class ValueHelper
 
     public static function getFromQueryOrDefault(string $key): mixed
     {
-        /** @var \Illuminate\Http\Request $request */
-        $request = app('request');
+        return self::getRequest()->query($key) ?? self::$defaults[$key] ?? null;
+    }
 
-        return $request->query($key) ?? self::$defaults[$key] ?? null;
+    public static function getRequest(): Request
+    {
+        return request();
     }
 
     public static function hasAnyFromQuery(): bool
     {
-        /** @var \Illuminate\Http\Request $request */
-        $request = app('request');
-        return count($request->query()) > 0;
+        return count(self::getRequest()->query()) > 0;
     }
 
     public static function hasFromQuery(string $key): bool
     {
-        /** @var \Illuminate\Http\Request $request */
-        $request = app('request');
-        return $request->query($key) !== null;
+        return self::getRequest()->query($key) !== null;
     }
 
     public static function hasAnyFromQueryOrDefault(): bool
@@ -62,11 +61,16 @@ class ValueHelper
             || self::hasFromQuery($key);
     }
 
+    public static function isUrl(?string $url): bool
+    {
+        return $url === self::getRequest()->fullUrl();
+    }
+
     public static function value(string $name, mixed $value, bool $fromQuery, ?string $cast): mixed
     {
         $dotSyntax = self::nameToDotSyntax($name);
+        $request = self::getRequest();
         if ($fromQuery) {
-            $request = app('request');
             $value = Arr::get(
                 $request->query(),
                 $dotSyntax,
@@ -74,8 +78,8 @@ class ValueHelper
             );
         }
 
-        if (count(old(null, [])) > 0) {
-            $value = old(self::nameToDotSyntax($name), $value);
+        if (count($request->old(null, [])) > 0) {
+            $value = $request->old(self::nameToDotSyntax($name), $value);
         }
 
         return self::castValue($value, $cast);
