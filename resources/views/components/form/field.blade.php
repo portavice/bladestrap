@@ -14,6 +14,12 @@
      */
     'options',
 
+    /**
+     * Only affects labels of options.
+     * @var bool $allowHtml
+     */
+    'allowHtml' => false,
+
     /** @var ?string $cast */
     'cast' => null,
 
@@ -23,7 +29,7 @@
      */
     'value' => null,
 
-    /*
+    /**
      * If enabled, value is extracted from the query parameter of the URL.
      * @var bool $fromQuery
      */
@@ -155,7 +161,7 @@
                                 ]) }} @checked(ValueHelper::isActive($optionValue, $value)) @disabled($disabled) @readonly($readonly) @required($required)/>
                             <label @class([
                                 'form-check-label',
-                            ]) for="{{ $optionId }}">{{ $optionLabel }}</label>
+                            ]) for="{{ $optionId }}">@if($allowHtml){!! $optionLabel !!}@else{{ $optionLabel }}@endif</label>
                             @if($loop->last)
                                 <x-bs::form.feedback name="{{ $name }}" :errorBag="$errorBag" :showSubErrors="true"/>
                             @endif

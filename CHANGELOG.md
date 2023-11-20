@@ -14,7 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Components for buttons, groups, and toolbars
 - Components for dropdowns
 - Components for forms and their fields
+  - Support all types of `<input>`s, `<textarea>`, and `<select>`s
+  - Options for `<input type="checkbox">`, `<input type="radio">`, and `<option>`s`<select>`:
+    - Set HTML attributes (e.g. classes or data attributes)
+    - Allow HTML for labels
   - Prefill values with old values or from query parameters
   - Show feedback in case of errors
-  - Set HTML attributes for `<option>`s within a `<select>`
 - Components for list groups and their items

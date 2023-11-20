@@ -240,6 +240,7 @@ Radio buttons, checkboxes and selects need a `:options` attribute providing an i
   - or `:options="User::query()->pluck('name', 'id')->prepend(__('all'), '')"`
 - a `Portavice\Bladestrap\Support\Options` which allows to set custom attributes for each option.
   For checkboxes, radios and switches, custom attributes prefixed with `check-container-` or `check-label-` are applied to the `.form-check` or `.form-check-label` respectively.
+  If labels contain HTML, set `:allow-html="true"`.
 
 An `Portavice\Bladestrap\Support\Options` can be used to easily create an iterable based on
 - an `array`
@@ -328,13 +329,16 @@ $options = Options::fromModels(User::query()->get(), 'name')
 
 **Single** checkbox (just one option):
 ```HTML
-<x-bs::form.field id="my_field_name" name="my_field_name[]" type="checkbox" :options="[1 => 'Option enabled']"
+<x-bs::form.field id="my_field_name" type="checkbox" :options="[1 => 'Option enabled']"
+                  :value="$value">{{ __('My label') }}</x-bs::form.field>
+<x-bs::form.field id="my_field_name" type="checkbox" :allow-html="true"
+                  :options="Options::one('Option <strong>with HTML</strong> enabled')"
                   :value="$value">{{ __('My label') }}</x-bs::form.field>
 ```
 
 **Select** (allows to select one of multiple values):
 ```HTML
-<x-bs::form.field id="my_field_name" type="select" :options="$options"
+<x-bs::form.field name="my_field_name" type="select" :options="$options"
                   :value="$value">{{ __('My label') }}</x-bs::form.field>
 ```
 
