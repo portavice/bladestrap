@@ -174,8 +174,8 @@ class CheckboxTest extends ComponentTestCase
     public static function singleOptions(): array
     {
         return [
-            [1 => 'Option enabled'],
-            Options::one('Option enabled'),
+            [[1 => 'Option enabled']],
+            [Options::one('Option enabled')],
         ];
     }
 
