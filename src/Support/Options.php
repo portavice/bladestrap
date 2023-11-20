@@ -199,4 +199,13 @@ class Options implements \IteratorAggregate
 
         return $options;
     }
+
+    public static function one(
+        int|string $label,
+        array|ComponentAttributeBag|null $attributes = null
+    ): self {
+        $options = (new self([]))->prepend($label, 1, $attributes);
+        $options->cast = 'int';
+        return $options;
+    }
 }

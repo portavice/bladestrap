@@ -137,13 +137,16 @@ class CheckboxTest extends ComponentTestCase
         );
     }
 
-    public function testSimpleCheckboxRendersCorrectly(): void
+    /**
+     * @dataProvider singleOptions
+     */
+    public function testSingleCheckboxRendersCorrectly(array|Options $options): void
     {
         $expectedHtml = static fn ($additionalHtml) => '<div class="mb-3">
             <label for="setting_enabled" class="form-label">Setting</label>
             <div class="form-check">
                 <input id="setting_enabled-1" name="setting_enabled" type="checkbox" value="1" class="form-check-input"' . $additionalHtml . '/>
-            <label class="form-check-label" for="setting_enabled-1">Option enabled</label>
+                <label class="form-check-label" for="setting_enabled-1">Option enabled</label>
             </div>
         </div>';
         $this->assertBladeRendersToHtml(
@@ -151,9 +154,7 @@ class CheckboxTest extends ComponentTestCase
             $this->bladeView(
                 '<x-bs::form.field name="setting_enabled" type="checkbox" :options="$options" :value="$value">Setting</x-bs::form.field>',
                 data: [
-                    'options' => [
-                        1 => 'Option enabled',
-                    ],
+                    'options' => $options,
                     'value' => 1,
                 ]
             )
@@ -163,9 +164,65 @@ class CheckboxTest extends ComponentTestCase
             $this->bladeView(
                 '<x-bs::form.field name="setting_enabled" type="checkbox" :options="$options" :value="$value">Setting</x-bs::form.field>',
                 data: [
-                    'options' => [
-                        1 => 'Option enabled',
-                    ],
+                    'options' => $options,
+                    'value' => 0,
+                ]
+            )
+        );
+    }
+
+    public static function singleOptions(): array
+    {
+        return [
+            [1 => 'Option enabled'],
+            Options::one('Option enabled'),
+        ];
+    }
+
+    public function testSingleCheckboxWithOptionsRendersCorrectly(): void
+    {
+        $html = 'I accept the <a class="alert-link" href="https://localhost/terms/" target="_blank">general terms and conditions</a>';
+        $expectedHtml = static fn ($additionalHtml, $label) => '<div class="mb-3">
+            <label for="setting_enabled" class="form-label">Setting</label>
+            <div class="form-check">
+                <input id="setting_enabled-1" name="setting_enabled" type="checkbox" value="1" class="form-check-input"' . $additionalHtml . '/>
+                <label class="form-check-label" for="setting_enabled-1">' . $label . '</label>
+            </div>
+        </div>';
+        $data = [
+            'options' => Options::one($html),
+            'value' => 1,
+        ];
+        $this->assertBladeRendersToHtml(
+            $expectedHtml(' checked', $html),
+            $this->bladeView(
+                '<x-bs::form.field name="setting_enabled" type="checkbox" :options="$options" :value="$value" :allow-html="true">Setting</x-bs::form.field>',
+                data: $data
+            )
+        );
+
+        // Without allow-html, htmlspecialchars is applied on the label.
+        $this->assertBladeRendersToHtml(
+            $expectedHtml('', 'I accept the &lt;a class=&quot;alert-link&quot; href=&quot;https://localhost/terms/&quot; target=&quot;_blank&quot;&gt;general terms and conditions&lt;/a&gt;'),
+            $this->bladeView(
+                '<x-bs::form.field name="setting_enabled" type="checkbox" :options="$options">Setting</x-bs::form.field>',
+                data: $data
+            )
+        );
+
+        // Attributes are supported as well.
+        $this->assertBladeRendersToHtml(
+            '<div class="mb-3">
+            <label for="setting_enabled" class="form-label">Setting</label>
+            <div class="form-check">
+                <input id="setting_enabled-1" name="setting_enabled" type="checkbox" value="1" class="form-check-input test"/>
+                <label class="form-check-label" for="setting_enabled-1">' . $html . '</label>
+            </div>
+        </div>',
+            $this->bladeView(
+                '<x-bs::form.field name="setting_enabled" type="checkbox" :options="$options" :value="$value" :allow-html="true">Setting</x-bs::form.field>',
+                data: [
+                    'options' => Options::one($html, ['class' => 'test']),
                     'value' => 0,
                 ]
             )

@@ -180,6 +180,15 @@ class OptionsTest extends TestCase
         ];
     }
 
+    public function testOne(): void
+    {
+        $options = Options::one('I accept.', [
+            'data-value' => 'accepted',
+        ]);
+        $this->assertEquals([1 => 'I accept.'], $options->toArray());
+        $this->assertEquals(new ComponentAttributeBag(['data-value' => 'accepted']), $options->getAttributes(1));
+    }
+
     public function testAddAttributes(): void
     {
         $options = Options::fromArray(self::$testIntArray);
