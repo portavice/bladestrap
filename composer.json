@@ -28,15 +28,12 @@
         "illuminate/view": "^10.24"
     },
     "require-dev": {
-        "orchestra/testbench": "^8.5",
+        "orchestra/testbench": "^8.15",
         "phpunit/phpunit": "^10.4",
-        "portavice/laravel-pint-config": "1.0"
+        "portavice/laravel-pint-config": "2.0"
     },
     "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
+        "sort-packages": true
     },
     "extra": {
         "laravel": {
