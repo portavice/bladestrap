@@ -8,16 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+
+## Version 1.0.0 (2023-11-22)
+
 ### Added
-- Components for alerts, badges, and links
-- Components for breadcrumb and navigation
-- Components for buttons, groups, and toolbars
-- Components for dropdowns
-- Components for forms and their fields
-  - Support all types of `<input>`s, `<textarea>`, and `<select>`s
-  - Options for `<input type="checkbox">`, `<input type="radio">`, and `<option>`s`<select>`:
-    - Set HTML attributes (e.g. classes or data attributes)
-    - Allow HTML for labels
+- Components for [alerts](https://getbootstrap.com/docs/5.3/components/alerts/) with support for variants and dismissible
+- Components for [badges](https://getbootstrap.com/docs/5.3/components/badge/) with background variants from Bootstrap 5.3
+- Components for [breadcrumb](https://getbootstrap.com/docs/5.3/components/breadcrumb/) containers and items
+- Components for [buttons](https://getbootstrap.com/docs/5.3/components/buttons/) and button-like links with support for variants and active/disabled styling,
+  button groups and toolbars
+- Components for [dropdown](https://getbootstrap.com/docs/5.3/components/dropdowns/#single-button) buttons (with different directions), headers, and items
+- Components for [forms](https://getbootstrap.com/docs/5.3/forms/overview/) and their fields
+  - Support all types of `<input>`s, `<textarea>`, and `<select>`
+  - Set HTML attributes (e.g. classes or data attributes) for options of `<input type="checkbox">`, `<input type="radio">`, and `<select>`:
+  - Allow HTML for labels of `<input type="checkbox">` and `<input type="radio">`
   - Prefill values with old values or from query parameters
   - Show feedback in case of errors
-- Components for list groups and their items
+- Components for [colored links](https://getbootstrap.com/docs/5.3/helpers/colored-links/#link-colors) with support for opacity
+- Components for [list groups](https://getbootstrap.com/docs/5.3/components/list-group/) with support for flush style
+  and list items with support for variants and active/disabled styling
+- Auto-registration within Laravel applications
+- Guide how to use Bladestrap in an application with Blade views, but without Laravel

@@ -1,8 +1,11 @@
 # Bladestrap = Blade + Bootstrap
 
-[![MIT Licensed](https://img.shields.io/badge/License-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-![Tests @GitHub](https://img.shields.io/github/actions/workflow/status/portavice/bladestrap/tests.yml?branch=main&label=Tests)
-![Code style check @GitHub](https://img.shields.io/github/actions/workflow/status/portavice/bladestrap/code-style.yml?branch=main&label=Code%20style)
+[![MIT Licensed](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE.md)
+![PHP](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fportavice%2Fbladestrap%2Fmain%2Fcomposer.json&query=require.php&label=PHP)
+[![Tests](https://github.com/portavice/bladestrap/actions/workflows/tests.yml/badge.svg)](https://github.com/portavice/bladestrap/actions/workflows/tests.yml)
+[![Code style check](https://github.com/portavice/bladestrap/actions/workflows/code-style.yml/badge.svg)](https://github.com/portavice/bladestrap/actions/workflows/code-style.yml)
+[![Latest version](https://img.shields.io/packagist/v/portavice/bladestrap.svg)](https://packagist.org/packages/portavice/bladestrap)
+[![Total downloads](https://img.shields.io/packagist/dt/portavice/bladestrap.svg)](https://packagist.org/packages/portavice/bladestrap)
 
 Bladestrap provides [Laravel Blade components](https://laravel.com/docs/10.x/blade#components)
 for the [Bootstrap 5](https://getbootstrap.com/docs/) frontend framework.
