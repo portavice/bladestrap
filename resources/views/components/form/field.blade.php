@@ -94,6 +94,8 @@
 
     // Override selected value and apply cast.
     $value = ValueHelper::value($name, $value, $fromQuery, $cast);
+
+    $showFeedback = true;
 @endphp
 <div {{ $containerAttributes->class([
     config('bladestrap.form.field.class'),
@@ -130,6 +132,9 @@
                         'switch' => ['checkbox', 'form-check form-switch', 'switch'],
                         default => [$type, 'form-check', null],
                     };
+
+                    // Feedback directly outputted in case block.
+                    $showFeedback = false;
                 @endphp
                 @if(!$checkContainerAttributes->isEmpty())
                     <div {{ $checkContainerAttributes }}>
@@ -183,7 +188,6 @@
                         'type' => $type,
                         'value' => $value,
                     ]) }} @disabled($disabled) @readonly($readonly) @required($required)/>
-                <x-bs::form.feedback name="{{ $name }}" :errorBag="$errorBag"/>
                 @break
             @case('select')
                 <select {{ $attributes
@@ -202,7 +206,6 @@
                             ]) }} @selected(ValueHelper::isActive($optionValue, $value))>{{ $description }}</option>
                     @endforeach
                 </select>
-                <x-bs::form.feedback name="{{ $name }}" :errorBag="$errorBag"/>
                 @break
             @case('textarea')
                 <textarea {{ $fieldAttributes
@@ -214,7 +217,6 @@
                         'id' => $id ?? $name,
                         'name' => $name,
                     ]) }} @disabled($disabled) @readonly($readonly) @required($required)>{{ $value }}</textarea>
-                <x-bs::form.feedback name="{{ $name }}" :errorBag="$errorBag"/>
                 @break
             @default
                 <input {{ $fieldAttributes
@@ -228,11 +230,13 @@
                         'type' => $type,
                         'value' => $value,
                     ]) }} @disabled($disabled) @readonly($readonly) @required($required)/>
-                <x-bs::form.feedback name="{{ $name }}" :errorBag="$errorBag"/>
         @endswitch
         @isset($appendText){{-- avoid whitespace
             --}}<label for="{{ $id ?? $name }}" {{ $appendText->attributes->class(['input-group-text']) }}>{{ $appendText }}</label>
         @endisset
+        @if($showFeedback)
+            <x-bs::form.feedback name="{{ $name }}" :errorBag="$errorBag"/>
+        @endif
     @if($hasInputGroupContainer)
         </div>
     @endif
