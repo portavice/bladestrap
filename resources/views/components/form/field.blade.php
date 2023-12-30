@@ -97,156 +97,167 @@
 
     $showFeedback = true;
 @endphp
-<div {{ $containerAttributes->class([
-    config('bladestrap.form.field.class'),
-]) }}>
-    @if($slot->isNotEmpty())
-        <label {{ $labelAttributes
-            ->class([
-                'form-label',
-            ])
-            ->merge([
-                'for' => $id ?? $name,
-            ]) }}>{{ $slot }}</label>
-    @endif
-    @if($hasInputGroupContainer)
-        <div @class([
-            'input-group',
-            'has-validation' => $hasAnyErrors,
-        ])>
-    @endif
-        @isset($prependText)
-            <label for="{{ $id ?? $name }}" {{ $prependText->attributes->class(['input-group-text']) }}>{{ $prependText }}</label>
-        @endisset
-        @switch($type)
-            @case('checkbox')
-            @case('radio')
-            @case('switch')
-                @php
-                    /** @var \Illuminate\View\ComponentAttributeBag $checkContainerAttributes */
-                    $checkContainerAttributes = $attributes->filterAndTransform('check-container-');
-                    /** @var \Illuminate\View\ComponentAttributeBag $checkLabelAttributes */
-                    $checkLabelAttributes = $attributes->filterAndTransform('check-label-');
-
-                    [$type, $checkClass, $role] = match ($type) {
-                        'switch' => ['checkbox', 'form-check form-switch', 'switch'],
-                        default => [$type, 'form-check', null],
-                    };
-
-                    // Feedback directly outputted in case block.
-                    $showFeedback = false;
-                @endphp
-                @if(!$checkContainerAttributes->isEmpty())
-                    <div {{ $checkContainerAttributes }}>
-                @endif
-                    @foreach($options as $optionValue => $optionLabel)
-                        @php
-                            $optionId = ($id ?? $name) . '-' . $optionValue;
-                            $hasAnyErrors = $hasAnyErrors && $errorBag->hasAny([$dotSyntax . '.*']);
-
-                            $attributesForOption = $getAttributesForOption($optionValue);
-                            /** @var \Illuminate\View\ComponentAttributeBag $checkContainerAttributesForOption */
-                            $checkContainerAttributesForOption = $attributesForOption->filterAndTransform('check-');
-                        @endphp
-                        <div {{ $checkContainerAttributesForOption
-                            ->class([
-                                $checkClass,
-                            ]) }}>
-                            <input {{ $fieldAttributes->merge($attributesForOption->whereDoesntStartWith('check-')->getAttributes())
-                                ->class([
-                                    'form-check-input',
-                                    'is-invalid' => $hasAnyErrors,
-                                ])
-                                ->merge([
-                                    'id' => $optionId,
-                                    'name' => $name,
-                                    'role' => $role,
-                                    'type' => $type,
-                                    'value' => $optionValue,
-                                ]) }} @checked(ValueHelper::isActive($optionValue, $value)) @disabled($disabled) @readonly($readonly) @required($required)/>
-                            <label @class([
-                                'form-check-label',
-                            ]) for="{{ $optionId }}">@if($allowHtml){!! $optionLabel !!}@else{{ $optionLabel }}@endif</label>
-                            @if($loop->last)
-                                <x-bs::form.feedback name="{{ $name }}" :errorBag="$errorBag" :showSubErrors="true"/>
-                            @endif
-                        </div>
-                    @endforeach
-                @if(!$checkContainerAttributes->isEmpty())
-                    </div>
-                @endif
-                @break
-            @case('range')
-                <input {{ $fieldAttributes
-                    ->class([
-                        'form-range',
-                        'is-invalid' => $hasAnyErrors,
-                    ])
-                    ->merge([
-                        'id' => $id ?? $name,
-                        'name' => $name,
-                        'type' => $type,
-                        'value' => $value,
-                    ]) }} @disabled($disabled) @readonly($readonly) @required($required)/>
-                @break
-            @case('select')
-                <select {{ $attributes
-                    ->class([
-                        'form-select',
-                        'is-invalid' => $hasAnyErrors,
-                    ])
-                    ->merge([
-                        'id' => $id ?? $name,
-                        'name' => $name,
-                    ]) }} @disabled($disabled) @readonly($readonly) @required($required)>
-                    @foreach($options as $optionValue => $description)
-                        <option {{ $getAttributesForOption($optionValue)
-                            ->merge([
-                                'value' => $optionValue,
-                            ]) }} @selected(ValueHelper::isActive($optionValue, $value))>{{ $description }}</option>
-                    @endforeach
-                </select>
-                @break
-            @case('textarea')
-                <textarea {{ $fieldAttributes
-                    ->class([
-                        'form-control',
-                        'is-invalid' => $hasAnyErrors,
-                    ])
-                    ->merge([
-                        'id' => $id ?? $name,
-                        'name' => $name,
-                    ]) }} @disabled($disabled) @readonly($readonly) @required($required)>{{ $value }}</textarea>
-                @break
-            @default
-                <input {{ $fieldAttributes
-                    ->class([
-                        'form-control',
-                        'is-invalid' => $hasAnyErrors,
-                    ])
-                    ->merge([
-                        'id' => $id ?? $name,
-                        'name' => $name,
-                        'type' => $type,
-                        'value' => $value,
-                    ]) }} @disabled($disabled) @readonly($readonly) @required($required)/>
-        @endswitch
-        @isset($appendText){{-- avoid whitespace
-            --}}<label for="{{ $id ?? $name }}" {{ $appendText->attributes->class(['input-group-text']) }}>{{ $appendText }}</label>
-        @endisset
-        @if($showFeedback)
-            <x-bs::form.feedback name="{{ $name }}" :errorBag="$errorBag"/>
+@if($type === 'hidden')
+    <input {{ $fieldAttributes
+        ->merge([
+            'id' => $id ?? $name,
+            'name' => $name,
+            'type' => $type,
+            'value' => $value,
+        ]) }}/>
+@else
+    <div {{ $containerAttributes->class([
+        config('bladestrap.form.field.class'),
+    ]) }}>
+        @if($slot->isNotEmpty())
+            <label {{ $labelAttributes
+                ->class([
+                    'form-label',
+                ])
+                ->merge([
+                    'for' => $id ?? $name,
+                ]) }}>{{ $slot }}</label>
         @endif
-    @if($hasInputGroupContainer)
-        </div>
-    @endif
-    @isset($hint)
-        <div {{ $hint->attributes
-            ->class([
-                'form-text',
-            ])
-            ->merge([
-                'id' => $hintId,
-            ]) }}>{{ $hint }}</div>
-    @endisset
-</div>
+        @if($hasInputGroupContainer)
+            <div @class([
+                'input-group',
+                'has-validation' => $hasAnyErrors,
+            ])>
+        @endif
+            @isset($prependText)
+                <label for="{{ $id ?? $name }}" {{ $prependText->attributes->class(['input-group-text']) }}>{{ $prependText }}</label>
+            @endisset
+            @switch($type)
+                @case('checkbox')
+                @case('radio')
+                @case('switch')
+                    @php
+                        /** @var \Illuminate\View\ComponentAttributeBag $checkContainerAttributes */
+                        $checkContainerAttributes = $attributes->filterAndTransform('check-container-');
+                        /** @var \Illuminate\View\ComponentAttributeBag $checkLabelAttributes */
+                        $checkLabelAttributes = $attributes->filterAndTransform('check-label-');
+
+                        [$type, $checkClass, $role] = match ($type) {
+                            'switch' => ['checkbox', 'form-check form-switch', 'switch'],
+                            default => [$type, 'form-check', null],
+                        };
+
+                        // Feedback directly outputted in case block.
+                        $showFeedback = false;
+                    @endphp
+                    @if(!$checkContainerAttributes->isEmpty())
+                        <div {{ $checkContainerAttributes }}>
+                    @endif
+                        @foreach($options as $optionValue => $optionLabel)
+                            @php
+                                $optionId = ($id ?? $name) . '-' . $optionValue;
+                                $hasAnyErrors = $hasAnyErrors && $errorBag->hasAny([$dotSyntax . '.*']);
+
+                                $attributesForOption = $getAttributesForOption($optionValue);
+                                /** @var \Illuminate\View\ComponentAttributeBag $checkContainerAttributesForOption */
+                                $checkContainerAttributesForOption = $attributesForOption->filterAndTransform('check-');
+                            @endphp
+                            <div {{ $checkContainerAttributesForOption
+                                ->class([
+                                    $checkClass,
+                                ]) }}>
+                                <input {{ $fieldAttributes
+                                    ->merge($attributesForOption->whereDoesntStartWith('check-')->getAttributes())
+                                    ->class([
+                                        'form-check-input',
+                                        'is-invalid' => $hasAnyErrors,
+                                    ])
+                                    ->merge([
+                                        'id' => $optionId,
+                                        'name' => $name,
+                                        'role' => $role,
+                                        'type' => $type,
+                                        'value' => $optionValue,
+                                    ]) }} @checked(ValueHelper::isActive($optionValue, $value)) @disabled($disabled) @readonly($readonly) @required($required)/>
+                                <label @class([
+                                    'form-check-label',
+                                ]) for="{{ $optionId }}">@if($allowHtml){!! $optionLabel !!}@else{{ $optionLabel }}@endif</label>
+                                @if($loop->last)
+                                    <x-bs::form.feedback name="{{ $name }}" :errorBag="$errorBag" :showSubErrors="true"/>
+                                @endif
+                            </div>
+                        @endforeach
+                    @if(!$checkContainerAttributes->isEmpty())
+                        </div>
+                    @endif
+                    @break
+                @case('range')
+                    <input {{ $fieldAttributes
+                        ->class([
+                            'form-range',
+                            'is-invalid' => $hasAnyErrors,
+                        ])
+                        ->merge([
+                            'id' => $id ?? $name,
+                            'name' => $name,
+                            'type' => $type,
+                            'value' => $value,
+                        ]) }} @disabled($disabled) @readonly($readonly) @required($required)/>
+                    @break
+                @case('select')
+                    <select {{ $attributes
+                        ->class([
+                            'form-select',
+                            'is-invalid' => $hasAnyErrors,
+                        ])
+                        ->merge([
+                            'id' => $id ?? $name,
+                            'name' => $name,
+                        ]) }} @disabled($disabled) @readonly($readonly) @required($required)>
+                        @foreach($options as $optionValue => $description)
+                            <option {{ $getAttributesForOption($optionValue)
+                                ->merge([
+                                    'value' => $optionValue,
+                                ]) }} @selected(ValueHelper::isActive($optionValue, $value))>{{ $description }}</option>
+                        @endforeach
+                    </select>
+                    @break
+                @case('textarea')
+                    <textarea {{ $fieldAttributes
+                        ->class([
+                            'form-control',
+                            'is-invalid' => $hasAnyErrors,
+                        ])
+                        ->merge([
+                            'id' => $id ?? $name,
+                            'name' => $name,
+                        ]) }} @disabled($disabled) @readonly($readonly) @required($required)>{{ $value }}</textarea>
+                    @break
+                @default
+                    <input {{ $fieldAttributes
+                        ->class([
+                            'form-control',
+                            'is-invalid' => $hasAnyErrors,
+                        ])
+                        ->merge([
+                            'id' => $id ?? $name,
+                            'name' => $name,
+                            'type' => $type,
+                            'value' => $value,
+                        ]) }} @disabled($disabled) @readonly($readonly) @required($required)/>
+            @endswitch
+            @isset($appendText){{-- avoid whitespace
+                --}}<label for="{{ $id ?? $name }}" {{ $appendText->attributes->class(['input-group-text']) }}>{{ $appendText }}</label>
+            @endisset
+            @if($showFeedback)
+                <x-bs::form.feedback name="{{ $name }}" :errorBag="$errorBag"/>
+            @endif
+        @if($hasInputGroupContainer)
+            </div>
+        @endif
+        @isset($hint)
+            <div {{ $hint->attributes
+                ->class([
+                    'form-text',
+                ])
+                ->merge([
+                    'id' => $hintId,
+                ]) }}>{{ $hint }}</div>
+        @endisset
+    </div>
+@endif

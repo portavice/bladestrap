@@ -219,6 +219,7 @@ The following [types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/
 - `datetime-local`*
 - `email`
 - `file`
+- `hidden` - ignores slots for label, hint and input group
 - `month`*
 - `number`
 - `password`
