@@ -44,6 +44,10 @@ composer require portavice/bladestrap
 
 Within a Laravel application, the package will automatically register itself.
 
+> [!NOTE]
+> If you only use parts of the Laravel framework (such as `illuminate/view`),
+> make sure to follow the instructions in the section on [usage without Laravel](#usage-without-laravel).
+
 ### Install Bootstrap
 Note that you need to [include the Bootstrap files](https://github.com/twbs/bootstrap#quick-start) on your own.
 1. If you haven't added Bootstrap as one of your dependencies, you can do so via [npm](https://www.npmjs.com/):
@@ -63,7 +67,8 @@ Note that you need to [include the Bootstrap files](https://github.com/twbs/boot
     <link rel="stylesheet" href="{{ mix('lib/bootstrap.min.css') }}">
     <script src="{{ mix('lib/bootstrap.bundle.min.js') }}"></script>
     ```
-You may need to adjust the steps above to your custom project configuration (e.g. if you want a [custom build](https://getbootstrap.com/docs/5.3/customize/sass/)).
+You may need to adjust the steps above to your custom project configuration.
+If you have a [custom Bootstrap build](https://getbootstrap.com/docs/5.3/customize/sass/) you are responsible to include the necessary parts of Bootstrap yourself.
 
 
 ### Configure Bladestrap
