@@ -368,6 +368,17 @@ which makes an [input group](https://getbootstrap.com/docs/5.3/forms/input-group
 </x-bs::form.field>
 ```
 
+By default, the appended/prepended text is wrapped within a `<label> class="input-group-text"` associated with the field.
+To avoid this, set `:container="false"` attribute on the slot which allows to define to add buttons for example:
+```HTML
+<x-bs::form.field name="file" type="file">
+    File
+    <x-slot:appendText>
+        <x-bs::button.link variant="primary" href="test.pdf">Download current file</x-bs::button.link>
+    </x-slot:appendText>
+</x-bs::form.field>'
+```
+
 #### Hints
 `<x-slot:hint>` can be used to add a [text](https://getbootstrap.com/docs/5.3/forms/form-control/#form-text) with custom hints (`.form-text`) below the field,
 which will be automatically referenced via `aria-describedby` by the input:
