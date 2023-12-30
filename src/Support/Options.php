@@ -93,7 +93,7 @@ class Options implements \IteratorAggregate
 
     /**
      * @param array<int|string,int|string> $array
-     * @param ?\Closure(<int|string>,int|string): ComponentAttributeBag $attributeProvider
+     * @param ?\Closure(int|string,int|string): ComponentAttributeBag $attributeProvider
      */
     public static function fromArray(
         array $array,

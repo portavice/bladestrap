@@ -125,7 +125,17 @@
             ])>
         @endif
             @isset($prependText)
-                <label for="{{ $id ?? $name }}" {{ $prependText->attributes->class(['input-group-text']) }}>{{ $prependText }}</label>
+                @if($prependText->attributes->get('container', true) === false)
+                    {{ $prependText }}
+                @else
+                    <label {{ $prependText->attributes
+                        ->class([
+                            'input-group-text',
+                        ])
+                        ->merge([
+                            'for' => $id ?? $name,
+                        ]) }}>{{ $prependText }}</label>
+                @endif
             @endisset
             @switch($type)
                 @case('checkbox')
@@ -241,8 +251,18 @@
                             'value' => $value,
                         ]) }} @disabled($disabled) @readonly($readonly) @required($required)/>
             @endswitch
-            @isset($appendText){{-- avoid whitespace
-                --}}<label for="{{ $id ?? $name }}" {{ $appendText->attributes->class(['input-group-text']) }}>{{ $appendText }}</label>
+            @isset($appendText)
+                @if($appendText->attributes->get('container', true) === false)
+                    {{ $appendText }}
+                @else
+                    <label {{ $appendText->attributes
+                        ->class([
+                            'input-group-text',
+                        ])
+                        ->merge([
+                            'for' => $id ?? $name,
+                        ]) }}>{{ $appendText }}</label>
+                @endif
             @endisset
             @if($showFeedback)
                 <x-bs::form.feedback name="{{ $name }}" :errorBag="$errorBag"/>

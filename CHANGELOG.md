@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+- Support input groups with without automatic wrapping into a `<label>` container
+
 ### Fixed
 - Layout of input groups with validation errors
 - Avoid any visible output for form fields of `type="hidden"`

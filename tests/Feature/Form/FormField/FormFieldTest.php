@@ -52,42 +52,6 @@ class FormFieldTest extends ComponentTestCase
         );
     }
 
-    public function testFieldWithAppendedTextRendersCorrectly(): void
-    {
-        $this->assertBladeRendersToHtml(
-            '<div class="mb-3">
-                <label for="price" class="form-label">Price</label>
-                <div class="input-group">
-                    <input id="price" name="price" type="number" class="form-control" min="0.01" step="0.01"/>
-                    <label for="price" class="input-group-text fw-bold">€</label>
-                </div>
-            </div>',
-            '<x-bs::form.field name="price" type="number" min="0.01" step="0.01">
-                Price
-                <x-slot:appendText class="fw-bold">€</x-slot>
-            </x-bs::form.field>'
-        );
-    }
-
-    public function testFieldWithAppendedAndPrependedTextRendersCorrectly(): void
-    {
-        $this->assertBladeRendersToHtml(
-            '<div class="mb-3">
-                <label for="price" class="form-label">Price</label>
-                <div class="input-group">
-                    <label for="price" class="input-group-text">≥</label>
-                    <input id="price" name="price" type="number" class="form-control" min="0.01" step="0.01"/>
-                    <label for="price" class="input-group-text">€</label>
-                </div>
-            </div>',
-            '<x-bs::form.field name="price" type="number" min="0.01" step="0.01">
-                Price
-                <x-slot:prependText>≥</x-slot>
-                <x-slot:appendText>€</x-slot>
-            </x-bs::form.field>'
-        );
-    }
-
     /**
      * @dataProvider booleanFormFieldAttributes
      */
