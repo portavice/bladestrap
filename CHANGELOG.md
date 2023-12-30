@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Layout of input groups with validation errors
+- Avoid any visible output for form fields of `type="hidden"`
 
 
 ## Version 1.0.0 (2023-11-22)
