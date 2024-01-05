@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+
+## Version 1.1.1 (2024-01-05)
+
 ### Fixed
 - Display of error messages for checkboxes and radios whose name is not an array
 - Make `Portavice\Bladestrap\Support\Options` countable to correct `$loop->last` in Blade
