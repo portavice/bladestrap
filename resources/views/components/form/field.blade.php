@@ -161,7 +161,7 @@
                         @foreach($options as $optionValue => $optionLabel)
                             @php
                                 $optionId = ($id ?? $name) . '-' . $optionValue;
-                                $hasAnyErrors = $hasAnyErrors && $errorBag->hasAny([$dotSyntax . '.*']);
+                                $hasAnyErrors = $hasAnyErrors || $errorBag->hasAny([$dotSyntax . '.*']);
 
                                 $attributesForOption = $getAttributesForOption($optionValue);
                                 /** @var \Illuminate\View\ComponentAttributeBag $checkContainerAttributesForOption */
