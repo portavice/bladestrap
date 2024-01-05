@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Display of error messages for checkboxes and radios whose name is not an array
 - Make `Portavice\Bladestrap\Support\Options` countable to correct `$loop->last` in Blade
   and display of error messages for checkboxes and radios
+- Set the correct value of form fields if the value was emptied or unchecked before submission with validation errors
+  (don't prefill with the previous value currently in the database, but with the empty one submitted)
 
 
 ## Version 1.1.0 (2023-12-30)

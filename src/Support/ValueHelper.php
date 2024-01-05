@@ -79,7 +79,7 @@ class ValueHelper
         }
 
         if (count($request->old(null, [])) > 0) {
-            $value = $request->old(self::nameToDotSyntax($name), $value);
+            $value = $request->old(self::nameToDotSyntax($name));
         }
 
         return self::castValue($value, $cast);
