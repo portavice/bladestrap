@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\View\ComponentAttributeBag;
 
-class Options implements \IteratorAggregate
+class Options implements \Countable, \IteratorAggregate
 {
     /**
      * @var array<int|string,ComponentAttributeBag>
@@ -42,6 +42,11 @@ class Options implements \IteratorAggregate
         }
 
         return $this;
+    }
+
+    public function count(): int
+    {
+        return count($this->options);
     }
 
     public function getAttributes(int|string $optionValue): ComponentAttributeBag
