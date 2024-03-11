@@ -1,13 +1,13 @@
 @props([
-    /** @var string $container */
     'container' => 'ul',
-
-    /** @var bool $flush */
     'flush' => false,
-
-    /** @var bool $horizontal */
     'horizontal' => false,
 ])
+@php
+    /** @var string $container */
+    /** @var bool $flush */
+    /** @var bool $horizontal */
+@endphp
 <{{ $container }} {{ $attributes
     ->class([
         $horizontal ? 'list-group list-group-horizontal' : 'list-group',

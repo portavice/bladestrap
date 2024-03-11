@@ -1,7 +1,9 @@
 @props([
-    /** @var bool $vertical */
     'vertical' => false,
 ])
+@php
+    /** @var bool $vertical */
+@endphp
 <div {{ $attributes
     ->class([
         $vertical ? 'btn-group-vertical' : 'btn-group',

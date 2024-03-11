@@ -1,20 +1,19 @@
 @props([
-    /** @var string $container */
     'container' => 'li',
-
-    /** @var bool $active */
     'active' => false,
-
-    /** @var bool $disabled */
     'disabled' => false,
-
+    'variant' => null,
+])
+@php
+    /** @var string $container */
+    /** @var bool $active */
+    /** @var bool $disabled */
     /**
      * @var ?string $variant
      * Possible values: primary, secondary, success, danger, warning, info, light, dark
      * and any custom variants defined via custom Bootstrap build.
      */
-    'variant' => null,
-])
+@endphp
 <{{ $container }} {{ $attributes
     ->class([
         'list-group-item',

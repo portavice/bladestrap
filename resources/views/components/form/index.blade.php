@@ -1,8 +1,9 @@
 @props([
-    /** @string $method */
     'method' => 'POST',
 ])
 @php
+    /** @string $method */
+
     $isDefaultMethod = in_array($method, ['GET', 'POST']);
 @endphp
 <form method="{{ $isDefaultMethod ? $method : 'POST' }}" {{ $attributes }}>

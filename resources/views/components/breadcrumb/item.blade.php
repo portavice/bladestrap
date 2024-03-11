@@ -1,8 +1,8 @@
 @props([
-    /** @var ?string $href */
     'href' => null,
 ])
 @php
+    /** @var ?string $href */
     $active = !isset($href) || \Portavice\Bladestrap\Support\ValueHelper::isUrl($href);
 @endphp
 <li {{ $attributes
