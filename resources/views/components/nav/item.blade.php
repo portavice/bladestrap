@@ -1,15 +1,15 @@
 @props([
-    /** @var bool $disabled */
+    'direction' => 'down',
     'disabled' => false,
-
+])
+@php
     /**
      * @var string $direction
      * Possible values: down, down-center, up, up-center, start, end
      * May be used only in combination with dropdown slot.
      */
-    'direction' => 'down',
-])
-@php
+    /** @var bool $disabled */
+
     /** @var \Illuminate\View\ComponentAttributeBag $attributes */
     $containerAttributes = $attributes->filterAndTransform('container-');
     $itemAttributes = $attributes->whereDoesntStartWith('container-');

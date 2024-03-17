@@ -1,16 +1,16 @@
 @props([
-    /** @var string $name */
     'name',
-
-    /** @var \Illuminate\Support\ViewErrorBag $errorBag */
     'errorBag' => $errors,
-
-    /** @var bool $showSubErrors */
     'showSubErrors' => false,
 ])
 @php
     use Portavice\Bladestrap\Support\ValueHelper;
 
+    /** @var string $name */
+    /** @var \Illuminate\Support\ViewErrorBag $errorBag */
+    /** @var bool $showSubErrors */
+
+    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
     $attributes = $attributes->class([
         'invalid-feedback',
     ]);

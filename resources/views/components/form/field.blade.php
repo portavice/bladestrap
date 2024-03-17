@@ -1,55 +1,45 @@
 @props([
-    /** @var ?string $id */
     'id' => null,
-
-    /** @var string $name */
     'name',
-
-    /** @var string $type */
     'type',
-
-    /**
-     * Only for checkbox, select, radio.
-     * @var iterable|Illuminate\Support\Collection|Options $options
-     */
     'options',
-
-    /**
-     * Only affects labels of options.
-     * @var bool $allowHtml
-     */
     'allowHtml' => false,
-
-    /** @var ?string $cast */
     'cast' => null,
-
-    /**
-     * The preset value, may be automatically overwritten by an old() value if old values are present.
-     * @var ?mixed $value
-     */
     'value' => null,
-
-    /**
-     * If enabled, value is extracted from the query parameter of the URL.
-     * @var bool $fromQuery
-     */
     'fromQuery' => false,
-
-    /** @var \Illuminate\Support\ViewErrorBag $errorBag */
     'errorBag' => $errors,
-
-    /** @var bool $disabled */
     'disabled' => false,
-
-    /** @var bool $readonly */
     'readonly' => false,
-
-    /** @var bool $required */
     'required' => false,
 ])
 @php
     use Portavice\Bladestrap\Support\Options;
     use Portavice\Bladestrap\Support\ValueHelper;
+
+    /** @var ?string $id */
+    /** @var string $name */
+    /** @var string $type */
+    /**
+     * Only for checkbox, select, radio.
+     * @var iterable|Illuminate\Support\Collection|Options $options
+     */
+    /**
+     * @var bool $allowHtml
+     * Only affects labels of options.
+     */
+    /** @var ?string $cast */
+    /**
+     * The preset value, may be automatically overwritten by an old() value if old values are present.
+     * @var ?mixed $value
+     */
+    /**
+     * @var bool $fromQuery
+     * If enabled, value is extracted from the query parameter of the URL.
+     */
+    /** @var \Illuminate\Support\ViewErrorBag $errorBag */
+    /** @var bool $disabled */
+    /** @var bool $readonly */
+    /** @var bool $required */
 
     /** @var \Illuminate\View\ComponentAttributeBag $attributes */
     /** @var \Illuminate\View\ComponentAttributeBag $containerAttributes */

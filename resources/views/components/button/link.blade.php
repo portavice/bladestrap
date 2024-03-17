@@ -1,14 +1,16 @@
 @props([
+    'variant' => 'primary',
+    'disabled' => false,
+])
+@php
     /**
      * @var string $variant
      * Possible values: primary, secondary, success, danger, warning, info, light, dark
      * and any custom variants defined via custom Bootstrap build.
      */
-    'variant' => 'primary',
-
     /** @var bool $disabled */
-    'disabled' => false,
-])
+    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
+@endphp
 <a {{ $attributes
     ->class([
         'btn',

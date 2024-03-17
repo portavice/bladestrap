@@ -1,14 +1,16 @@
 @props([
+    'variant' => 'info',
+    'dismissible' => false,
+])
+@php
     /**
      * @var string $variant
      * Possible values: primary, secondary, success, danger, warning, info, light, dark
      * and any custom variants defined via custom Bootstrap build.
      */
-    'variant' => 'info',
-
     /** @var bool $dismissible */
-    'dismissible' => false,
-])
+    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
+@endphp
 <div {{ $attributes
     ->class([
         'alert',

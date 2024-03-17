@@ -1,10 +1,12 @@
 @props([
-    /** @var string $container */
     'container' => 'ul',
-
-    /** @var bool $vertical */
     'vertical' => false,
 ])
+@php
+    /** @var string $container */
+    /** @var bool $vertical */
+    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
+@endphp
 <{{ $container }} {{ $attributes->class([
     'nav',
     'flex-column' => $vertical,

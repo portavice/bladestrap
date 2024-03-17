@@ -1,15 +1,15 @@
 @props([
+    'direction' => 'down',
+])
+@php
     /**
      * @var string $direction
      * Possible values: down, down-center, up, up-center, start, end
      */
-    'direction' => 'down',
-])
-@php
-    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
-    /** @var ?\Illuminate\View\ComponentSlot $dropdown */
-
     $containerClass = 'drop' . $direction;
+
+    /** @var ?\Illuminate\View\ComponentSlot $dropdown */
+    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
 @endphp
 <div @class($containerClass)>
     <x-bs::button :attributes="$attributes
