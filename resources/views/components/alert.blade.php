@@ -9,6 +9,7 @@
      * and any custom variants defined via custom Bootstrap build.
      */
     /** @var bool $dismissible */
+    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
 @endphp
 <div {{ $attributes
     ->class([

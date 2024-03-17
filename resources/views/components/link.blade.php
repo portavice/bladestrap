@@ -17,6 +17,7 @@
      * @var int|string|null $opacityHover
      * Possible values: 10, 25, 50, 75, 100
      */
+    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
 @endphp
 <a {{ $attributes
     ->class([

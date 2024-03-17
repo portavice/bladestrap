@@ -6,6 +6,8 @@
     /** @var bool $isSubItem */
     /** @var bool $subItems */
     $active = \Portavice\Bladestrap\Support\ValueHelper::isUrl($attributes->get('href'));
+
+    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
 @endphp
 <li>{{-- no whitespace
 --}}<a {{ $attributes

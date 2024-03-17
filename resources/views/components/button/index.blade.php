@@ -9,6 +9,7 @@
      * their outline-... variants, and any custom variants defined via custom Bootstrap build.
      */
     /** @var bool $disabled */
+    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
 @endphp
 <button {{ $attributes
     ->class([

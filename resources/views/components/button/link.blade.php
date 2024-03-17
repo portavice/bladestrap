@@ -9,6 +9,7 @@
      * and any custom variants defined via custom Bootstrap build.
      */
     /** @var bool $disabled */
+    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
 @endphp
 <a {{ $attributes
     ->class([

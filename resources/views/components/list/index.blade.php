@@ -7,6 +7,7 @@
     /** @var string $container */
     /** @var bool $flush */
     /** @var bool $horizontal */
+    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
 @endphp
 <{{ $container }} {{ $attributes
     ->class([

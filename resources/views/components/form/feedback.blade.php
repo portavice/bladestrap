@@ -10,6 +10,7 @@
     /** @var \Illuminate\Support\ViewErrorBag $errorBag */
     /** @var bool $showSubErrors */
 
+    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
     $attributes = $attributes->class([
         'invalid-feedback',
     ]);

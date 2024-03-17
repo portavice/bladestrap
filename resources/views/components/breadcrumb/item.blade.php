@@ -4,6 +4,8 @@
 @php
     /** @var ?string $href */
     $active = !isset($href) || \Portavice\Bladestrap\Support\ValueHelper::isUrl($href);
+
+    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
 @endphp
 <li {{ $attributes
     ->class([

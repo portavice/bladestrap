@@ -5,6 +5,7 @@
 @php
     /** @var string $container */
     /** @var bool $vertical */
+    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
 @endphp
 <{{ $container }} {{ $attributes->class([
     'nav',

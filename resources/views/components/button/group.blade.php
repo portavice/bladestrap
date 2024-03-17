@@ -3,6 +3,7 @@
 ])
 @php
     /** @var bool $vertical */
+    /** @var \Illuminate\View\ComponentAttributeBag $attributes */
 @endphp
 <div {{ $attributes
     ->class([
