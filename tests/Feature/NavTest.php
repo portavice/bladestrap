@@ -33,9 +33,19 @@ class NavTest extends ComponentTestCase
         $this->mockRequest('http://localhost/current-page');
         $this->assertBladeRendersToHtml(
             '<li class="nav-item">
-                <a aria-current="page"  class="nav-link active" href="http://localhost/current-page">Current Page</a>
+                <a aria-current="page" class="nav-link active" href="http://localhost/current-page">Current Page</a>
             </li>',
             $this->bladeView('<x-bs::nav.item href="http://localhost/current-page">Current Page</x-bs::nav.item>')
+        );
+    }
+
+    public function testDisabledNavItemRendersCorrectly(): void
+    {
+        $this->assertBladeRendersToHtml(
+            '<li class="nav-item">
+                <a aria-disabled="true" class="nav-link disabled" href="http://localhost/">Page</a>
+            </li>',
+            $this->bladeView('<x-bs::nav.item href="http://localhost/" :disabled="true">Page</x-bs::nav.item>')
         );
     }
 

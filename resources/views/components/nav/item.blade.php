@@ -37,12 +37,12 @@
         ->class([
             'nav-link',
             'active' => $active,
+            'disabled' => $disabled,
             'dropdown-toggle' => $hasDropdown,
         ])
         ->merge([
             'aria-current' => $active ? 'page' : null,
             'aria-disabled' => $disabled ? 'true' : null,
-            'disabled' => $disabled,
         ]) }}>{{ $slot }}</a>
     @if($hasDropdown)
         <ul {{ $dropdown->attributes
