@@ -83,7 +83,9 @@
     }
 
     // Override selected value and apply cast.
-    $value = ValueHelper::value($name, $value, $fromQuery, $cast);
+    if (!$disabled) {
+        $value = ValueHelper::value($name, $value, $fromQuery, $cast);
+    }
 
     $showFeedback = true;
 @endphp

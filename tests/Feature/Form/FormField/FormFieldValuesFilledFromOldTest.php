@@ -16,6 +16,21 @@ class FormFieldValuesFilledFromOldTest extends ComponentTestCase
         $this->assertBladeRendersToHtml($html, $this->bladeView($blade, $data));
     }
 
+    /**
+     * @dataProvider formDataProvider
+     */
+    public function testDisabledFormFieldHasValueEvenIfNotInOldValues(array $old): void
+    {
+        $this->mockOld($old);
+        $this->assertBladeRendersToHtml(
+            '<div class="mb-3">
+                <label for="count" class="form-label">Count</label>
+                <input id="count" name="count" type="number" value="42" class="form-control" disabled/>
+            </div>',
+            '<x-bs::form.field name="count" type="number" :disabled="true" value="42">Count</x-bs::form.field>'
+        );
+    }
+
     public static function formDataProvider(): array
     {
         return [
