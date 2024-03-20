@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Move PHPDoc comments outside of `@props` block
+- Display of disabled navigation items (`<x-bs::nav.item :disabled="true">`)
+- Set the value of disabled form fields even if the value is not contained in the old values
 
 
 ## Version 1.1.1 (2024-01-05)
