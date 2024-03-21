@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+- Components for [modals](https://getbootstrap.com/docs/5.3/components/modal/) and buttons opening a modal
+
 ### Fixed
 - Move PHPDoc comments outside of `@props` block
 - Display of disabled navigation items (`<x-bs::nav.item :disabled="true">`)
