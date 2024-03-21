@@ -21,7 +21,9 @@ for the [Bootstrap 5](https://getbootstrap.com/docs/) frontend framework.
   - [Badges](#badges)
   - [Breadcrumb](#breadcrumb)
   - [Buttons](#buttons)
-    - [Button groups and toolbars](#button-groups-and-toolbars)
+    - [Button groups](#button-groups)
+    - [Button toolbars](#button-toolbars)
+  - [Dropdowns](#dropdowns)
   - [Forms](#forms)
     - [Types of form fields](#types-of-form-fields)
     - [Options](#options)
@@ -142,7 +144,7 @@ Per default `btn-primary` is used, you can change that with the variant.
 To disable a button or link, just add `disabled="true"` which automatically adds the corresponding class 
 and `aria-disabled="true"` as recommended by the Bootstrap documentation.
 
-#### Button groups and toolbars
+#### Button groups
 Buttons can be [grouped](https://getbootstrap.com/docs/5.3/components/button-group/):
 ```HTML
 <x-bs::button.group>
@@ -151,6 +153,7 @@ Buttons can be [grouped](https://getbootstrap.com/docs/5.3/components/button-gro
 </x-bs::button.group>
 ```
 
+#### Button toolbars
 Button groups can be grouped into a [toolbar](https://getbootstrap.com/docs/5.3/components/button-group/#button-toolbar):
 ```HTML
 <x-bs:toolbar aria-label="Toolbar with two groups">
