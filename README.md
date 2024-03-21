@@ -32,6 +32,7 @@ for the [Bootstrap 5](https://getbootstrap.com/docs/) frontend framework.
     - [Error messages](#error-messages)
   - [Links](#links)
   - [List groups](#list-groups)
+  - [Modals](#modals)
   - [Navigation](#navigation) 
 - [Usage without Laravel](#usage-without-laravel)
 
@@ -443,6 +444,31 @@ Items can be added via `<x-bs::list.item>`:
 ```
 `:active="true"` highlights the [active item](https://getbootstrap.com/docs/5.3/components/list-group/#active-items), 
 `:disabled="true"` makes it appear [disabled](https://getbootstrap.com/docs/5.3/components/list-group/#disabled-items).
+
+### Modals
+[Modals](https://getbootstrap.com/docs/5.3/components/modal/) can be created via `<x-bs::modal>` with optional slots for title and footer.
+Both slots accept additional classes and other attributes.
+If you don't want a `<h1>` container for the title, change it via `container="h2"` etc.
+```HTML
+<x-bs::modal.button modal="my-modal">Open modal</x-bs::modal.button>
+<x-bs::modal id="my-modal">
+    <x-slot:title>My modal title</x-slot:title>
+    <x-slot:footer>
+        <x-bs::button>Test</x-bs::button>
+    </x-slot:footer>
+</x-bs::modal>
+```
+`<x-bs::modal>` supports the following optional attributes:
+- `centered` to center the modal vertically (defaults to `false`)
+- `fade` for the fade effect when opening the modal (defaults to `true`)
+- `fullScreen` to force fullscreen (defaults to `false`, pass `true` to always enforce full screen or `sm` to enforce for sizes below the sm breakpoint etc.), 
+- `scrollable` to enable a vertical scrollbar for long dialog content (defaults to `false`)
+- `staticBackdrop`' to enforce that clicking outside of it does not close the modal (defaults to `false`)
+- `closeButton` sets the variant of the close button in the modal footer (defaults to `secondary`, `false` to disable the close button),
+- `closeButtonTitle` for the title of the close button (defaults to "Close")
+
+A `<x-bs::modal.button modal="my-modal">` opens the modal with the ID `my-modal`.
+You may pass any additional attributes as known from [`<x-bs::button>`](#buttons).
 
 ### Navigation
 `<x-bs::nav>` creates a [nav](https://getbootstrap.com/docs/5.3/components/navs-tabs/) container, use `container="ol"` to change the container element from the default `<ul>` to `<ol>`.
