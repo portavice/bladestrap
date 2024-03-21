@@ -13,8 +13,8 @@
     $labelId = $id . 'Label';
     /** @var bool $centered */
     /** @var bool $fade */
-    /** @var bool $scrollable */
     /** @var bool|string $fullScreen */
+    /** @var bool $scrollable */
     /** @var bool $staticBackdrop */
     /** @var string|bool $closeButton */
     $closeButton = $closeButton === true ? 'secondary' : $closeButton;
@@ -22,8 +22,7 @@
     /** @var string $closeButtonTitle */
     /** @var \Illuminate\View\ComponentAttributeBag $attributes */
     /** @var ?\Illuminate\View\ComponentSlot $title */
-    /** @var ?\Illuminate\View\ComponentSlot $closeButton */
-    /** @var ?\Illuminate\View\ComponentSlot $action */
+    /** @var ?\Illuminate\View\ComponentSlot $footer */
 @endphp
 <div {{ $attributes
     ->class([
@@ -70,15 +69,15 @@
                 $footer = $footer ?? new \Illuminate\View\ComponentSlot();
             @endphp
             <div {{ $footer->attributes
-                    ->class([
-                        'modal-footer',
-                    ]) }}>
+                ->class([
+                    'modal-footer',
+                ]) }}>
                 @if($showCloseButtonInFooter)
                     <x-bs::button :variant="$closeButton" {{ $attributes
-                                ->merge([
-                                    'type' => 'button',
-                                    'data-bs-dismiss' => 'modal',
-                                ]) }}>{{ $closeButtonTitle }}</x-bs::button>
+                        ->merge([
+                            'type' => 'button',
+                            'data-bs-dismiss' => 'modal',
+                        ]) }}>{{ $closeButtonTitle }}</x-bs::button>
                 @endif{{--
                     --}}{{ $footer }}</div>
         @endif
