@@ -17,15 +17,35 @@ class ValueHelperTest extends TestCase
         $this->assertEquals('names.1', ValueHelper::nameToDotSyntax('names[1][]'));
     }
 
-    public function testCastValue(): void
+    public function testCastValueToBool(): void
     {
-        $this->assertEquals(1, ValueHelper::castValue(1, 'integer'));
-        $this->assertEquals(1, ValueHelper::castValue('1', 'integer'));
-
         $this->assertTrue(ValueHelper::castValue(1, 'bool'));
         $this->assertTrue(ValueHelper::castValue('1', 'bool'));
         $this->assertFalse(ValueHelper::castValue(0, 'bool'));
         $this->assertFalse(ValueHelper::castValue('0', 'bool'));
+
+        $this->assertEquals([true, true], ValueHelper::castValue([1, 1], 'bool'));
+        $this->assertEquals([true, false], ValueHelper::castValue(['1', '0'], 'bool'));
+    }
+
+    public function testCastValueToInteger(): void
+    {
+        $this->assertEquals(1, ValueHelper::castValue(1, 'integer'));
+        $this->assertEquals(1, ValueHelper::castValue('1', 'integer'));
+
+        $this->assertEquals([1, 42], ValueHelper::castValue([1, 42], 'integer'));
+        $this->assertEquals([1, 42], ValueHelper::castValue(['1', '42'], 'integer'));
+    }
+
+    public function testCastValueWithClosure(): void
+    {
+        $cast = static fn ($v) => in_array($v, ['+', '-', '*'], true) ? $v : (int) $v;
+
+        $this->assertEquals('+', ValueHelper::castValue('+', $cast));
+        $this->assertEquals(42, ValueHelper::castValue('42', $cast));
+
+        $this->assertEquals(['*', 42], ValueHelper::castValue(['*', 42], $cast));
+        $this->assertEquals(['-', 42], ValueHelper::castValue(['-', '42'], $cast));
     }
 
     public function testHasDefault(): void
