@@ -66,7 +66,7 @@ class ValueHelper
         return $url === self::getRequest()->fullUrl();
     }
 
-    public static function value(string $name, mixed $value, bool $fromQuery, ?string $cast): mixed
+    public static function value(string $name, mixed $value, bool $fromQuery, \Closure|string|null $cast): mixed
     {
         $dotSyntax = self::nameToDotSyntax($name);
         $request = self::getRequest();
@@ -85,7 +85,7 @@ class ValueHelper
         return self::castValue($value, $cast);
     }
 
-    public static function castValue(mixed $value, ?string $cast): mixed
+    public static function castValue(mixed $value, \Closure|string|null $cast): mixed
     {
         if ($value === null) {
             return null;
@@ -96,6 +96,10 @@ class ValueHelper
                 static fn ($valueItem) => self::castValue($valueItem, $cast),
                 $value
             );
+        }
+
+        if ($cast instanceof \Closure) {
+            return $cast($value);
         }
 
         return match ($cast) {
