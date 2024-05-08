@@ -102,6 +102,31 @@ class Options implements \Countable, \IteratorAggregate
         return $this;
     }
 
+    public function sortAlphabetically(): self
+    {
+        $array = $this->options;
+        asort($array, SORT_NATURAL | SORT_FLAG_CASE);
+        $this->options = $array;
+
+        return $this;
+    }
+
+    public function sortAlphabeticallyByKeys(): self
+    {
+        $array = $this->options;
+        ksort($array, SORT_NATURAL | SORT_FLAG_CASE);
+        $this->options = $array;
+
+        return $this;
+    }
+
+    public function sortBy(callable $callback): self
+    {
+        $this->options = Arr::sort($this->options, $callback);
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         return $this->options;

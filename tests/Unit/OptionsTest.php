@@ -320,6 +320,68 @@ class OptionsTest extends TestCase
         ], $options->getAttributes(1)->getAttributes());
     }
 
+    public function testSortAlphabetically(): void
+    {
+        $this->assertArrayEquals([
+            5 => 'five',
+            4 => 'Four',
+            1 => 'One',
+            7 => 'Seven',
+            6 => 'six',
+            3 => 'Three',
+            2 => 'Two',
+        ], Options::fromArray($this->createArray())->sortAlphabetically()->toArray());
+    }
+
+    public function testSortAlphabeticallyByKey(): void
+    {
+        $this->assertArrayEquals([
+            1 => 'One',
+            2 => 'Two',
+            3 => 'Three',
+            4 => 'Four',
+            5 => 'five',
+            6 => 'six',
+            7 => 'Seven',
+        ], Options::fromArray($this->createArray())->sortAlphabeticallyByKeys()->toArray());
+    }
+
+    public function testSortBy(): void
+    {
+        $this->assertArrayEquals([
+            7 => 'Seven',
+            3 => 'Three',
+            5 => 'five',
+            6 => 'six',
+            1 => 'One',
+            4 => 'Four',
+            2 => 'Two',
+        ], Options::fromArray($this->createArray())->sortBy(static fn ($v) => substr($v, 1))->toArray());
+
+        $this->assertArrayEquals([
+            7 => 'Seven',
+            6 => 'six',
+            5 => 'five',
+            4 => 'Four',
+            3 => 'Three',
+            2 => 'Two',
+            1 => 'One',
+        ], Options::fromArray($this->createArray())->sortBy(static fn ($v, $k) => -$k)->toArray());
+    }
+
+    private function createArray(): array
+    {
+        return [
+            3 => 'Three',
+            4 => 'Four',
+            5 => 'five',
+            6 => 'six',
+            7 => 'Seven',
+            1 => 'One',
+            2 => 'Two',
+        ];
+    }
+
     private function assertArrayEquals(array $expected, array $actual): void
     {
         $this->assertEquals(

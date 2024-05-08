@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Support custom casts for form field values via `Closure`
 - Prepend/append multiple options at once
+- Sort options alphabetically or by user defined function
 
 
 ## Version 1.2.0 (2024-03-21)
