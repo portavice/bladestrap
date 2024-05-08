@@ -20,7 +20,7 @@ class OptionsTest extends TestCase
     public function testFromArray(): void
     {
         $options = Options::fromArray(self::$testIntArray);
-        $this->assertEquals(self::$testIntArray, $options->toArray());
+        $this->assertArrayEquals(self::$testIntArray, $options->toArray());
         $this->assertEquals(new ComponentAttributeBag([]), $options->getAttributes(1));
     }
 
@@ -33,7 +33,7 @@ class OptionsTest extends TestCase
                 'data-value2' => $k . '_' . $v,
             ])
         );
-        $this->assertEquals(self::$testIntArray, $options->toArray());
+        $this->assertArrayEquals(self::$testIntArray, $options->toArray());
         $this->assertEquals(new ComponentAttributeBag([
             'data-value1' => 3,
             'data-value2' => '1_One',
@@ -45,7 +45,7 @@ class OptionsTest extends TestCase
      */
     public function testFromEnumWithInt(array $expectedOptions, Options $options): void
     {
-        $this->assertEquals($expectedOptions, $options->toArray());
+        $this->assertArrayEquals($expectedOptions, $options->toArray());
         $this->assertEquals('int', $options->getCast());
     }
 
@@ -74,15 +74,8 @@ class OptionsTest extends TestCase
      */
     public function testFromEnumWithString(array $expectedOptions, Options $options): void
     {
-        $this->assertEquals($expectedOptions, $options->toArray());
+        $this->assertArrayEquals($expectedOptions, $options->toArray());
         $this->assertNull($options->getCast());
-    }
-
-    public function testFromEnumWithModelFails(): void
-    {
-        $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Enum expected, but '. TestModel::class. ' found');
-        Options::fromEnum(TestModel::class);
     }
 
     public static function enumStringSamples(): array
@@ -91,6 +84,13 @@ class OptionsTest extends TestCase
             [['Test1' => 'Test1', 'Test2' => 'Test2'], Options::fromEnum(TestStringEnum::class)],
             [['Test1' => '1', 'Test2' => '2'], Options::fromEnum(TestStringEnum::class, 'getSuffix')],
         ];
+    }
+
+    public function testFromEnumWithModelFails(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Enum expected, but '. TestModel::class. ' found');
+        Options::fromEnum(TestModel::class);
     }
 
     /**
@@ -185,7 +185,7 @@ class OptionsTest extends TestCase
         $options = Options::one('I accept.', [
             'data-value' => 'accepted',
         ]);
-        $this->assertEquals([1 => 'I accept.'], $options->toArray());
+        $this->assertArrayEquals([1 => 'I accept.'], $options->toArray());
         $this->assertEquals(new ComponentAttributeBag(['data-value' => 'accepted']), $options->getAttributes(1));
     }
 
@@ -205,20 +205,54 @@ class OptionsTest extends TestCase
         $options = Options::fromArray(self::$testIntArray);
         $options->append('all', '');
 
-        $this->assertEquals([
+        $this->assertArrayEquals([
             1 => 'One',
             2 => 'Two',
             '' => 'all',
         ], $options->toArray());
 
         $options->append('Three', 3, ['class' => 'test']);
-        $this->assertEquals([
-            '' => 'all',
+        $this->assertArrayEquals([
             1 => 'One',
             2 => 'Two',
+            '' => 'all',
             3 => 'Three',
         ], $options->toArray());
         $this->assertEquals(new ComponentAttributeBag(['class' => 'test']), $options->getAttributes(3));
+    }
+
+    public function testAppendManyAttributes(): void
+    {
+        $options = Options::fromArray(self::$testIntArray)
+            ->appendMany([
+                5 => 'Five',
+                6 => 'Six',
+                7 => 'Seven',
+            ]);
+        $this->assertArrayEquals([
+            1 => 'One',
+            2 => 'Two',
+            5 => 'Five',
+            6 => 'Six',
+            7 => 'Seven',
+        ], $options->toArray());
+        $this->assertEquals(new ComponentAttributeBag(), $options->getAttributes(5));
+
+        $options->appendMany([
+            3 => 'Three',
+            4 => 'Four',
+        ], static fn ($key, $label) => ['data-square' => $key * $key]);
+        $this->assertArrayEquals([
+            1 => 'One',
+            2 => 'Two',
+            5 => 'Five',
+            6 => 'Six',
+            7 => 'Seven',
+            3 => 'Three',
+            4 => 'Four',
+        ], $options->toArray());
+        $this->assertEquals(new ComponentAttributeBag(['data-square' => 9]), $options->getAttributes(3));
+        $this->assertEquals(new ComponentAttributeBag(['data-square' => 16]), $options->getAttributes(4));
     }
 
     public function testPrependAttributes(): void
@@ -226,20 +260,54 @@ class OptionsTest extends TestCase
         $options = Options::fromArray(self::$testIntArray)
             ->prepend('all', '');
 
-        $this->assertEquals([
+        $this->assertArrayEquals([
             '' => 'all',
             1 => 'One',
             2 => 'Two',
         ], $options->toArray());
 
         $options->prepend('Three', 3, ['class' => 'test']);
-        $this->assertEquals([
+        $this->assertArrayEquals([
             3 => 'Three',
             '' => 'all',
             1 => 'One',
             2 => 'Two',
         ], $options->toArray());
         $this->assertEquals(new ComponentAttributeBag(['class' => 'test']), $options->getAttributes(3));
+    }
+
+    public function testPrependManyAttributes(): void
+    {
+        $options = Options::fromArray(self::$testIntArray)
+            ->prependMany([
+                5 => 'Five',
+                6 => 'Six',
+                7 => 'Seven',
+            ]);
+        $this->assertArrayEquals([
+            5 => 'Five',
+            6 => 'Six',
+            7 => 'Seven',
+            1 => 'One',
+            2 => 'Two',
+        ], $options->toArray());
+        $this->assertEquals(new ComponentAttributeBag(), $options->getAttributes(5));
+
+        $options->prependMany([
+            3 => 'Three',
+            4 => 'Four',
+        ], static fn ($key, $label) => ['data-square' => $key * $key]);
+        $this->assertArrayEquals([
+            3 => 'Three',
+            4 => 'Four',
+            5 => 'Five',
+            6 => 'Six',
+            7 => 'Seven',
+            1 => 'One',
+            2 => 'Two',
+        ], $options->toArray());
+        $this->assertEquals(new ComponentAttributeBag(['data-square' => 9]), $options->getAttributes(3));
+        $this->assertEquals(new ComponentAttributeBag(['data-square' => 16]), $options->getAttributes(4));
     }
 
     public function testSetAttributes(): void
@@ -250,5 +318,14 @@ class OptionsTest extends TestCase
         $this->assertEquals([
             'data-value2' => 43,
         ], $options->getAttributes(1)->getAttributes());
+    }
+
+    private function assertArrayEquals(array $expected, array $actual): void
+    {
+        $this->assertEquals(
+            json_encode($expected, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR),
+            json_encode($actual, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR),
+            'Failed asserting that two arrays are equal.'
+        );
     }
 }

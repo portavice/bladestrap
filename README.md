@@ -324,8 +324,12 @@ Additional options can be prepended/appended to an `Options`:
 use Portavice\Bladestrap\Support\Options;
 
 $options = Options::fromModels(User::query()->get(), 'name')
-    ->prepend('all', '') // adds an option with empty value at the start
-    ->append('last', 'last'); // adds at the end
+    ->prepend('all', '') // adds an option with empty value before first option
+    ->append('last', 'last') // adds an option after the last option
+    ->prependMany([ // adds options before the first option
+        '1' => 'first prepended option',
+        '2' => 'second prepended option',
+    ]);
 ```
 
 **Radio** buttons (allows to select one of multiple values):

@@ -44,6 +44,15 @@ class Options implements \Countable, \IteratorAggregate
         return $this;
     }
 
+    public function appendMany(array $labelsByOptionValue, \Closure|null $attributeProvider = null): self
+    {
+        foreach ($labelsByOptionValue as $optionValue => $label) {
+            $this->append($label, $optionValue, isset($attributeProvider) ? $attributeProvider($optionValue, $label) : null);
+        }
+
+        return $this;
+    }
+
     public function count(): int
     {
         return count($this->options);
@@ -72,6 +81,15 @@ class Options implements \Countable, \IteratorAggregate
         $this->options = [$optionValue => $label] + $this->options;
         if ($attributes !== null) {
             $this->setAttributes($optionValue, $attributes);
+        }
+
+        return $this;
+    }
+
+    public function prependMany(array $labelsByOptionValue, \Closure|null $attributeProvider = null): self
+    {
+        foreach (array_reverse($labelsByOptionValue, true) as $optionValue => $label) {
+            $this->prepend($label, $optionValue, isset($attributeProvider) ? $attributeProvider($optionValue, $label) : null);
         }
 
         return $this;
