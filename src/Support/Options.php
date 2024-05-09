@@ -44,6 +44,15 @@ class Options implements \Countable, \IteratorAggregate
         return $this;
     }
 
+    public function appendMany(array $labelsByOptionValue, \Closure|null $attributeProvider = null): self
+    {
+        foreach ($labelsByOptionValue as $optionValue => $label) {
+            $this->append($label, $optionValue, isset($attributeProvider) ? $attributeProvider($optionValue, $label) : null);
+        }
+
+        return $this;
+    }
+
     public function count(): int
     {
         return count($this->options);
@@ -77,9 +86,43 @@ class Options implements \Countable, \IteratorAggregate
         return $this;
     }
 
+    public function prependMany(array $labelsByOptionValue, \Closure|null $attributeProvider = null): self
+    {
+        foreach (array_reverse($labelsByOptionValue, true) as $optionValue => $label) {
+            $this->prepend($label, $optionValue, isset($attributeProvider) ? $attributeProvider($optionValue, $label) : null);
+        }
+
+        return $this;
+    }
+
     public function setAttributes(int|string $optionValue, array|ComponentAttributeBag $attributes): self
     {
         $this->attributesForOption[$optionValue] = self::wrapAttributes($attributes);
+
+        return $this;
+    }
+
+    public function sortAlphabetically(): self
+    {
+        $array = $this->options;
+        asort($array, SORT_NATURAL | SORT_FLAG_CASE);
+        $this->options = $array;
+
+        return $this;
+    }
+
+    public function sortAlphabeticallyByKeys(): self
+    {
+        $array = $this->options;
+        ksort($array, SORT_NATURAL | SORT_FLAG_CASE);
+        $this->options = $array;
+
+        return $this;
+    }
+
+    public function sortBy(callable $callback): self
+    {
+        $this->options = Arr::sort($this->options, $callback);
 
         return $this;
     }
