@@ -325,11 +325,11 @@ use Portavice\Bladestrap\Support\Options;
 
 $options = Options::fromModels(User::query()->get(), 'name')
     ->sortAlphabetically() // call sort for current options
-    ->prepend('all', '') // adds an option with empty value before first option
-    ->append('last', 'last') // adds an option after the last option
-    ->prependMany([ // adds options before the first option
-        '1' => 'first prepended option',
-        '2' => 'second prepended option',
+    ->prepend('all', '') // adds an option with an empty value before first option
+    ->append('label for last option', 'value') // adds an option after the last option
+    ->prependMany([ // adds options before the first option (value => label)
+        'value-1' => 'first prepended option',
+        'value-2' => 'second prepended option',
     ]);
 ```
 
