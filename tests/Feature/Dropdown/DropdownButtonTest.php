@@ -2,6 +2,7 @@
 
 namespace Portavice\Bladestrap\Tests\Feature\Dropdown;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 use Portavice\Bladestrap\Tests\Traits\TestsVariants;
 
@@ -9,9 +10,7 @@ class DropdownButtonTest extends ComponentTestCase
 {
     use TestsVariants;
 
-    /**
-     * @dataProvider variants
-     */
+    #[DataProvider('variants')]
     public function testDropdownButtonRendersCorrectly(string $buttonClass, ?string $variant): void
     {
         $this->assertBladeRendersToHtml(
@@ -63,9 +62,7 @@ class DropdownButtonTest extends ComponentTestCase
         );
     }
 
-    /**
-     * @dataProvider directions
-     */
+    #[DataProvider('directions')]
     public function testDropdownButtonWithDirectionRendersCorrectly(string $containerClass, ?string $direction): void
     {
         $this->assertBladeRendersToHtml(

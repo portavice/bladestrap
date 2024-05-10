@@ -4,6 +4,7 @@ namespace Portavice\Bladestrap\Tests\Unit;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\ComponentAttributeBag;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Portavice\Bladestrap\Support\Options;
 use Portavice\Bladestrap\Tests\SampleData\TestIntEnum;
@@ -40,9 +41,7 @@ class OptionsTest extends TestCase
         ]), $options->getAttributes(1));
     }
 
-    /**
-     * @dataProvider enumIntSamples
-     */
+    #[DataProvider('enumIntSamples')]
     public function testFromEnumWithInt(array $expectedOptions, Options $options): void
     {
         $this->assertArrayEquals($expectedOptions, $options->toArray());
@@ -69,9 +68,7 @@ class OptionsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider enumStringSamples
-     */
+    #[DataProvider('enumStringSamples')]
     public function testFromEnumWithString(array $expectedOptions, Options $options): void
     {
         $this->assertArrayEquals($expectedOptions, $options->toArray());
@@ -93,9 +90,7 @@ class OptionsTest extends TestCase
         Options::fromEnum(TestModel::class);
     }
 
-    /**
-     * @dataProvider modelProvider
-     */
+    #[DataProvider('modelProvider')]
     public function testFromModels(array|Collection $testModels, array $testModelsIdToName): void
     {
         // With column.
@@ -122,9 +117,7 @@ class OptionsTest extends TestCase
         ], $options->toArray());
     }
 
-    /**
-     * @dataProvider modelProvider
-     */
+    #[DataProvider('modelProvider')]
     public function testFromModelsWithAttributes(array|Collection $testModels, array $testModelsIdToName): void
     {
         $options = Options::fromModels($testModels, 'name', static function (TestModel $model) {

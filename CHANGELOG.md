@@ -8,11 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+
+## Version 1.3.0 (2024-05-10)
+
 ### Added
 - Support custom casts for form field values via `Closure`
 - Prepend/append multiple options at once
 - Sort options alphabetically or by user defined function
 - Support Laravel 11
+
+### Changed
+- Migrate PHPUnit tests to use PHP attributes instead of comments, support PHPUnit 11
 
 
 ## Version 1.2.0 (2024-03-21)

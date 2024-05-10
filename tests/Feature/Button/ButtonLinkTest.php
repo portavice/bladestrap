@@ -2,6 +2,7 @@
 
 namespace Portavice\Bladestrap\Tests\Feature\Button;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 use Portavice\Bladestrap\Tests\Traits\TestsVariants;
 
@@ -9,9 +10,7 @@ class ButtonLinkTest extends ComponentTestCase
 {
     use TestsVariants;
 
-    /**
-     * @dataProvider variants
-     */
+    #[DataProvider('variants')]
     public function testLinksRenderCorrectly(string $buttonClass, ?string $variant): void
     {
         $this->assertBladeRendersToHtml(
@@ -25,9 +24,7 @@ class ButtonLinkTest extends ComponentTestCase
         );
     }
 
-    /**
-     * @dataProvider variants
-     */
+    #[DataProvider('variants')]
     public function testDisabledLinksRenderCorrectly(string $buttonClass, ?string $variant): void
     {
         /*

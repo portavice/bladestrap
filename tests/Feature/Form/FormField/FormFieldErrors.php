@@ -2,14 +2,13 @@
 
 namespace Portavice\Bladestrap\Tests\Feature\Form\FormField;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Support\Options;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 
 class FormFieldErrors extends ComponentTestCase
 {
-    /**
-     * @dataProvider allTypes
-     */
+    #[DataProvider('allTypes')]
     public function testFormFieldShowsErrors(string $type, string $output): void
     {
         $outputWithErrorMessage = str_replace(
@@ -89,9 +88,7 @@ class FormFieldErrors extends ComponentTestCase
         ];
     }
 
-    /**
-     * @dataProvider typesSupportingInputGroups
-     */
+    #[DataProvider('typesSupportingInputGroups')]
     public function testFormFieldWithInputGroupShowsErrors(string $type, string $output): void
     {
         $this->assertBladeRendersToHtml(

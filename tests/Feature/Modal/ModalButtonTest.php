@@ -2,6 +2,7 @@
 
 namespace Feature\Modal;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 use Portavice\Bladestrap\Tests\Traits\TestsVariants;
 
@@ -9,9 +10,7 @@ class ModalButtonTest extends ComponentTestCase
 {
     use TestsVariants;
 
-    /**
-     * @dataProvider variants
-     */
+    #[DataProvider('variants')]
     public function testModalButtonRendersCorrectly(string $buttonClass, ?string $variant): void
     {
         $this->assertBladeRendersToHtml(

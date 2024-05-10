@@ -2,6 +2,7 @@
 
 namespace Portavice\Bladestrap\Tests\Feature\Form\FormField;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 use Portavice\Bladestrap\Tests\Traits\TestsBooleanAttributes;
 
@@ -52,9 +53,7 @@ class FormFieldTest extends ComponentTestCase
         );
     }
 
-    /**
-     * @dataProvider booleanFormFieldAttributes
-     */
+    #[DataProvider('booleanFormFieldAttributes')]
     public function testFormFieldWithBooleanAttributesRendersCorrectly(string $html, string $blade): void
     {
         $this->assertBladeRendersToHtml(
