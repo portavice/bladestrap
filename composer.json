@@ -22,15 +22,15 @@
     },
     "require": {
         "php": "^8.1",
-        "illuminate/console": "^10.24",
-        "illuminate/http": "^10.24",
-        "illuminate/support": "^10.24",
-        "illuminate/view": "^10.24"
+        "illuminate/console": "^10.24|^11.0",
+        "illuminate/http": "^10.24|^11.0",
+        "illuminate/support": "^10.24|^11.0",
+        "illuminate/view": "^10.24|^11.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^8.15",
+        "orchestra/testbench": "^8.22|^9.0",
         "phpunit/phpunit": "^10.4",
-        "portavice/laravel-pint-config": "2.0"
+        "portavice/laravel-pint-config": "^2.0"
     },
     "config": {
         "sort-packages": true
