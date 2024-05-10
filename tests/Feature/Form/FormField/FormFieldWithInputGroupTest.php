@@ -2,13 +2,12 @@
 
 namespace Feature\Form\FormField;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 
 class FormFieldWithInputGroupTest extends ComponentTestCase
 {
-    /**
-     * @dataProvider inputGroups
-     */
+    #[DataProvider('inputGroups')]
     public function testFieldWithInputGroupFromTextCorrectly(string $slots, string $append, string $prepend): void
     {
         $this->assertBladeRendersToHtml(
@@ -49,9 +48,7 @@ class FormFieldWithInputGroupTest extends ComponentTestCase
         ];
     }
 
-    /**
-     * @dataProvider inputGroupWithoutContainerForSlot
-     */
+    #[DataProvider('inputGroupWithoutContainerForSlot')]
     public function testFieldWithInputGroupContainer(string $slot, string $append, string $prepend): void
     {
         $this->assertBladeRendersToHtml(

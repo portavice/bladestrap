@@ -3,22 +3,19 @@
 namespace Portavice\Bladestrap\Tests\Feature\Form\FormField;
 
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 
 class FormFieldValuesFilledFromOldTest extends ComponentTestCase
 {
-    /**
-     * @dataProvider formDataProvider
-     */
+    #[DataProvider('formDataProvider')]
     public function testFormFieldFilledWithOldValue(array $old, string $html, string $blade, array $data): void
     {
         $this->mockOld($old);
         $this->assertBladeRendersToHtml($html, $this->bladeView($blade, $data));
     }
 
-    /**
-     * @dataProvider formDataProvider
-     */
+    #[DataProvider('formDataProvider')]
     public function testDisabledFormFieldHasValueEvenIfNotInOldValues(array $old): void
     {
         $this->mockOld($old);

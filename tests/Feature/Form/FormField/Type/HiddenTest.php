@@ -2,13 +2,12 @@
 
 namespace Feature\Form\FormField\Type;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 
 class HiddenTest extends ComponentTestCase
 {
-    /**
-     * @dataProvider hiddenFields
-     */
+    #[DataProvider('hiddenFields')]
     public function testHiddenInputRendersCorrectly(string $blade): void
     {
         $this->assertBladeRendersToHtml(

@@ -2,13 +2,12 @@
 
 namespace Feature\Modal;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 
 class ModalTest extends ComponentTestCase
 {
-    /**
-     * @dataProvider modalOptions
-     */
+    #[DataProvider('modalOptions')]
     public function testModalRendersOptionsCorrectly(string $blade, string $modalAttributes, string $modalDialogClasses): void
     {
         $this->assertBladeRendersToHtml(
@@ -41,9 +40,7 @@ class ModalTest extends ComponentTestCase
         ];
     }
 
-    /**
-     * @dataProvider fullScreenOptions
-     */
+    #[DataProvider('fullScreenOptions')]
     public function testModalRendersFullScreenOptionsCorrectly(bool|string $fullScreen, string $modalDialogClass): void
     {
         $this->assertBladeRendersToHtml(
@@ -78,9 +75,7 @@ class ModalTest extends ComponentTestCase
         ];
     }
 
-    /**
-     * @dataProvider closeButtonOptions
-     */
+    #[DataProvider('closeButtonOptions')]
     public function testModalRendersCloseButtonCorrectly(string $closeButtonAttributes, string $footer): void
     {
         $this->assertBladeRendersToHtml(
@@ -109,9 +104,7 @@ class ModalTest extends ComponentTestCase
         ];
     }
 
-    /**
-     * @dataProvider slots
-     */
+    #[DataProvider('slots')]
     public function testModalRendersSlotsCorrectly(string $slots, string $header, string $footer): void
     {
         $this->assertBladeRendersToHtml(

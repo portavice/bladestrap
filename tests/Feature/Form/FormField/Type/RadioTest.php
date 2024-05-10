@@ -2,6 +2,7 @@
 
 namespace Portavice\Bladestrap\Tests\Feature\Form\FormField\Type;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Support\Options;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 use Portavice\Bladestrap\Tests\Traits\TestsBooleanAttributes;
@@ -88,9 +89,7 @@ class RadioTest extends ComponentTestCase
         );
     }
 
-    /**
-     * @dataProvider booleanFormFieldAttributes
-     */
+    #[DataProvider('booleanFormFieldAttributes')]
     public function testRadioWithBooleanAttributesRendersCorrectly(string $html, string $blade): void
     {
         $this->assertBladeRendersToHtml(

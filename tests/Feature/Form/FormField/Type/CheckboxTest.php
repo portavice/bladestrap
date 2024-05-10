@@ -2,6 +2,7 @@
 
 namespace Portavice\Bladestrap\Tests\Feature\Form\FormField\Type;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Support\Options;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 use Portavice\Bladestrap\Tests\Traits\TestsBooleanAttributes;
@@ -10,9 +11,7 @@ class CheckboxTest extends ComponentTestCase
 {
     use TestsBooleanAttributes;
 
-    /**
-     * @dataProvider checkBoxTypes
-     */
+    #[DataProvider('checkBoxTypes')]
     public function testMultipleCheckboxRendersCorrectly(
         string $componentType,
         string $checkClass,
@@ -71,9 +70,7 @@ class CheckboxTest extends ComponentTestCase
         );
     }
 
-    /**
-     * @dataProvider checkBoxTypes
-     */
+    #[DataProvider('checkBoxTypes')]
     public function testCheckboxWithAttributesRendersCorrectly(
         string $componentType,
         string $checkClass,
@@ -137,9 +134,7 @@ class CheckboxTest extends ComponentTestCase
         );
     }
 
-    /**
-     * @dataProvider singleOptions
-     */
+    #[DataProvider('singleOptions')]
     public function testSingleCheckboxRendersCorrectly(array|Options $options): void
     {
         $expectedHtml = static fn ($additionalHtml) => '<div class="mb-3">
@@ -229,9 +224,7 @@ class CheckboxTest extends ComponentTestCase
         );
     }
 
-    /**
-     * @dataProvider booleanFormFieldAttributes
-     */
+    #[DataProvider('booleanFormFieldAttributes')]
     public function testFormFieldWithBooleanAttributesRendersCorrectly(string $html, string $blade): void
     {
         $this->assertBladeRendersToHtml(

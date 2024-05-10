@@ -2,15 +2,14 @@
 
 namespace Portavice\Bladestrap\Tests\Feature;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Tests\Traits\TestsVariants;
 
 class AlertTest extends ComponentTestCase
 {
     use TestsVariants;
 
-    /**
-     * @dataProvider variants
-     */
+    #[DataProvider('variants')]
     public function testAlertsRenderCorrectly(string $buttonClass, ?string $variant): void
     {
         $this->assertBladeRendersToHtml(
@@ -19,9 +18,7 @@ class AlertTest extends ComponentTestCase
         );
     }
 
-    /**
-     * @dataProvider variants
-     */
+    #[DataProvider('variants')]
     public function testDismissibleAlertsRenderCorrectly(string $buttonClass, ?string $variant): void
     {
         $this->assertBladeRendersToHtml(

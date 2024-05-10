@@ -2,6 +2,7 @@
 
 namespace Portavice\Bladestrap\Tests\Feature\Form\FormField\Type;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 use Portavice\Bladestrap\Tests\Traits\TestsBooleanAttributes;
 
@@ -26,9 +27,7 @@ class RangeTest extends ComponentTestCase
         );
     }
 
-    /**
-     * @dataProvider booleanFormFieldAttributes
-     */
+    #[DataProvider('booleanFormFieldAttributes')]
     public function testRangeWithBooleanAttributesRendersCorrectly(string $html, string $blade): void
     {
         $expectedHtml = '<div class="mb-3">

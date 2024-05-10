@@ -2,15 +2,14 @@
 
 namespace Portavice\Bladestrap\Tests\Feature;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Tests\Traits\TestsVariants;
 
 class LinkTest extends ComponentTestCase
 {
     use TestsVariants;
 
-    /**
-     * @dataProvider variants
-     */
+    #[DataProvider('variants')]
     public function testLinksRenderCorrectly(string $linkClass, ?string $variant): void
     {
         $this->assertBladeRendersToHtml(

@@ -2,15 +2,14 @@
 
 namespace Portavice\Bladestrap\Tests\Feature;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Tests\Traits\TestsVariants;
 
 class ListTest extends ComponentTestCase
 {
     use TestsVariants;
 
-    /**
-     * @dataProvider listVariables
-     */
+    #[DataProvider('listVariables')]
     public function testListGroupRendersCorrectly(string $additionalClasses, string $variables): void
     {
         $this->assertBladeRendersToHtml(
@@ -42,9 +41,7 @@ class ListTest extends ComponentTestCase
         );
     }
 
-    /**
-     * @dataProvider variants
-     */
+    #[DataProvider('variants')]
     public function testListItemsRenderCorrectly(string $additionalClasses, ?string $variant): void
     {
         $this->assertBladeRendersToHtml(

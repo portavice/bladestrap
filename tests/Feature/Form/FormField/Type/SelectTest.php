@@ -3,6 +3,7 @@
 namespace Portavice\Bladestrap\Tests\Feature\Form\FormField\Type;
 
 use Illuminate\View\ComponentAttributeBag;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Support\Options;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 use Portavice\Bladestrap\Tests\SampleData\TestModel;
@@ -79,9 +80,7 @@ class SelectTest extends ComponentTestCase
         );
     }
 
-    /**
-     * @dataProvider attributesProvider
-     */
+    #[DataProvider('attributesProvider')]
     public function testSelectWithOptionsRendersCorrectly(Options $options, ?string $cast, string $html): void
     {
         $this->assertBladeRendersToHtml(
@@ -151,9 +150,7 @@ class SelectTest extends ComponentTestCase
         ];
     }
 
-    /**
-     * @dataProvider booleanFormFieldAttributes
-     */
+    #[DataProvider('booleanFormFieldAttributes')]
     public function testSelectWithBooleanAttributesRendersCorrectly(string $html, string $blade): void
     {
         $this->assertBladeRendersToHtml(
