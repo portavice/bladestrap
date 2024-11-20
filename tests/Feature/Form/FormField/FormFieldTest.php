@@ -21,12 +21,23 @@ class FormFieldTest extends ComponentTestCase
         );
     }
 
+    public function testFormFieldWithHintAndWithoutLabelRendersCorrectly(): void
+    {
+        $this->assertBladeRendersToHtml(
+            '<div>
+                <input id="first_name" name="first_name" type="text" value="Patrick" class="form-control" aria-describedby="first_name-hint"/>
+                <div id="first_name-hint" class="form-text">My hint</div>
+            </div>',
+            '<x-bs::form.field name="first_name" type="text" value="Patrick">
+                <x-slot:hint>My hint</x-slot:hint>
+            </x-bs::form.field>'
+        );
+    }
+
     public function testFormFieldWithoutLabelRendersCorrectly(): void
     {
         $this->assertBladeRendersToHtml(
-            '<div class="mb-3">
-                <input id="first_name" name="first_name" type="text" value="Patrick" class="form-control" placeholder="First name"/>
-            </div>',
+            '<input id="first_name" name="first_name" type="text" value="Patrick" class="form-control" placeholder="First name"/>',
             '<x-bs::form.field name="first_name" placeholder="First name" type="text" value="Patrick"/>'
         );
     }
