@@ -4,6 +4,7 @@
     'type',
     'options',
     'allowHtml' => false,
+    'nestedInGroup' => false,
     'cast' => null,
     'value' => null,
     'fromQuery' => false,
@@ -27,6 +28,13 @@
      * @var bool $allowHtml
      * Only affects labels of options.
      */
+     /**
+     * @var bool $nestedInGroup
+     * Whether the form field is nested in another form field (via prepend or append slot)
+     */
+    if ($nestedInGroup && $slot->isNotEmpty()) {
+        throw new RuntimeException('Attribute nestedInGroup is only allowed with empty slot!');
+    }
     /** @var ?string $cast */
     /**
      * The preset value, may be automatically overwritten by an old() value if old values are present.
@@ -44,6 +52,11 @@
     /** @var \Illuminate\View\ComponentAttributeBag $attributes */
     /** @var \Illuminate\View\ComponentAttributeBag $containerAttributes */
     $containerAttributes = $attributes->filterAndTransform('container-');
+    if ($slot->isNotEmpty()) {
+        $containerAttributes = $containerAttributes->class([
+            config('bladestrap.form.field.class'),
+        ]);
+    }
     /** @var \Illuminate\View\ComponentAttributeBag $labelAttributes */
     $labelAttributes = $attributes->filterAndTransform('label-');
     /** @var \Illuminate\View\ComponentAttributeBag $fieldAttributes */
@@ -59,7 +72,7 @@
 
     /** @var ?\Illuminate\View\ComponentSlot $prependText */
     /** @var ?\Illuminate\View\ComponentSlot $appendText */
-    $hasInputGroupContainer = isset($prependText) || isset($appendText);
+    $hasInputGroupContainer = !$nestedInGroup && (isset($prependText) || isset($appendText));
 
     /** @var ?\Illuminate\View\ComponentSlot $hint */
     if (isset($hint)) {
@@ -98,18 +111,18 @@
             'value' => $value,
         ]) }}/>
 @else
-    <div {{ $containerAttributes->class([
-        config('bladestrap.form.field.class'),
-    ]) }}>
-        @if($slot->isNotEmpty())
-            <label {{ $labelAttributes
-                ->class([
-                    'form-label',
-                ])
-                ->merge([
-                    'for' => $id ?? $name,
-                ]) }}>{{ $slot }}</label>
-        @endif
+    @if(isset($hint) || $slot->isNotEmpty())
+        <div {{ $containerAttributes }}>
+            @if($slot->isNotEmpty())
+                <label {{ $labelAttributes
+                    ->class([
+                        'form-label',
+                    ])
+                    ->merge([
+                        'for' => $id ?? $name,
+                    ]) }}>{{ $slot }}</label>
+            @endif
+    @endif
         @if($hasInputGroupContainer)
             <div @class([
                 'input-group',
@@ -271,5 +284,7 @@
                     'id' => $hintId,
                 ]) }}>{{ $hint }}</div>
         @endisset
-    </div>
+    @if(isset($hint) || $slot->isNotEmpty())
+        </div>
+    @endif
 @endif
