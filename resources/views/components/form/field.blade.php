@@ -12,6 +12,7 @@
     'disabled' => false,
     'readonly' => false,
     'required' => false,
+    'markAsRequired' => config('bladestrap.form.field.mark_as_required'),
 ])
 @php
     use Portavice\Bladestrap\Support\Options;
@@ -48,6 +49,7 @@
     /** @var bool $disabled */
     /** @var bool $readonly */
     /** @var bool $required */
+    /** @var bool $markAsRequired */
 
     /** @var \Illuminate\View\ComponentAttributeBag $attributes */
     /** @var \Illuminate\View\ComponentAttributeBag $containerAttributes */
@@ -120,7 +122,7 @@
                     ])
                     ->merge([
                         'for' => $id ?? $name,
-                    ]) }}>{{ $slot }}</label>
+                    ]) }}>{{ $slot }}@if($required && $markAsRequired) *@endif</label>
             @endif
     @endif
         @if($hasInputGroupContainer)

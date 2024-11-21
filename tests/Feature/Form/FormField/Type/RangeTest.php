@@ -28,16 +28,16 @@ class RangeTest extends ComponentTestCase
     }
 
     #[DataProvider('booleanFormFieldAttributes')]
-    public function testRangeWithBooleanAttributesRendersCorrectly(string $html, string $blade): void
+    public function testRangeWithBooleanAttributesRendersCorrectly(string $html, string $blade, string $additionalLabel): void
     {
         $expectedHtml = '<div class="mb-3">
-                <label for="my_range" class="form-label">My range</label>
-                <input id="my_range" name="my_range" type="range" value="2" class="form-range" ' . $html . '/>
-            </div>';
+            <label for="my_range" class="form-label">My range' . $additionalLabel . '</label>
+            <input id="my_range" name="my_range" type="range" value="2" class="form-range" ' . $html . '/>
+        </div>';
         $this->assertBladeRendersToHtml(
             $expectedHtml,
             $this->bladeView(
-                '<x-bs::form.field name="my_range" type="range" :value="$value" ' . $html . '>My range</x-bs::form.field>',
+                '<x-bs::form.field name="my_range" type="range" :value="$value" ' . $blade . '>My range</x-bs::form.field>',
                 data: [
                     'value' => 2,
                 ]
