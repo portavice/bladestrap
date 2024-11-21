@@ -22,11 +22,11 @@ class TextareaTest extends ComponentTestCase
     }
 
     #[DataProvider('booleanFormFieldAttributes')]
-    public function testTextareaWithBooleanAttributesRendersCorrectly(string $html, string $blade): void
+    public function testTextareaWithBooleanAttributesRendersCorrectly(string $html, string $blade, string $additionalLabel): void
     {
         $this->assertBladeRendersToHtml(
             '<div class="mb-3">
-                <label for="text_block" class="form-label">Text</label>
+                <label for="text_block" class="form-label">Text' . $additionalLabel . '</label>
                 <textarea id="text_block" name="text_block" class="form-control" rows="5" ' . $html . '></textarea>
             </div>',
             '<x-bs::form.field name="text_block" type="textarea" value="" rows="5" ' . $blade . '>Text</x-bs::form.field>'

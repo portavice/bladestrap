@@ -151,11 +151,11 @@ class SelectTest extends ComponentTestCase
     }
 
     #[DataProvider('booleanFormFieldAttributes')]
-    public function testSelectWithBooleanAttributesRendersCorrectly(string $html, string $blade): void
+    public function testSelectWithBooleanAttributesRendersCorrectly(string $html, string $blade, string $additionalLabel): void
     {
         $this->assertBladeRendersToHtml(
             '<div class="mb-3">
-                <label for="my_model" class="form-label">My Model</label>
+                <label for="my_model" class="form-label">My Model' . $additionalLabel . '</label>
                 <select id="my_model" name="my_model" class="form-select" ' . $html . '>
                     <option value="1">A</option>
                     <option value="2" selected>B</option>

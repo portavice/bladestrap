@@ -370,6 +370,9 @@ $options = Options::fromModels(User::query()->get(), 'name')
 The attributes `:disabled`, `:readonly`, and `:required` accept a boolean value,
 e.g. `:disabled="true"` or `:required="isset($var)"`.
 
+Per default fields with `:required="true"` are marked with a `*` after the label.
+This behavior can be disabled via configuration (for all fields) or with `:mark-as-required="false"` (for a single field).
+
 #### Input groups
 To add text at the left or the right of a form field (except checkboxes and radio buttons),
 you can use the slots `<x-slot:prependText>` and `<x-slot:appendText>`

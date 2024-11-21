@@ -225,11 +225,11 @@ class CheckboxTest extends ComponentTestCase
     }
 
     #[DataProvider('booleanFormFieldAttributes')]
-    public function testFormFieldWithBooleanAttributesRendersCorrectly(string $html, string $blade): void
+    public function testFormFieldWithBooleanAttributesRendersCorrectly(string $html, string $blade, string $additionalLabel): void
     {
         $this->assertBladeRendersToHtml(
             '<div class="mb-3">
-                <label for="my_model" class="form-label">My Model</label>
+                <label for="my_model" class="form-label">My Model' . $additionalLabel . '</label>
                 <div class="form-check">
                     <input id="my_model-1" name="my_models[]" type="checkbox" value="1" class="form-check-input" ' . $html . '/>
                     <label class="form-check-label" for="my_model-1">A</label>
