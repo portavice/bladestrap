@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - Mark required fields with a `*`
+- Support PHP 8.4
 
 
 ## Version 1.3.0 (2024-05-10)
