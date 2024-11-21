@@ -5,6 +5,9 @@ namespace Portavice\Bladestrap\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Portavice\Bladestrap\Support\ValueHelper;
 use Portavice\Bladestrap\Tests\Feature\Form\FormField\FormFieldValuesFilledFromQueryTest;
+use Portavice\Bladestrap\Tests\SampleData\TestIntEnum;
+use Portavice\Bladestrap\Tests\SampleData\TestModel;
+use Portavice\Bladestrap\Tests\SampleData\TestStringEnum;
 
 class ValueHelperTest extends TestCase
 {
@@ -15,6 +18,18 @@ class ValueHelperTest extends TestCase
         $this->assertEquals('names', ValueHelper::nameToDotSyntax('names[]'));
         $this->assertEquals('names.1', ValueHelper::nameToDotSyntax('names[1]'));
         $this->assertEquals('names.1', ValueHelper::nameToDotSyntax('names[1][]'));
+    }
+
+    public function testCastEnum(): void
+    {
+        $this->assertEquals(2, ValueHelper::castValue(TestIntEnum::Test2, null));
+        $this->assertEquals('Test2', ValueHelper::castValue(TestStringEnum::Test2, null));
+    }
+
+    public function testCastModel(): void
+    {
+        $testModel = TestModel::samples()->random(1)->first();
+        $this->assertEquals($testModel->id, ValueHelper::castValue($testModel, null));
     }
 
     public function testCastValueToBool(): void

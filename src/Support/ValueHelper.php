@@ -2,6 +2,7 @@
 
 namespace Portavice\Bladestrap\Support;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -103,6 +104,13 @@ class ValueHelper
 
         if ($cast instanceof \Closure) {
             return $cast($value);
+        }
+
+        if ($value instanceof \BackedEnum) {
+            $value = $value->value;
+        }
+        if ($value instanceof Model) {
+            $value = $value->id;
         }
 
         return match ($cast) {
