@@ -71,11 +71,14 @@ class ValueHelper
         $dotSyntax = self::nameToDotSyntax($name);
         $request = self::getRequest();
         if ($fromQuery) {
-            $value = Arr::get(
+            $queryValue = Arr::get(
                 $request->query(),
                 $dotSyntax,
                 Arr::get(self::$defaults, $dotSyntax)
             );
+            if ($queryValue !== null) {
+                $value = $queryValue;
+            }
         }
 
         if (count($request->old(null, [])) > 0) {

@@ -2,6 +2,7 @@
 
 namespace Portavice\Bladestrap\Tests\Feature\Form\FormField;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Portavice\Bladestrap\Support\ValueHelper;
 use Portavice\Bladestrap\Tests\Feature\ComponentTestCase;
 
@@ -41,6 +42,28 @@ class FormFieldValuesFilledFromQueryTest extends ComponentTestCase
             </div>',
             $this->bladeView('<x-bs::form.field name="test" type="text" :from-query="true">Test</x-bs::form.field>')
         );
+    }
+
+    #[DataProvider('urlsWithValues')]
+    public function testFormFieldFilledFromValueOrQuery(string $url, string $value): void
+    {
+        $this->mockRequest($url);
+
+        $this->assertBladeRendersToHtml(
+            '<div class="mb-3">
+                <label for="test" class="form-label">Test</label>
+                <input id="test" name="test" type="text" value="' . $value . '" class="form-control"/>
+            </div>',
+            $this->bladeView('<x-bs::form.field name="test" type="text" value="default-value" :from-query="true">Test</x-bs::form.field>')
+        );
+    }
+
+    public static function urlsWithValues(): array
+    {
+        return [
+            ['http://localhost', 'default-value'],
+            ['http://localhost?test=another-value', 'another-value'],
+        ];
     }
 
     public function testHasFromQueryWithDefaultAndWithQueryParameters(): void
