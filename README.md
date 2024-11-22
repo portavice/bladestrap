@@ -396,6 +396,20 @@ To avoid this, set `:container="false"` attribute on the slot which allows to de
 </x-bs::form.field>'
 ```
 
+Alternatively, an `appendText` slot can include a `<x-bs::form.field:nested-in-group="true">`:
+```HTML
+<x-bs::form.field name="price_from" type="number" min="1" step="1">
+    <x-slot:prependText>from</x-slot:prependText>
+    Price
+    <x-slot:appendText :container="false">
+        <x-bs::form.field name="price_until" type="number" min="1" step="1" :nested-in-group="true">
+            <x-slot:prependText>until</x-slot:prependText>
+            <x-slot:appendText>€</x-slot:appendText>
+        </x-bs::form.field>
+    </x-slot:appendText>
+</x-bs::form.field>
+```
+
 #### Hints
 `<x-slot:hint>` can be used to add a [text](https://getbootstrap.com/docs/5.3/forms/form-control/#form-text) with custom hints (`.form-text`) below the field,
 which will be automatically referenced via `aria-describedby` by the input:
