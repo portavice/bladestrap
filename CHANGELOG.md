@@ -8,8 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+
+## Version 1.4.0 (2024-11-22)
+
+### Added
+- Support nested form fields
 - Mark required fields with a `*`
 - Support PHP 8.4
+
+### Changed
+- Cast enum and models set as value before comparing whether values are active
+
+### Fixed
+- Don't override passed values for form fields if fromQuery is enabled, but there is no query parameter with the value
 
 
 ## Version 1.3.0 (2024-05-10)
