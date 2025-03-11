@@ -191,9 +191,9 @@ and [items](https://getbootstrap.com/docs/5.3/components/dropdowns/#menu-items):
 <x-bs::dropdown.item href="#">Item</x-bs::dropdown.item>
 ```
 
-Note that Bootstrap's dropdowns require Popper, which needs to be included separately if you don't use Bootstrap's `bootstrap.bundle.min.js`.
+Note that Bootstrap's [dropdowns require Popper](https://getbootstrap.com/docs/5.3/components/dropdowns/#overview), which needs to be included separately if you don't use Bootstrap's `bootstrap.bundle.min.js`.
 
-Dropdown buttons within a button group require a nested button group and `:nested-in-group="true"` on the dropdown button:
+Dropdown buttons within a button group require a [nested button group](https://getbootstrap.com/docs/5.3/components/button-group/#nesting) and `:nested-in-group="true"` on the dropdown button:
 ```HTML
 <x-bs::button.group>
     <x-bs::button.group>
