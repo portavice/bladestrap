@@ -7,7 +7,7 @@
 [![Latest version](https://img.shields.io/packagist/v/portavice/bladestrap.svg)](https://packagist.org/packages/portavice/bladestrap)
 [![Total downloads](https://img.shields.io/packagist/dt/portavice/bladestrap.svg)](https://packagist.org/packages/portavice/bladestrap)
 
-Bladestrap provides [Laravel Blade components](https://laravel.com/docs/10.x/blade#components)
+Bladestrap provides [Laravel Blade components](https://laravel.com/docs/12.x/blade#components)
 for the [Bootstrap 5](https://getbootstrap.com/docs/) frontend framework.
 
 
@@ -225,8 +225,8 @@ any additional attributes passed to the form component will be outputted as well
 </x-bs::form>
 ```
 
-Bladestrap will inject an [CSRF token field](https://laravel.com/docs/10.x/blade#csrf-field) for all methods except `GET` automatically.
-Bladestrap will also configure [method spoofing](https://laravel.com/docs/10.x/blade#method-field) for `PUT`, `PATCH` and `DELETE` forms.
+Bladestrap will inject an [CSRF token field](https://laravel.com/docs/12.x/blade#csrf-field) for all methods except `GET` automatically.
+Bladestrap will also configure [method spoofing](https://laravel.com/docs/12.x/blade#method-field) for `PUT`, `PATCH` and `DELETE` forms.
 
 ### Types of form fields
 Bladestrap has wide support for Bootstrap's [form fields](https://getbootstrap.com/docs/5.3/forms/form-control/).
