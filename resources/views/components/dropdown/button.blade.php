@@ -1,5 +1,6 @@
 @props([
     'direction' => 'down',
+    'nestedInGroup' => false,
 ])
 @php
     /**
@@ -8,28 +9,34 @@
      */
     $containerClass = 'drop' . $direction;
 
+    /** @var bool $nestedInGroup */
+
     /** @var ?\Illuminate\View\ComponentSlot $dropdown */
     /** @var \Illuminate\View\ComponentAttributeBag $attributes */
 @endphp
-<div @class($containerClass)>
-    <x-bs::button :attributes="$attributes
-        ->class([
-            'dropdown-toggle',
-        ])
-        ->merge([
-            'type' => 'button',
-            'data-bs-toggle' => 'dropdown',
-            'aria-expanded' => 'false',
-        ])">{{ $slot }}</x-bs::button>
-    @isset($dropdown)
-        <ul {{ $dropdown->attributes
+@if(!$nestedInGroup)
+    <div @class($containerClass)>
+@endif
+        <x-bs::button :attributes="$attributes
             ->class([
-                'dropdown-menu',
+                'dropdown-toggle',
             ])
             ->merge([
-                'aria-labelledby' => $attributes->get('id'),
-            ]) }}>
-            {{ $dropdown }}
-        </ul>
-    @endisset
-</div>
+                'type' => 'button',
+                'data-bs-toggle' => 'dropdown',
+                'aria-expanded' => 'false',
+            ])">{{ $slot }}</x-bs::button>
+        @isset($dropdown)
+            <ul {{ $dropdown->attributes
+                ->class([
+                    'dropdown-menu',
+                ])
+                ->merge([
+                    'aria-labelledby' => $attributes->get('id'),
+                ]) }}>
+                {{ $dropdown }}
+            </ul>
+        @endisset
+@if(!$nestedInGroup)
+    </div>
+@endif

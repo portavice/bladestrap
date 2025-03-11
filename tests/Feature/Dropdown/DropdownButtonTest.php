@@ -102,4 +102,36 @@ class DropdownButtonTest extends ComponentTestCase
             ['dropend', 'end'],
         ];
     }
+
+    #[DataProvider('variants')]
+    public function testDropdownButtonInButtonGroupRendersCorrectly(string $buttonClass, ?string $variant): void
+    {
+        $this->assertBladeRendersToHtml(
+            '<div role="group" class="btn-group">' .
+                '<div role="group" class="btn-group">' .
+                    '<button class="btn ' . $buttonClass . ' dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown in a group</button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="http://localhost/test1">Test1</a></li>
+                        <li><a class="dropdown-item" href="http://localhost/test2">Test2</a></li>
+                    </ul>' .
+                '</div>' .
+            '</div>',
+            $this->bladeView(
+                sprintf(
+                    '<x-bs::button.group>
+                        <x-bs::button.group>
+                            <x-bs::dropdown.button %s :nested-in-group="true">
+                                Dropdown in a group
+                                <x-slot:dropdown>
+                                    <x-bs::dropdown.item href="http://localhost/test1">Test1</x-bs::dropdown.item>
+                                    <x-bs::dropdown.item href="http://localhost/test2">Test2</x-bs::dropdown.item>
+                                </x-slot:dropdown>
+                            </x-bs::dropdown.button>
+                        </x-bs::button.group>
+                    </x-bs::button.group>',
+                    self::makeVariantAttribute($variant)
+                )
+            )
+        );
+    }
 }

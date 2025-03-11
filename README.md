@@ -193,6 +193,29 @@ and [items](https://getbootstrap.com/docs/5.3/components/dropdowns/#menu-items):
 
 Note that Bootstrap's dropdowns require Popper, which needs to be included separately if you don't use Bootstrap's `bootstrap.bundle.min.js`.
 
+Dropdown buttons within a button group require a nested button group and `:nested-in-group="true"` on the dropdown button:
+```HTML
+<x-bs::button.group>
+    <x-bs::button.group>
+        <x-bs::dropdown.button variant="primary" :nested-in-group="true">
+            Primary dropdown in group
+            <x-slot:dropdown>
+                <x-bs::dropdown.item href="#">Item 1.1</x-bs::dropdown.item>
+                <x-bs::dropdown.item href="#">Item 1.2</x-bs::dropdown.item>
+            </x-slot:dropdown>
+        </x-bs::dropdown.button>
+        <x-bs::dropdown.button variant="secondary" :nested-in-group="true">
+            Secondary dropdown in group
+            <x-slot:dropdown>
+                <x-bs::dropdown.item href="#">Item 2.1</x-bs::dropdown.item>
+                <x-bs::dropdown.item href="#">Item 2.2</x-bs::dropdown.item>
+            </x-slot:dropdown>
+        </x-bs::dropdown.button>
+    </x-bs::button.group>
+    <x-bs::button.link href="#">Normal button in group</x-bs::button.link>
+</x-bs::button.group>
+```
+
 ### Forms
 Use `<x-bs::form>` to create [forms](https://getbootstrap.com/docs/5.3/forms/overview/) (method defaults to `POST`),
 any additional attributes passed to the form component will be outputted as well:
