@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $name
  * @property string $short_name
- *
  * @property-read string $display_name {@see self::displayName()}
  */
 class TestModel extends Model
