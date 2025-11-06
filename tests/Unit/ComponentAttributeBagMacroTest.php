@@ -3,12 +3,13 @@
 namespace Portavice\Bladestrap\Tests\Unit;
 
 use Illuminate\View\ComponentAttributeBag;
+use Override;
 use PHPUnit\Framework\TestCase;
 use Portavice\Bladestrap\Macros\ComponentAttributeBagExtension;
 
 class ComponentAttributeBagMacroTest extends TestCase
 {
-    #[\Override]
+    #[Override]
     public static function setUpBeforeClass(): void
     {
         ComponentAttributeBagExtension::registerMacros();

@@ -42,7 +42,7 @@ class ButtonLinkTest extends ComponentTestCase
 
         /**
          * Additional tabindex="-1" for links with href recommended in
-         * https://getbootstrap.com/docs/5.3/components/buttons/#link-functionality-caveat
+         * https://getbootstrap.com/docs/5.3/components/buttons/#link-functionality-caveat.
          */
         $this->assertBladeRendersToHtml(
             '<a aria-disabled="true" role="button" tabindex="-1" class="btn ' . $buttonClass . ' disabled" href="#">Link title</a>',

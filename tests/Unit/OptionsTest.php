@@ -2,6 +2,7 @@
 
 namespace Portavice\Bladestrap\Tests\Unit;
 
+use BadMethodCallException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\ComponentAttributeBag;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -85,7 +86,7 @@ class OptionsTest extends TestCase
 
     public function testFromEnumWithModelFails(): void
     {
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('Enum expected, but '. TestModel::class. ' found');
         Options::fromEnum(TestModel::class);
     }

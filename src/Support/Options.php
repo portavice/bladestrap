@@ -2,12 +2,19 @@
 
 namespace Portavice\Bladestrap\Support;
 
+use ArrayIterator;
+use BackedEnum;
+use BadMethodCallException;
+use Closure;
+use Countable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\View\ComponentAttributeBag;
+use IteratorAggregate;
+use Traversable;
 
-class Options implements \Countable, \IteratorAggregate
+class Options implements Countable, IteratorAggregate
 {
     /**
      * @var array<int|string,ComponentAttributeBag>
@@ -44,7 +51,7 @@ class Options implements \Countable, \IteratorAggregate
         return $this;
     }
 
-    public function appendMany(array $labelsByOptionValue, \Closure|null $attributeProvider = null): self
+    public function appendMany(array $labelsByOptionValue, ?Closure $attributeProvider = null): self
     {
         foreach ($labelsByOptionValue as $optionValue => $label) {
             $this->append($label, $optionValue, isset($attributeProvider) ? $attributeProvider($optionValue, $label) : null);
@@ -68,9 +75,9 @@ class Options implements \Countable, \IteratorAggregate
         return $this->cast;
     }
 
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
-        return new \ArrayIterator($this->options);
+        return new ArrayIterator($this->options);
     }
 
     public function prepend(
@@ -86,7 +93,7 @@ class Options implements \Countable, \IteratorAggregate
         return $this;
     }
 
-    public function prependMany(array $labelsByOptionValue, \Closure|null $attributeProvider = null): self
+    public function prependMany(array $labelsByOptionValue, ?Closure $attributeProvider = null): self
     {
         foreach (array_reverse($labelsByOptionValue, true) as $optionValue => $label) {
             $this->prepend($label, $optionValue, isset($attributeProvider) ? $attributeProvider($optionValue, $label) : null);
@@ -141,15 +148,15 @@ class Options implements \Countable, \IteratorAggregate
 
     /**
      * @param array<int|string,int|string> $array
-     * @param ?\Closure(int|string,int|string): ComponentAttributeBag $attributeProvider
+     * @param ?Closure(int|string, int|string): ComponentAttributeBag $attributeProvider
      */
     public static function fromArray(
         array $array,
-        \Closure|null $attributeProvider = null
+        ?Closure $attributeProvider = null
     ): self {
         $options = new self($array);
 
-        if ($attributeProvider instanceof \Closure) {
+        if ($attributeProvider instanceof Closure) {
             foreach ($array as $optionValue => $label) {
                 $options->setAttributes($optionValue, $attributeProvider($optionValue, $label));
             }
@@ -159,21 +166,21 @@ class Options implements \Countable, \IteratorAggregate
     }
 
     /**
-     * @param class-string|array<\BackedEnum> $enum
+     * @param array<BackedEnum>|class-string<BackedEnum> $enum
      * @param \Closure(<\BackedEnum>): (int|string)|string $labelProvider
      * @param ?\Closure(<\BackedEnum>): ComponentAttributeBag $attributeProvider
      */
     public static function fromEnum(
         array|string $enum,
-        \Closure|string $labelProvider = 'value',
-        \Closure|null $attributeProvider = null
+        Closure|string $labelProvider = 'value',
+        ?Closure $attributeProvider = null
     ): self {
         $enumCases = self::enumCases($enum);
         if (is_string($labelProvider)) {
             $labelProvider = match ($labelProvider) {
                 'name' => static fn ($enumCase) => $enumCase->name,
                 'value' => static fn ($enumCase) => $enumCase->value,
-                default => static fn ($enumCase) => $enumCase->$labelProvider(),
+                default => static fn ($enumCase) => $enumCase->{$labelProvider}(),
             };
         }
 
@@ -186,7 +193,7 @@ class Options implements \Countable, \IteratorAggregate
             $options->cast = 'int';
         }
 
-        if ($attributeProvider instanceof \Closure) {
+        if ($attributeProvider instanceof Closure) {
             foreach ($enumCases as $enumCase) {
                 $options->setAttributes($enumCase->value, $attributeProvider($enumCase));
             }
@@ -196,7 +203,7 @@ class Options implements \Countable, \IteratorAggregate
     }
 
     /**
-     * @param class-string|array<\BackedEnum> $enum
+     * @param array<BackedEnum>|class-string<BackedEnum> $enum
      */
     private static function enumCases(array|string $enum): array
     {
@@ -205,21 +212,21 @@ class Options implements \Countable, \IteratorAggregate
         }
 
         if (!enum_exists($enum)) {
-            throw new \BadMethodCallException('Enum expected, but ' . $enum . ' found');
+            throw new BadMethodCallException('Enum expected, but ' . $enum . ' found');
         }
 
         return $enum::cases();
     }
 
     /**
-     * @param Model[]|Collection<Model> $models
+     * @param Collection<Model>|Model[] $models
      * @param \Closure(<Model>): (int|string)|string $labelProvider
      * @param ?\Closure(<Model>): ComponentAttributeBag $attributeProvider
      */
     public static function fromModels(
         array|Collection $models,
-        \Closure|string $labelProvider,
-        \Closure|null $attributeProvider = null,
+        Closure|string $labelProvider,
+        ?Closure $attributeProvider = null,
     ): self {
         $modelCollection = is_array($models)
             ? Collection::make($models)
@@ -239,7 +246,7 @@ class Options implements \Countable, \IteratorAggregate
         );
         $options->cast = 'int';
 
-        if ($attributeProvider instanceof \Closure) {
+        if ($attributeProvider instanceof Closure) {
             foreach ($modelCollection as $model) {
                 $options->setAttributes($model->getKey(), $attributeProvider($model));
             }

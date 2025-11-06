@@ -3,6 +3,7 @@
 namespace Portavice\Bladestrap;
 
 use Illuminate\Support\ServiceProvider;
+use Override;
 use Portavice\Bladestrap\Macros\ComponentAttributeBagExtension;
 
 class BladestrapServiceProvider extends ServiceProvider
@@ -26,7 +27,7 @@ class BladestrapServiceProvider extends ServiceProvider
         }
     }
 
-    #[\Override]
+    #[Override]
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/bladestrap.php', 'bladestrap');

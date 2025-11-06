@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Http\Request;
 use Illuminate\Testing\TestView;
 use Orchestra\Testbench\TestCase;
+use Override;
 use Portavice\Bladestrap\BladestrapServiceProvider;
 
 abstract class ComponentTestCase extends TestCase
@@ -14,7 +15,7 @@ abstract class ComponentTestCase extends TestCase
     use InteractsWithSession;
     use InteractsWithViews;
 
-    #[\Override]
+    #[Override]
     protected function getPackageProviders($app): array
     {
         return [
