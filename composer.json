@@ -22,16 +22,18 @@
     },
     "require": {
         "php": "^8.2",
-        "illuminate/console": "^10.24|^11.0|^12.0",
-        "illuminate/http": "^10.24|^11.0|^12.0",
-        "illuminate/support": "^10.24|^11.0|^12.0",
-        "illuminate/view": "^10.24|^11.0|^12.0"
+        "illuminate/console": "^10.24|^11.0|^12.0|^13.0",
+        "illuminate/http": "^10.24|^11.0|^12.0|^13.0",
+        "illuminate/support": "^10.24|^11.0|^12.0|^13.0",
+        "illuminate/view": "^10.24|^11.0|^12.0|^13.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^8.36|^9.15|^10.6",
-        "phpunit/phpunit": "^10.5|^11.5",
+        "orchestra/testbench": "^8.36|^9.15|^10.6|^11.0",
+        "phpunit/phpunit": "^10.5|^11.5|^12.5",
         "portavice/laravel-pint-config": "^3.0"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "config": {
         "sort-packages": true
     },
