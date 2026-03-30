@@ -32,8 +32,6 @@
         "phpunit/phpunit": "^10.5|^11.5|^12.5",
         "portavice/laravel-pint-config": "^3.0"
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "config": {
         "sort-packages": true
     },
