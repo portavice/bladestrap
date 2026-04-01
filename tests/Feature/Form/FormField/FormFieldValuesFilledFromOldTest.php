@@ -16,7 +16,7 @@ class FormFieldValuesFilledFromOldTest extends ComponentTestCase
     }
 
     #[DataProvider('formDataProvider')]
-    public function testDisabledFormFieldHasValueEvenIfNotInOldValues(array $old): void
+    public function testDisabledFormFieldHasValueEvenIfNotInOldValues(array $old, string $html, string $blade, array $data): void
     {
         $this->mockOld($old);
         $this->assertBladeRendersToHtml(
