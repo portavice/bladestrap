@@ -8,8 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+
+## Version 1.6.0 (2026-04-01)
+
 ### Added
 - Support Laravel 13
+- Support PHP 8.5
+
+### Changed
+- Update development dependencies (use `portavice/laravel-pint-config` 3.0)
+
+## Removed
+- Support for PHP 8.1
 
 
 ## Version 1.5.0 (2025-03-11)
