@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+- Support PHP 8.6 (with Laravel 13.32 or later)
+
+### Changed
+- Update actions used in GitHub workflows
+
+### Removed
+- Support for PHP 8.2, Laravel 10 and 11
+
 
 ## Version 1.6.0 (2026-04-01)
 
