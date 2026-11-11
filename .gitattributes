@@ -1,5 +1,13 @@
 * text eol=lf
 
+*.blade.php text diff=html
+*.json text diff=json
+*.md text diff=markdown
+*.php text diff=php
+*.xml text diff=xml
+*.yaml text diff=yaml
+*.yml text diff=yaml
+
 # Directories
 /.github/ export-ignore
 /.phpunit.cache/ export-ignore

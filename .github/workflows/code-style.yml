@@ -1,6 +1,6 @@
 name: Check code style
 
-on: [push]
+on: [ push ]
 
 jobs:
   code-style:
@@ -10,12 +10,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.4
+          php-version: 8.5
 
       - name: Install
         run: composer install --prefer-dist --no-interaction
